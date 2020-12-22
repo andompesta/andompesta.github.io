@@ -4,7 +4,7 @@ layout: default
 
 # [Home](./index.html#home)
 
-
+{% absolute_url %}
 {% post_url 2020-12-22-second %}
 
 Text can be **bold**, _italic_, or ~~strikethrough~~.
