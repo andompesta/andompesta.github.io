@@ -1,11 +1,24 @@
 ---
 layout: default
+mathjax: false
 ---
 
-# [Home](./index.html#home)
+# Welcome
+
+This is my personal space where I keep all my notes from my ML experience. I'm mostly interested in NLP and graph embeddings/analytics. Thus expect most of the material to cover:
+* Fundamentals of Deep Learning;
+* Fundamentals of Reinforcement Learning;
+* Basic Stats;
+* Basic of Neural ODE.
+
+You re more than welcome to have a look at all my works on [gitHub](https://github.com/andompesta).
+
+Please note that this website is ment to keep only my personal material,this it my contains errors and typos.
 
 
-sticazzi
+
+
+<!-- sticazzi
 
 {{ site.baseurl}}{% post_url 2020-12-22-second %}
 
@@ -127,4 +140,4 @@ Long, single-line code blocks should not wrap. They should horizontally scroll i
 
 ```
 The final element.
-```
+``` -->
