@@ -7,10 +7,7 @@ layout: default
 
 sticazzi
 
-{{site.baseurl}}
-
-
-{% post_url 2020-12-22-second %}
+{{ "\" | site.baseurl}}{% post_url 2020-12-22-second %}
 
 Text can be **bold**, _italic_, or ~~strikethrough~~.
 
