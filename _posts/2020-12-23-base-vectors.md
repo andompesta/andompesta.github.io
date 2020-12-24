@@ -75,7 +75,7 @@ $$
 
 Thanks to their properties, it is possible to linearly transforma any vector by means to its basis. 
 In other words, given a vector $$\mathbf{x} = \left[\begin{array}{c} -1\\ 2 \end{array}\right]$$ w.r.t. $$\mathbf{i}$$ and $$\mathbf{j}$$ and any lineart transformation $$L$$.
-It is possible to describe $$L(\mathbf{x}) = \left[\begin{array}{c} -1\\ 2 \end{array}\right] $$ w.r.t. $$L(\mathbf{i})$$ and $$L(\mathbf{j})$$ (formally $$L(\mathbf{x}) = -1 L(\mathbf{i}) + 2 L(\mathbf{j})$$).
+It is possible to represent $$L(\mathbf{x}) $$ as a function of $$L(\mathbf{i})$$ and $$L(\mathbf{j})$$ (formally $$L(\mathbf{x}) = -1 L(\mathbf{i}) + 2 L(\mathbf{j})$$).
 
 For example, assume $$L = \left[\begin{array}{cc} 1 & 3\\ -2 & 0 \end{array}\right]$$, then:
 
@@ -88,6 +88,12 @@ L(\mathbf{x}) &= -1 L(\mathbf{i}) + 2 L(\mathbf{j}) \\
 	&= \left[\begin{array}{c} 5\\ 2 \end{array}\right]
 \end{align*}
 $$
+
+<div>
+<img src="{{site.baseurl}}/assets/img/linear_algebra/linear-transform.png" style="max-width: 85%">
+<p style="font-size:small;">Figure 3: Visualization of the linear transformation appled to vector x.)</p>
+</div>
+
 
 
 Finally, as a linear transformation is represented by a matrix, it is possible to define the **composition of two or more linear transformations** as he left-to-right product of the transformation matrixis:
