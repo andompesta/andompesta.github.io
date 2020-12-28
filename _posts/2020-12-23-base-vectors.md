@@ -8,11 +8,12 @@ tag: "Linear Algebra"
 
 # Basis Vectors
 
-In linear algebra, a vector basis $$B$$ of a vector space $$V$$ is a set of vectors $$\{\mathbf{b_1}, ..., \mathbf{b_n}\}$$ that are linearly independet and allow to reconstruct every vector $\mathbf{v_i} \in V$ as linear combination of $B$:
+In linear algebra, a vector basis $$B$$ of a vector space $$V$$ is a set of vectors $$\{\mathbf{b_1}, ..., \mathbf{b_n}\}$$ that are linearly independent and allow to reconstruct every vector $\mathbf{v_i} \in V$ as a linear combination of $B$:
+
 $$
-\begin{align}
+\begin{align*}
 	\mathbf{v_i} & = a_1 \mathbf{b_1} + ... + a_n \mathbf{b_n} 
-\end{align}
+\end{align*}
 $$
 
 
@@ -28,20 +29,20 @@ and $$\mathbf{j} = \left[
   0\\
   1
 \end{array}
-\right]$$ are the most common base vectors for the vectors space in $$\mathbb{R}^2$$. Thus, it is possible to represet a vector $$ \mathbf{x} = \left[\begin{array}{c}
+\right]$$ are the most common base vectors for the vectors space $$\mathbb{R}^2$$. Thus, it is possible to represent a vector $$ \mathbf{x} = \left[\begin{array}{c}
   3\\
   2
 \end{array}\right]$$ as $$ 3 \mathbf{i} + 2 \mathbf{j}$$.
 
 <div>
 <img src="{{site.baseurl}}/assets/img/linear_algebra/basic_vectors.png" alt="Base Vectors">
-<p style="font-size:small;">Figure 1: Vector representation by base vector.</p>
+<p style="font-size:small;">Figure 1: Vector representation by the base vector $\mathbf{i}$ and $\mathbf{j}$.</p>
 </div>
 
 
-The ability of represent any vector in $$V$$ as linear combination of the basis vectors is a powerful concept.
+The ability to represent any vector in $$V$$ as a linear combination of the basis vectors is a powerful concept.
 However, $$\mathbf{i}$$ and $$\mathbf{j}$$ are not the only possible basis vectors of $$\mathbb{R}^2$$.
-For example, an other possible basis is  $$ \mathbf{v} = \left[\begin{array}{c}
+For example, another possible basis could be formed by $$\mathbf{v} = \left[\begin{array}{c}
   1\\
   2
 \end{array}\right]$$ and  $$ \mathbf{w} = \left[\begin{array}{c}
@@ -53,18 +54,18 @@ For example, an other possible basis is  $$ \mathbf{v} = \left[\begin{array}{c}
 # Span
 
 The **Span** is defined as the set of all possible vectors that we can create given a basis set.
-Note that, the number of basis vectors define the dimention of our vector space.
+Note that the number of basis vectors defines the dimension of our vector space.
 
 # Linear Transformations
 
-A **linear transformation** is equvalent to a function over vectors. That is, a linear transformation "move" an input vector to an output vector. While general transformations have complex features, linear transformations have some well defined properties:
-1. they mantains the origin of the vector space invariante
-2. they maps equally spaced lines to equally spaced lines (or points)
+A **linear transformation** is equivalent to a function over vectors. That is, a linear transformation "move" an input vector to an output vector. While general transformations have complex features, linear transformations have some well-defined properties:
+1. they maintain the origin of the vector space invariant
+2. they map equally spaced lines to equally spaced lines (or points)
 
 $$
-\begin{align}
+\begin{align*}
 	L(a_1 \mathbf{i} + a_2 \mathbf{j}) & = a_1L(\mathbf{i}) + a_2L(\mathbf{j})
-\end{align}
+\end{align*}
 $$
 
 <div>
@@ -72,10 +73,8 @@ $$
 <p style="font-size:small;">Figure 2: Examples of the most commont linear transformations. (Image taken from <a href="https://mathigon.org/course/linear-algebra/linear-transformations"> Samuel S. Watson</a>)</p>
 </div>
 
-
-Thanks to their properties, it is possible to linearly transforma any vector by means to its basis. 
-In other words, given a vector $$\mathbf{x} = \left[\begin{array}{c} -1\\ 2 \end{array}\right]$$ w.r.t. $$\mathbf{i}$$ and $$\mathbf{j}$$ and any lineart transformation $$L$$.
-It is possible to represent $$L(\mathbf{x}) $$ as a function of $$L(\mathbf{i})$$ and $$L(\mathbf{j})$$ (formally $$L(\mathbf{x}) = -1 L(\mathbf{i}) + 2 L(\mathbf{j})$$).
+Thanks to their properties, it is possible to linearly transform any vector by means to its basis. In other words, given a vector $$\mathbf{x} = \left[\begin{array}{c} -1\\ 2 \end{array}\right]$$ w.r.t. $$\mathbf{i}$$ and $$\mathbf{j}$$ and any lineart transformation $$L$$.
+It is possible to represent $$L(\mathbf{x})$$ as a function of $$L(\mathbf{i})$$ and $$L(\mathbf{j})$$ (formally $$L(\mathbf{x}) = -1 L(\mathbf{i}) + 2 L(\mathbf{j})$$).
 
 For example, assume $$L = \left[\begin{array}{cc} 1 & 3\\ -2 & 0 \end{array}\right]$$, then:
 
@@ -96,7 +95,7 @@ $$
 
 
 
-Finally, as a linear transformation is represented by a matrix, it is possible to define the **composition of two or more linear transformations** as he left-to-right product of the transformation matrixis:
+Finally, as a linear transformation is represented by a matrix, it is possible to define the **composition of two or more linear transformations** as he left-to-right product of the transformation matrix:
 
 $$
 \begin{align*}
@@ -116,3 +115,12 @@ L_2 L_1( \mathbf{x} ) &= \Big ( \left[\begin{array}{cc} 0 & 2\\ 1 & 0 \end{array
 \end{align*} 
 $$
 
+Note that as matrix multiplication is equal to applying different linear transformations, the multiplication order does matter.
+
+# Determinant
+As linear transformations alter the original vector space, it is important to evaluate by how much the original space is expanded or contracted by a given linear transformation $L$. The **determinant** define how much the original unit surface is changed by $$L$$.
+
+The determinant has some interesting properties:
+1. A liner transantformation with 0 determinant ($$ det(L) = 0$$) means that squash all the vectrs on a single line/plane. Moreover, it also means that $$L$$ has linearly dependents columns.
+2. The determinant can be negative if it change orientation of the space.
+3. Determinant is associative: $$det(L) \cdot det(M) = det(L \cdot M)$$.
