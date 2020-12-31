@@ -124,3 +124,9 @@ The determinant has some interesting properties:
 1. A liner transantformation with 0 determinant ($$ det(L) = 0$$) means that squash all the vectrs on a single line/plane. Moreover, it also means that $$L$$ has linearly dependents columns.
 2. The determinant can be negative if it change orientation of the space.
 3. Determinant is associative: $$det(L) \cdot det(M) = det(L \cdot M)$$.
+
+<div>
+<img src="{{site.baseurl}}/assets/img/linear_algebra/determinant.png" style="max-width: 85%">
+<p style="font-size:small;">Figure 4: Visualization of the determinant for a initial vector space defined by $\mathbf{i}$ and $\mathbf{j}$ and the vector space obtained after applying the transformation $L$.)</p>
+</div>
+
