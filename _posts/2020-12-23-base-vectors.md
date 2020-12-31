@@ -130,3 +130,48 @@ The determinant has some interesting properties:
 <p style="font-size:small;">Figure 4: Visualization of the determinant for a initial vector space defined by $\mathbf{i}$ and $\mathbf{j}$ and the vector space obtained after applying the transformation $L$.)</p>
 </div>
 
+# Eigenvectors and Eigenvalues
+
+It is often convinient to study linear transformations, not on their matrix formulation, but ratehr on their base component.
+Among the most common decomposition methods, **eigenvectors** and **eigenvalues** are the most common matrix decomposition thecnique.
+
+
+Given a linear transformation $$L = \left[\begin{array}{cc} 3 & 0\\ 0 & 2 \end{array}\right]$$, most of the vectors $$\mathbf{v}_i$$ are rotated by $$L$$ away from their original span.
+Instead some special vectors $$\mathbf{e}_i$$ are only streched or squished by $$L$$, but they remain on the original span. Moreover, every vector on the span of $$\mathbf{e}_i$$ is also only scaled by $$L$$.
+
+
+<div>
+<img src="{{site.baseurl}}/assets/img/linear_algebra/eigen_values.png" style="max-width: 85%">
+<p style="font-size:small;">Figure 5: Visualization of one of the eigenvalue of $L$. Note that, $\mathbf{e}_1$ remain on its own span, while a random vector $\mathbf{v}$ is moved away from its original span.)</p>
+</div>
+
+
+Base on the intuition shown in Figure 5 and on the "move from the span" consepts, we can formally define the eigenvalues of a squared matrix $$A$$ as the non-zero vector $$\mathbf{e}_i$$:
+
+
+$$
+\begin{align*}
+A \cdot \mathbf{e}_i = \lambda \mathbf{e}_i
+\end{align*}
+$$
+
+Note that:
+1. $\lambda$ is known as the eigenvalue of the eigenvector $$\mathbf{e}$$.
+2. $$\lambda = 0 $$ is not an acceptable solution.
+3. if $$\mathbf{e}_i$$ is an eigenvectors of $$A$$, then any rescaled vector $$c \mathbf{e}_i $$ for $$ c \in \mathbb{R}, c \neq 0$$ is also an eigenvectors of $$A$$. Thus, usually only hte unit eigenvectors are considered.
+
+
+There is an interesting connection between eigenvectors are determinant. According to the formal definition of eigenvectors, we are tring to map a matrix to a vector. Thus, we are tring to map a volume/surface to a single line/point; which is possible only if the determinant of the matrix is 0:
+
+$$
+\begin{align*}
+A \cdot \mathbf{e}_i &= \lambda \mathbf{e}_i \\
+A \cdot \mathbf{e}_i &= (I \lambda) \mathbf{e}_i \\
+(A - \lambda I) \mathbf{e}_i &= 0 \\
+& \Rightarrow det(A - \lambda I) = 0
+\end{align*}
+$$
+
+
+
+Using the eigenvectors as basis of a linear transformation, makes the computation easier. Specifically, if we express a linear transformation $$A$$ using its own eigenvector as bases we get a diagonal transformation (formed by the eigenvalues of the eigenvectors).
