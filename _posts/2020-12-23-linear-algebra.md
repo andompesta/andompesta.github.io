@@ -9,7 +9,61 @@ tag: "Linear Algebra"
 
 Linear algebra is the branch of math and statistics that is devoted to the study of matrices and vectors. As such, it is broadly used to model real-world problems in phisitcs and machine learning. Such post is a collections of my notes obtained from the 3Blue1Brown series on linear-algebra <a href="#ref:3b1b">[1]</a> and Murphy's new book <a href="#ref:mkp">[2]</a>.
 
+# Basic Matrix Operations
 
+1. **transpose**: given a matrix $$\rmA \in \mathbf{R}^{m \times n}$$, its transpose $$\rmA^T$$ is obtained ''flipping'' the rows and colums
+
+$$
+\rmA = \left[\begin{array}{cccc}
+  a_{11} & a_{12} & ... & a_{1n}\\
+  a_{21} & a_{22} & ... & a_{2n}\\
+  \vdots & \vdots & \vdots & \vdots \\
+  a_{m1} & a_{m2} & ... & a_{mn}\\
+\end{array}\right]
+\Rightarrow
+\rmA^T = \left[\begin{array}{cccc}
+  a_{11} & a_{21} & ... & a_{m1}\\
+  a_{12} & a_{22} & ... & a_{m2}\\
+  \vdots & \vdots & \vdots & \vdots \\
+  a_{1n} & a_{2n} & ... & a_{mn}\\
+\end{array}\right].
+$$
+
+The most important properties are:
+* $${(\rmA^T)}^T = \rmA$$
+* $$(\rmA \rmB)^T = \rmB^T \rmA^T$$
+* $$(\rmA + \rmB)^T = \rmA^T \rmB^T$$
+
+
+2. **matrix multiplication**: while the summation of 2 matrixes is done element-wise. Matrix multiplication is done row-by-colum and requires matrixes of specific sizes. Given $$A \in \mathbf{R}^{m \times n}$$ and $$B \in \mathbf{R}^{n \times p}$$ it is possible to define $$\rmC = \rmA \rmB \in \mathbf{R}^{m \times p}$$ s.t. $$c_{i,j} = \sum_{k=1}^{n} a_{ik} b_{kj}$$. In other words, $$\rmC$$ is a linear combination of the row of $$\rmA$$ and the colum of $$\rmB$$.
+
+
+$$
+\rmC = \left[\begin{array}{ccc}
+  - & \rva_{1:} & -\\
+  - & \rva_{2:} & -\\
+     & \vdots &   \\
+  - & \rva_{m:} & -\\
+\end{array}\right]
+\left[\begin{array}{cccc}
+  | & | & | & |\\
+  \rvb_{:1} & \rvb_{:2} & \dots & \rvb_{:p}\\
+  | & | & | & |\\
+\end{array}\right]
+= 
+\left[\begin{array}{cccc}
+  \rva_{1:}\rvb_{:1} & \rva_{1:}\rvb_{:2} & \dots & \rva_{1:}\rvb_{:p}\\
+  \rva_{2:}\rvb_{:1} & \rva_{2:}\rvb_{:2} & \dots & \rva_{2:}\rvb_{:p}\\
+     & \vdots & \vdots &   \\
+  \rva_{m:}\rvb_{:1} & \rva_{m:}\rvb_{:2} & \dots & \rva_{m:}\rvb_{:p}\\
+\end{array}\right].
+$$
+
+
+The most important properties are:
+* $$(\rmA \rmB) \rmC = \rmA (\rmB \rmC)$$
+* $$\rmA(\rmB + \rmC) = \rmA \rmB \ \rmA \rmC)$$
+* $$\rmA \rmB \neq \rmB \rmA $$
 
 # Basis Vectors
 
