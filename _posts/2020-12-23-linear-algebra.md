@@ -6,9 +6,14 @@ author: "Sandro Cavallari"
 tag: "Linear Algebra"
 ---
 
+
+Linear algebra is the branch of math and statistics that is devoted to the study of matrices and vectors. As such, it is broadly used to model real-world problems in phisitcs and machine learning. Such post is a collections of my notes obtained from the 3Blue1Brown series on linear-algebra <a href="#ref:3b1b">[1]</a> and Murphy's new book <a href="#ref:mkp">[2]</a>.
+
+
+
 # Basis Vectors
 
-In linear algebra, a vector basis $$B$$ of a vector space $$V$$ is a set of vectors $$\{\mathbf{b_1}, ..., \mathbf{b_n}\}$$ that are linearly independent and allow to reconstruct every vector $\mathbf{v_i} \in V$ as a linear combination of $B$:
+In linear algebra, a vector basis $$\rmB$$ of a vector space $$\rmV$$ is a set of vectors $$\{\rvb_1, ..., \rvb_n\}$$ that are linearly independent and allow to reconstruct every vector $$\mathbf{v_i} \in V$$ as a linear combination of $$\rmB$$:
 
 $$
 \begin{align*}
@@ -175,3 +180,12 @@ $$
 
 
 Using the eigenvectors as basis of a linear transformation, makes the computation easier. Specifically, if we express a linear transformation $$A$$ using its own eigenvector as bases we get a diagonal transformation (formed by the eigenvalues of the eigenvectors).
+
+
+# Reference
+
+
+<ol>
+    <li id="ref:3b1b">3Blue1Brown. <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"><b>Essence of Linear Algebra.</b></a></li>
+    <li id="ref:mkp">Murphy, Kevin  Patrick. <b>Probabilistic Machine Learning: An Introduction.</b> MIT Press, 2021.</li>
+</ol>

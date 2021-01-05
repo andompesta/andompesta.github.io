@@ -1,22 +1,70 @@
 {% if page.mathjax %}
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
+ <script type="text/javascript">
+  window.MathJax = {
+    tex: {
+      macros: {
+        rvepsilon: "{\\mathbf{\\epsilon}}",
+        rvtheta: "{\\mathbf{\\theta}}",
+        rva: "{\\mathbf{a}}",
+        rvb: "{\\mathbf{b}}",
+        rvc: "{\\mathbf{c}}",
+        rvd: "{\\mathbf{d}}",
+        rve: "{\\mathbf{e}}",
+        rvf: "{\\mathbf{f}}",
+        rvg: "{\\mathbf{g}}",
+        rvh: "{\\mathbf{h}}",
+        rvi: "{\\mathbf{i}}",
+        rvj: "{\\mathbf{j}}",
+        rvk: "{\\mathbf{k}}",
+        rvl: "{\\mathbf{l}}",
+        rvm: "{\\mathbf{m}}",
+        rvn: "{\\mathbf{n}}",
+        rvo: "{\\mathbf{o}}",
+        rvp: "{\\mathbf{p}}",
+        rvq: "{\\mathbf{q}}",
+        rvr: "{\\mathbf{r}}",
+        rvs: "{\\mathbf{s}}",
+        rvt: "{\\mathbf{t}}",
+        rvu: "{\\mathbf{u}}",
+        rvv: "{\\mathbf{v}}",
+        rvw: "{\\mathbf{w}}",
+        rvx: "{\\mathbf{x}}",
+        rvy: "{\\mathbf{y}}",
+        rvz: "{\\mathbf{z}}",
+        rmA: "{\\mathbf{A}}",
+        rmB: "{\\mathbf{B}}",
+        rmC: "{\\mathbf{C}}",
+        rmD: "{\\mathbf{D}}",
+        rmE: "{\\mathbf{E}}",
+        rmF: "{\\mathbf{F}}",
+        rmG: "{\\mathbf{G}}",
+        rmH: "{\\mathbf{H}}",
+        rmI: "{\\mathbf{I}}",
+        rmJ: "{\\mathbf{J}}",
+        rmK: "{\\mathbf{K}}",
+        rmL: "{\\mathbf{L}}",
+        rmM: "{\\mathbf{M}}",
+        rmN: "{\\mathbf{N}}",
+        rmO: "{\\mathbf{O}}",
+        rmP: "{\\mathbf{P}}",
+        rmQ: "{\\mathbf{Q}",
+        rmR: "{\\mathbf{R}}",
+        rmS: "{\\mathbf{S}}",
+        rmT: "{\\mathbf{R}}",
+        rmU: "{\\mathbf{U}}",
+        rmV: "{\\mathbf{V}}",
+        rmW: "{\\mathbf{W}}",
+        rmX: "{\\mathbf{X}}",
+        rmY: "{\\mathbf{Y}}",
+        rmZ: "{\\mathbf{Z}}",
+      },
+      // Use AMS numbering rules and support labeled equations.
+      // See https://docs.mathjax.org/en/latest/input/tex/eqnumbers.html
+      tags: 'ams'
     }
-  });
+  };
 </script>
-<script
-  type="text/javascript"
-  charset="utf-8"
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
->
-</script>
-<script
-  type="text/javascript"
-  charset="utf-8"
-  src="https://vincenttam.github.io/javascripts/MathJaxLocal.js"
->
+<script type="text/javascript" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
 </script>
 {% endif %}
