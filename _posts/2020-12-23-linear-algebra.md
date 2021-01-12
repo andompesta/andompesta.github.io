@@ -215,7 +215,7 @@ A \cdot \mathbf{e}_i = \lambda \mathbf{e}_i
 $$
 
 Note that:
-1. $\lambda$ is known as the eigenvalue of the eigenvector $$\mathbf{e}$$.
+1. $$\lambda$$ is known as the eigenvalue of the eigenvector $$\mathbf{e}$$.
 2. $$\lambda = 0 $$ is not an acceptable solution.
 3. if $$\mathbf{e}_i$$ is an eigenvectors of $$A$$, then any rescaled vector $$c \mathbf{e}_i $$ for $$ c \in \mathbb{R}, c \neq 0$$ is also an eigenvectors of $$A$$. Thus, usually only hte unit eigenvectors are considered.
 
