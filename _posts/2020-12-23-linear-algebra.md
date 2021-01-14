@@ -35,8 +35,8 @@ The most important properties are:
 * $$(\rmA + \rmB)^T = \rmA^T \rmB^T$$
 
 
+{:start="2"}
 2. **matrix multiplication**: while the summation of 2 matrixes is done element-wise. Matrix multiplication is done row-by-colum and requires matrixes of specific sizes. Given $$A \in \mathbf{R}^{m \times n}$$ and $$B \in \mathbf{R}^{n \times p}$$ it is possible to define $$\rmC = \rmA \rmB \in \mathbf{R}^{m \times p}$$ s.t. $$c_{i,j} = \sum_{k=1}^{n} a_{ik} b_{kj}$$. In other words, $$\rmC$$ is a linear combination of the row of $$\rmA$$ and the colum of $$\rmB$$.
-
 
 $$
 \rmC = \left[\begin{array}{ccc}
@@ -59,20 +59,28 @@ $$
 \end{array}\right].
 $$
 
-
 The most important properties are:
 * $$(\rmA \rmB) \rmC = \rmA (\rmB \rmC)$$
 * $$\rmA(\rmB + \rmC) = \rmA \rmB \ \rmA \rmC)$$
 * $$\rmA \rmB \neq \rmB \rmA $$
+
+{:start="3"}
+3. **matrix inverse**: As for real numbers,  the inverso of a matrix $$\rmA$$ is denoted as $$\rmA^{-1}$$ and is defined as the matrix such that: $$\rmA \rmA^{-1} = \rmI$$. Besites being easy to define computing the inverse of a matrix is an expencive operations. Moreover, $$\rmA^{-1}$$ exists if and only if $$det(\rmA) \neq 0$$.
+
+The most important properties are:
+* $$(\rmA^{-1})^{-1} = \rmA$$
+* $$(\rmA \rmB)^{-1} = \rmB^{-1} \rmA^{-1}$$
+* $$(\rmA^{-1})^{T} = (\rmA^{T})^{-1} = \rmA^{-T}$$
 
 # Basis Vectors
 
 In linear algebra, a vector basis $$\rmB$$ of a vector space $$\rmV$$ is a set of vectors $$\{\rvb_1, ..., \rvb_n\}$$ that are linearly independent and allow to reconstruct every vector $$\mathbf{v_i} \in V$$ as a linear combination of $$\rmB$$:
 
 $$
-\begin{align*}
+\begin{align}
+\label{eq:basis_vector}
 	\mathbf{v_i} & = a_1 \mathbf{b_1} + ... + a_n \mathbf{b_n} 
-\end{align*}
+\end{align}
 $$
 
 
@@ -122,9 +130,10 @@ A **linear transformation** is equivalent to a function over vectors. That is, a
 2. they map equally spaced lines to equally spaced lines (or points)
 
 $$
-\begin{align*}
+\begin{align}
+\label{eq:linear_transform}
 	L(a_1 \mathbf{i} + a_2 \mathbf{j}) & = a_1L(\mathbf{i}) + a_2L(\mathbf{j})
-\end{align*}
+\end{align}
 $$
 
 <div>
@@ -157,9 +166,9 @@ $$
 Finally, as a linear transformation is represented by a matrix, it is possible to define the **composition of two or more linear transformations** as he left-to-right product of the transformation matrix:
 
 $$
-\begin{align*}
+\begin{align}
 L_2(L_1( \mathbf{x} )) =  L_2L_1(\mathbf{x})
-\end{align*}
+\end{align}
 $$
 
 For example, if $$L_1 = \left[\begin{array}{cc} 1 & -2\\ 1 & 0 \end{array}\right]$$, $$L_2 = \left[\begin{array}{cc} 0 & 2\\ 1 & 0 \end{array}\right]$$ and $$\mathbf{x} = \left[\begin{array}{c} x\\ y \end{array}\right]$$. Then:
@@ -189,6 +198,137 @@ The determinant has some interesting properties:
 <p style="font-size:small;">Figure 4: Visualization of the determinant for a initial vector space defined by $\mathbf{i}$ and $\mathbf{j}$ and the vector space obtained after applying the transformation $L$.)</p>
 </div>
 
+
+# System of Linear Equations
+It is convininet to use inear algebra to represent a system of linear equations, e.g.
+
+
+<table align="center">
+<tr>
+  <td>
+    $$\begin{cases} 
+    2x + 5y + 3z = -3 \\ 
+    4x + 8z = 0 \\
+    x + 3y = 2
+    \end{cases}$$
+  </td>
+  <td>
+    $$
+    \Rightarrow
+    $$
+  </td>
+  <td style="width: 5px">
+    $$
+    \left[\begin{array}{ccc} 
+    2 & 5 & 3\\
+    4 & 0 & -2\\
+    1 & 3 & 0
+    \end{array}
+    \right]
+    $$
+  </td>
+  <td style="width: 5px">
+    $$
+    \left[\begin{array}{c} 
+    x\\
+    y\\
+    z
+    \end{array}
+    \right]
+    $$
+  </td>
+  <td style="width: 3px">
+    = 
+  </td>
+  <td style="width: 5px">
+    $$
+    \left[\begin{array}{c} 
+    -3\\
+    0\\
+    2
+    \end{array}
+    \right]
+    $$
+  </td>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+    <td>$$\rmA$$</td>
+    <td>$$\rvx$$</td>
+    <td> = </td>
+    <td>$$\rvb$$</td>
+</tr>
+</table>
+
+Thus, any system of linear equations can be expressed as:
+
+$$
+\begin{equation}
+\rmA \rvx = \rvb
+\end{equation}
+$$
+
+where $$\rmA \in \mathbb{R}^{m \times n}$$ is a known linear transformation(a matrix), $$\rvb \in \mathbb{R}^{m \times 1}$$ is a known vector in the space of $$\rmA$$, and $$\rvx \in \mathbb{R}^{n \times 1}$$ is an unkown vector that after the transformation $$\rmA$$ lies over $$\rvb$$.
+
+
+Note that the existence of such unkown vector is tightly related to the determinant of $$\rmA$$:
+* if $$det(A) = 0$$, in general, there is no such $$\rvx$$
+* if $$det(A) \neq 0$$, in general, there is one-and-only-one $$\rvx$$ that satisfy $$ \rmA \rvx = \rvb $$, namely $$\rmA^{-1}$$.
+
+Mathematically, the solution to $$\rmA \rvx = \rvb$$ is $$\rvx = \rmA^{-1} \rvb$$. However, computing $$\rmA^{-1}$$ is a complex operation and is subject to numerical instabilities ([Don’t invert that matrix](https://www.johndcook.com/blog/2010/01/19/dont-invert-that-matrix/)). Thus, mathematicians have develop multiple solvers for that same problam that does not require to compute the matrix invers and they leverage some specific property of matrix $$\rmA$$.
+
+
+# Change of Basis
+
+Given a vector $$\rvx = \left[\begin{array}{c} 3\\ 2\end{array}\right]$$ imagine this vector represented in terms of the unit vectors $$\rvi = \left[\begin{array}{c} 1\\ 0\end{array}\right]$$ and $$\rvj = \left[\begin{array}{c} 0\\ 1\end{array}\right]$$, and, scale them by 3 and 2, i.e.
+
+
+$$\rvx = \left[\begin{array}{c} 3 \rvi\\ 2 \rvj \end{array}\right]$$
+
+However, as shown if Fig. 5, we can also represent $$\rvx$$ in terms of different basis vectors $$\rvu = \left[\begin{array}{c} 2\\ 1\end{array}\right]$$ and $$\rvv = \left[\begin{array}{c} -1\\ 1\end{array}\right]$$. That is, $$\rvx$$ can be represented as the linear combination of $$\rvu$$ $$\rvj$$:
+
+$$\rvx = \left[\begin{array}{c} \frac{5}{3} \rvu\\ \frac{1}{3} \rvv \end{array}\right]$$
+
+In other words, it is possible to represent $$\rvx$$ in two different languages: one according to basis $$\rvi$$ $$\rvj$$ the other according to basis $$\rvu \rvv$$.
+
+<div>
+<img src="{{site.baseurl}}/assets/img/linear_algebra/base_change.png" style="max-width: 85%">
+<p style="font-size:small;">Figure 5: Visualization of the same vector $\rvx$ represented according to two different basis vectors.)</p>
+</div>
+
+
+As overstated, we can express $$\rvu$$ and $$\rvv$$ in terms of basis vectors $$\rvi$$ and $$\rvj$$ as:
+
+$$\rvu = \left[\begin{array}{c} 2\\ 1\end{array}\right] ~~~~~~ \rvv = \left[\begin{array}{c} -1\\ 1\end{array}\right]$$
+
+or in terms of $$\rvu$$ $$\rvv$$ it-self:
+
+$$\rvu = \left[\begin{array}{c} 1\\ 0\end{array}\right] ~~~~~~ \rvv = \left[\begin{array}{c} 0\\ 1\end{array}\right]$$
+
+
+Yet, the linear transformation $$\rmA = [\rvu, \rvv]$$ (composed by the collum vectors $$\rvu$$ $$\rvv$$) allow to convert any vector written in terms of $$\rvu$$ $$\rvv$$ to its equivalent vector w.r.t. $$\rvi$$ and $$\rvj$$:
+
+$$ \left[\begin{array}{cc} 2 & -1\\ 1 & 1\end{array}\right] \cdot \left[\begin{array}{c} \frac{5}{3}\\ \frac{1}{3}\end{array}\right] = \left[\begin{array}{c} 3\\ 2 \end{array}\right]$$
+
+Similarly, we can use $$\rmA^{-1}$$ to convert any vector written in terms of $$\rvi$$ $$\rvj$$ to it equivalent representeation in $$\rvu$$ $$\rvv$$:
+
+$$
+\left[\begin{array}{cc} \frac{1}{3} & \frac{1}{3}\\ -\frac{1}{3} & \frac{2}{3}\end{array}\right] \cdot \left[\begin{array}{c} 3\\ 2\end{array}\right] = \left[\begin{array}{c} \frac{5}{3}\\ \frac{1}{3}\end{array}\right]
+$$
+
+
+More generaly, any transformation $$\rmM$$ expressed in terms of the basis $$\rvi$$ and $$\rvj$$ can be applyed to any vectror $$\rvx$$ defined in temrs of basis $$\rvu$$ and $$\rvv$$ applying the change-of-basis equation:
+
+$$
+\begin{equation}
+\label{eq:cob}
+[\rmA^{-1} \rmM \rmA] \rvx
+\end{equation}
+$$
+
+where $$\rmA^{-1} \rmM \rmA$$ express a sort of mathematical empathy between different reference systems; i.e., it converts a tranformation $$\rmM$$ to a different reference systems.
+
 # Eigenvectors and Eigenvalues
 
 It is often convinient to study linear transformations, not on their matrix formulation, but ratehr on their base component.
@@ -201,39 +341,158 @@ Instead some special vectors $$\mathbf{e}_i$$ are only streched or squished by $
 
 <div>
 <img src="{{site.baseurl}}/assets/img/linear_algebra/eigen_values.png" style="max-width: 85%">
-<p style="font-size:small;">Figure 5: Visualization of one of the eigenvalue of $L$. Note that, $\mathbf{e}_1$ remain on its own span, while a random vector $\mathbf{v}$ is moved away from its original span.)</p>
+<p style="font-size:small;">Figure 6: Visualization of one of the eigenvalue of $L$. Note that, $\mathbf{e}_1$ remain on its own span, while a random vector $\mathbf{v}$ is moved away from its original span.)</p>
 </div>
 
 
-Base on the intuition shown in Figure 5 and on the "move from the span" consepts, we can formally define the eigenvalues of a squared matrix $$A$$ as the non-zero vector $$\mathbf{e}_i$$:
+Base on the intuition shown in Fig. 6 and on the "move from the span" consepts, we can formally define the eigenvalues of a squared matrix $$\rmA \in \mathbb{R}^{n \times n}$$ as the non-zero vector $$\mathbf{e}_i$$:
 
 
 $$
-\begin{align*}
-A \cdot \mathbf{e}_i = \lambda \mathbf{e}_i
-\end{align*}
+\begin{align}
+\rmA \cdot \mathbf{e}_i = \lambda \mathbf{e}_i
+\end{align}
 $$
 
-Note that:
-1. $$\lambda$$ is known as the eigenvalue of the eigenvector $$\mathbf{e}$$.
-2. $$\lambda = 0 $$ is not an acceptable solution.
-3. if $$\mathbf{e}_i$$ is an eigenvectors of $$A$$, then any rescaled vector $$c \mathbf{e}_i $$ for $$ c \in \mathbb{R}, c \neq 0$$ is also an eigenvectors of $$A$$. Thus, usually only hte unit eigenvectors are considered.
-
+where:
+* $$\lambda$$ is known as the eigenvalue of the eigenvector $$\mathbf{e}$$.
+* $$\lambda \neq 0 $$.
+* if $$\mathbf{e}_i$$ is an eigenvectors of $$\rmA$$, then any rescaled vector $$c ~ \mathbf{e}_i $$ for $$ c \in \mathbb{R}, c \neq 0$$ is also an eigenvectors of $$\rmA$$. Thus, usually only the unit eigenvectors are considered.
 
 There is an interesting connection between eigenvectors are determinant. According to the formal definition of eigenvectors, we are tring to map a matrix to a vector. Thus, we are tring to map a volume/surface to a single line/point; which is possible only if the determinant of the matrix is 0:
 
 $$
 \begin{align*}
-A \cdot \mathbf{e}_i &= \lambda \mathbf{e}_i \\
-A \cdot \mathbf{e}_i &= (I \lambda) \mathbf{e}_i \\
-(A - \lambda I) \mathbf{e}_i &= 0 \\
-& \Rightarrow det(A - \lambda I) = 0
+\rmA \cdot \mathbf{e}_i &= \lambda \mathbf{e}_i \\
+\rmA \cdot \mathbf{e}_i &= (\rmI \lambda) \mathbf{e}_i \\
+(\rmA - \lambda \rmI) \mathbf{e}_i &= 0 \\
+& \Rightarrow det(\rmA - \lambda \rmI) = 0
 \end{align*}
 $$
 
 
+The most important properties are:
+* the trance of a matrix is equal to the some of its eigenvalues: $$tr(\rmA) = \sum_{i=0}^{n-1} \lambda_i$$
+* the determinanto of $$\rmA$$ is equal to the producto of its eigenvalues: $$ det(\rmA) = \prod_{i=0}^{n-1} \lambda_i$$
 
-Using the eigenvectors as basis of a linear transformation, makes the computation easier. Specifically, if we express a linear transformation $$A$$ using its own eigenvector as bases we get a diagonal transformation (formed by the eigenvalues of the eigenvectors).
+
+Finally, given any linear transformation $$\rmA$$, if we express $$\rmA$$ in terms of its own eivenvectors (we use the eigenvectors of $$\rmA$$ as a new basis to express $$\rmA$$) applying the change of basis (Eq. \ref{eq:cob}), we obtain a diagonal matrix of eigenvalues:
+
+$$
+\begin{equation}
+\rmU^{-1} \rmA \rmU = \mathbf{\Lambda}
+\end{equation}
+$$
+
+where $$\rmU \in \mathbb{R}^{n \times n} = \left[\begin{array}{ccc}
+  | & | & | \\
+  \rve_1 & \dots & \rve_{n}\\
+  | & | & | \\
+\end{array}\right]$$ is the matrix formed by the eigenvectors of $$\rmA$$ and $$\mathbf{\Lambda} \in \mathbb{R}^{n \times n} = \left[\begin{array}{ccc}
+  \lambda_1 &  &  \\
+   & \ddots & \\
+   & & \lambda_n \\
+\end{array}\right]$$ is the diagonal matrix formed by the eigenvalues assogiated to the eigenvectors of $$\rmA$$.
+
+
+# Matrix Decomposition
+
+If the eigenvalues of $$\rmA$$ are linearly indipendent, then the matrix $$\rmU$$ is invertible, it is possible to **decompose** $$\rmA$$ as:
+
+$$
+\begin{equation}
+\label{eq:eigendecomposition}
+\rmA = \rmU \mathbf{\Lambda} \rmU^{-1}
+\end{equation}
+$$
+
+
+Moreover, if $$\rmA$$ is real valued and symmetric then it can be shown that $$\rmU$$ is orthonormal, i.e., $$\rvu^T_i \rvu_j = 0$$ if $$i \neq j$$ and $$\rvu^T_i \rvu_i = 1$$ (or $$\rmU^T\rmU = \rmU \rmU^T = \rmI$$). Thus, we can futher symplify Eq. \ref{eq:eigendecomposition} $$\rmA$$ as:
+
+$$
+\begin{equation}
+\rmA = \rmU \mathbf{\Lambda} \rmU^T
+\end{equation}
+$$
+
+Once a matrix is decomposed, it became straightforward to compute it's inverse. Since $$\rmU^T = \rmU^{-1}$$, we have:
+
+$$
+\begin{equation}
+\rmA^{-1} = \rmU \mathbf{\Lambda}^{-1} \rmU^T
+\end{equation}
+$$
+
+
+## Singular Value Decomposition (SVD)
+
+While eigendecomposition require squared matrices, SVD allow the factorization of rectangular matrices into **singular vectors** and **singular values**. Given any $$\rmA \in \mathbb{R}${m \times n}$$, it can be decomposed as:
+
+$$
+\begin{equation}
+\rmA = \rmU \rmS \rmV^T
+\end{equation}
+$$
+
+where $$\rmU \in \mathbb{R}^{m \times m}$$ is composed by orthonormal columns ($$\rmU^T \rmU = \rmI$$), $$\rmV \in \mathbb{R}^{n \times n}$$ is compesed by orthonormals rows and columns ($$\rmV^T\rmV = \rmV \rmV^T = \rmI$$), and $$\rmS \in \mathbb{R}^{m \times n}$$ is a diagonal matrix containing the **singular values** $$\sigma_i \geq 0$$.
+$$\rmU$$ and $$\rmV^T$$ are respectively known as the **left singular vectors** and **right singular vectors** of $$\rmA$$ and are obtained as the eigenvectors of $$\rmA\rmA^T$$ and $$\rmA^T\rmA$$. Similarly, $$\rmS$$ is composed by the squared root of the eigenvalues of $$\rmA\rmA^T$$ and $$\rmA^T\rmA$$ arranged in descending order.
+
+For example, consider
+
+$$
+\rmA = 
+\left[\begin{array}{cc}
+  2 & 4 \\
+  1 & 3 \\
+  0 & 0 \\
+  0 & 0 \\
+\end{array}\right]
+$$
+
+then we know that the columns of $$\rmU$$ are made by the eigenvalues of $$\rmA \rmA^T$$:
+
+$$
+\begin{align*}
+\rmA \rmA^T &= \left[\begin{array}{cccc}
+  20 & 14 & 0 & 0 \\
+  14 & 10 & 0 & 0 \\
+  0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 \\
+\end{array}\right]\\
+\rmU &= \left[\begin{array}{cccc}
+  0.82 & -0.58 & 0 & 0 \\
+  0.58 & 0.82 & 0 & 0 \\
+  0 & 0 & 1 & 0 \\
+  0 & 0 & 0 & 1 \\
+\end{array}\right]
+\end{align*}
+$$
+
+similarly, the right singular vectors are obtained as eigenvalues of $$\rmA^T \rmA$$:
+
+$$
+\begin{align*}
+\rmA^T \rmA &= \left[\begin{array}{cc}
+  5 & 11 \\
+  11 & 25\\
+\end{array}\right]\\
+\rmV &= \left[\begin{array}{cc}
+  0.4 & -0.91 \\
+  0.91 & 0.4
+\end{array}\right]
+\end{align*}
+$$
+
+instead, $$\rmS$$ is formed by the squared root of the eivenvectors of $$\rmV$$ or $$\rmU$$:
+
+$$
+\rmS = \left[\begin{array}{cc}
+  5.46 & 0 \\
+  0 & 0.37 \\
+  0 & 0 \\
+  0 & 0 
+\end{array}\right]
+$$
 
 
 # Reference
