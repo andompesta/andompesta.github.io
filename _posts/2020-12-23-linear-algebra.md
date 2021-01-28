@@ -446,21 +446,28 @@ It is also a powerful method for optimization subject to linear constrains (cons
 That is, it can be used to solve quadratic constrained problems of the form:
 
 $$
-\min_{\rvx} \rvx^T \rmH \rvx + d, ~~\text{subject to} ~~ \rvx^T \rvx - 1 = 0 .
+\min_{\rvx} \rvx^T \rmH \rvx + d, ~~\text{subject to} ~~ \rvx^T \rvx - 1 = 0
 $$
 
+where $$\rmH \in \mathbb{R}^{n \times n}$$ is symmetric.
 Such problems are a specific instanche of the **Lagrangian method**, in which an augmented objective is created to ensure the constrain satisfability:
 
 $$
-L(\rvx, \lambda) = \max_{\lambda} \min_{\rvx} \rvx^T \rmH \rvx + d + \lambda (\rvx^T \rvx - 1)
+L(\rvx, \lambda) = \max_{\lambda} \min_{\rvx} \rvx^T \rmH \rvx + d - \lambda (\rvx^T \rvx - 1)
 $$
 
 The optimal $$\rvx^*$$ that solve the problem, need to satisfy the zero-gradient condition:
 
 $$
 \begin{align*}
-\frac{\partial L(\rvx, \lambda)} {\partial \rvx} = 0 ~~ & \Rightarrow  ~~  2 \rmH \rvx + 2 \lambda \rvx = 0 \\
-\frac{\partial L(\rvx, \lambda)} {\partial \lambda} = 0  &\Rightarrow  ~~  \rvx^T \rvx - 1 = 0\\
+\frac{\partial L(\rvx, \lambda)} {\partial \rvx} & = 0 \\
+ & = \frac{ \partial } {\partial \rvx} \rvx^T \rmH \rvx   +  \frac{\partial}{\partial \rvx} d - \frac{\partial}{\partial \rvx} \lambda (\rvx^T \rvx - 1)  \\
+ & = \rvx^T (\rmH + \rmH^T) + 0 - 2 \lambda \rvx^T  && { \small \rmH = \rmH^T \text{ since is symmetric.} }\\
+ & = 2 \rvx^T \rmH - 2 \lambda \rvx^T \\ 
+\frac{\partial L(\rvx, \lambda)} {\partial \lambda} & = 0  \\
+ & =  \frac{ \partial }{ \partial \lambda } \rvx^T \rmH \rvx + \frac{ \partial }{ \partial \lambda } d - \frac{ \partial }{ \partial \lambda } \lambda (\rvx^T \rvx - 1) \\
+ & = 0 + 0 - \rvx^T \rvx + 1 \\
+ & = \rvx^T \rvx - 1
 \end{align*}
 $$
 
