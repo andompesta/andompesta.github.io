@@ -389,6 +389,7 @@ Given a squared matrix $$\rmA \in \mathbb{R}^{n \times n}$$, it is possible to r
 
 $$
 \begin{equation}
+\label{eq:eigenvectors_matrix}
 \rmA \rmU = \rmU \mathbf{\Lambda}
 \end{equation}
 $$
@@ -438,7 +439,35 @@ $$
 \end{equation}
 $$
 
-Thus, this method can be applied to solve a system of linear equations.
+
+### Lagrangian Methods for Constrained Optimization
+While eigen decomposition is commonly applied to solve systems of liear equations.
+It is also a powerful method for optimization subject to linear constrains (constrained optimization).
+That is, it can be used to solve quadratic constrained problems of the form:
+
+$$
+\min_{\rvx} \rvx^T \rmH \rvx + d, ~~\text{subject to} ~~ \rvx^T \rvx - 1 = 0 .
+$$
+
+Such problems are a specific instanche of the **Lagrangian method**, in which an augmented objective is created to ensure the constrain satisfability:
+
+$$
+L(\rvx, \lambda) = \max_{\lambda} \min_{\rvx} \rvx^T \rmH \rvx + d + \lambda (\rvx^T \rvx - 1)
+$$
+
+The optimal $$\rvx^*$$ that solve the problem, need to satisfy the zero-gradient condition:
+
+$$
+\begin{align*}
+\frac{\partial L(\rvx, \lambda)} {\partial \rvx} = 0 ~~ & \Rightarrow  ~~  2 \rmH \rvx + 2 \lambda \rvx = 0 \\
+\frac{\partial L(\rvx, \lambda)} {\partial \lambda} = 0  &\Rightarrow  ~~  \rvx^T \rvx - 1 = 0\\
+\end{align*}
+$$
+
+which is equivalent to the eigenvector equation (Eq. \ref{eq:eigenvectors_matrix}) $$ \rmH \rvx = \lambda \rvx$$.
+
+
+
 
 ## Singular Value Decomposition (SVD)
 
@@ -511,7 +540,6 @@ $$
 $$
 
 
-## LU Decomposition
 
 # Reference
 
