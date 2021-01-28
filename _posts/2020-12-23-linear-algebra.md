@@ -307,27 +307,27 @@ or in terms of $$\rvu$$ $$\rvv$$ it-self:
 $$\rvu = \left[\begin{array}{c} 1\\ 0\end{array}\right] ~~~~~~ \rvv = \left[\begin{array}{c} 0\\ 1\end{array}\right]$$
 
 
-Yet, the linear transformation $$\rmA = [\rvu, \rvv]$$ (composed by the collum vectors $$\rvu$$ $$\rvv$$) allow to convert any vector written in terms of $$\rvu$$ $$\rvv$$ to its equivalent vector w.r.t. $$\rvi$$ and $$\rvj$$:
+Yet, the linear transformation $$\rmU = [\rvu, \rvv]$$ (composed by the collum vectors $$\rvu$$ and $$\rvv$$) allow to convert any vector written in terms of $$\rvu$$ $$\rvv$$ to its equivalent vector w.r.t. $$\rvi$$ and $$\rvj$$:
 
 $$ \left[\begin{array}{cc} 2 & -1\\ 1 & 1\end{array}\right] \cdot \left[\begin{array}{c} \frac{5}{3}\\ \frac{1}{3}\end{array}\right] = \left[\begin{array}{c} 3\\ 2 \end{array}\right]$$
 
-Similarly, we can use $$\rmA^{-1}$$ to convert any vector written in terms of $$\rvi$$ $$\rvj$$ to it equivalent representeation in $$\rvu$$ $$\rvv$$:
+Similarly, we can use $$\rmU^{-1}$$ to convert any vector written in terms of $$\rvi$$ $$\rvj$$ to it equivalent representeation in $$\rvu$$ $$\rvv$$:
 
 $$
 \left[\begin{array}{cc} \frac{1}{3} & \frac{1}{3}\\ -\frac{1}{3} & \frac{2}{3}\end{array}\right] \cdot \left[\begin{array}{c} 3\\ 2\end{array}\right] = \left[\begin{array}{c} \frac{5}{3}\\ \frac{1}{3}\end{array}\right]
 $$
 
 
-More generaly, any transformation $$\rmM$$ expressed in terms of the basis $$\rvi$$ and $$\rvj$$ can be applyed to any vectror $$\rvx$$ defined in temrs of basis $$\rvu$$ and $$\rvv$$ applying the change-of-basis equation:
+More generaly, any transformation $$\rmA$$ expressed in terms of the basis $$\rvi$$ and $$\rvj$$ can be applyed to any vectror $$\rvx$$ defined in temrs of basis $$\rvu$$ and $$\rvv$$ applying the change-of-basis equation:
 
 $$
 \begin{equation}
 \label{eq:cob}
-[\rmA^{-1} \rmM \rmA] \rvx
+[\rmU^{-1} \rmA \rmU] \rvx
 \end{equation}
 $$
 
-where $$\rmA^{-1} \rmM \rmA$$ express a sort of mathematical empathy between different reference systems; i.e., it converts a tranformation $$\rmM$$ to a different reference systems.
+where $$\rmU^{-1} \rmA \rmU$$ express a sort of mathematical empathy between different reference systems; i.e., it converts a tranformation $$\rmA$$ to a different reference systems.
 
 # Eigenvectors and Eigenvalues
 
@@ -362,12 +362,13 @@ where:
 There is an interesting connection between eigenvectors are determinant. According to the formal definition of eigenvectors, we are tring to map a matrix to a vector. Thus, we are tring to map a volume/surface to a single line/point; which is possible only if the determinant of the matrix is 0:
 
 $$
-\begin{align*}
+\begin{align}
+\label{eq:eigenvectors}
 \rmA \cdot \mathbf{e}_i &= \lambda \mathbf{e}_i \\
-\rmA \cdot \mathbf{e}_i &= (\rmI \lambda) \mathbf{e}_i \\
-(\rmA - \lambda \rmI) \mathbf{e}_i &= 0 \\
-& \Rightarrow det(\rmA - \lambda \rmI) = 0
-\end{align*}
+\rmA \cdot \mathbf{e}_i &= (\rmI \lambda) \mathbf{e}_i \nonumber \\
+(\rmA - \lambda \rmI) \mathbf{e}_i &= 0 \nonumber \\
+& \Rightarrow det(\rmA - \lambda \rmI) = 0 \nonumber
+\end{align}
 $$
 
 
@@ -376,7 +377,23 @@ The most important properties are:
 * the determinanto of $$\rmA$$ is equal to the producto of its eigenvalues: $$ det(\rmA) = \prod_{i=0}^{n-1} \lambda_i$$
 
 
-Finally, given any linear transformation $$\rmA$$, if we express $$\rmA$$ in terms of its own eivenvectors (we use the eigenvectors of $$\rmA$$ as a new basis to express $$\rmA$$) applying the change of basis (Eq. \ref{eq:cob}), we obtain a diagonal matrix of eigenvalues:
+
+# Matrix Decomposition
+
+Similarly, to how it is conveninet to express $$15$$ as product of its factors $$5 \cdot 3$$; sometimes it is convenient to express a matrix $$\rmA$$ as product of other matrixes.
+There are multiple method to decpompose a matrix, but they are mostly used to eficiently solve systems of linear equation.
+
+## Eigendecomposition 
+
+Given a squared matrix $$\rmA \in \mathbb{R}^{n \times n}$$, it is possible to rewrite Eq. \ref{eq:eigenvectors} in matrix form as:
+
+$$
+\begin{equation}
+\rmA \rmU = \rmU \mathbf{\Lambda}
+\end{equation}
+$$
+
+Moreover, according to Eq. \ref{eq:cob}, using the eigenvectors of $$\rmA$$ as new basis of $$\rmA$$ will generate a diagonal matrix of eigenvalues:
 
 $$
 \begin{equation}
@@ -395,38 +412,37 @@ where $$\rmU \in \mathbb{R}^{n \times n} = \left[\begin{array}{ccc}
 \end{array}\right]$$ is the diagonal matrix formed by the eigenvalues assogiated to the eigenvectors of $$\rmA$$.
 
 
-# Matrix Decomposition
-
-If the eigenvalues of $$\rmA$$ are linearly indipendent, then the matrix $$\rmU$$ is invertible, it is possible to **decompose** $$\rmA$$ as:
+This process of expressing $$\rmA$$ in terms of its eigenvalue and eigenvectors is know as **diagonalization**.
+If the eigenvalues of $$\rmA$$ are linearly indipendent, then the matrix $$\rmU$$ is invertible, thus, it is possible to **decompose** $$\rmA$$ as:
 
 $$
 \begin{equation}
 \label{eq:eigendecomposition}
-\rmA = \rmU \mathbf{\Lambda} \rmU^{-1}
+\rmA = \rmU \mathbf{\Lambda} \rmU^{-1} .
 \end{equation}
 $$
-
 
 Moreover, if $$\rmA$$ is real valued and symmetric then it can be shown that $$\rmU$$ is orthonormal, i.e., $$\rvu^T_i \rvu_j = 0$$ if $$i \neq j$$ and $$\rvu^T_i \rvu_i = 1$$ (or $$\rmU^T\rmU = \rmU \rmU^T = \rmI$$). Thus, we can futher symplify Eq. \ref{eq:eigendecomposition} $$\rmA$$ as:
 
 $$
 \begin{equation}
-\rmA = \rmU \mathbf{\Lambda} \rmU^T
+\rmA = \rmU \mathbf{\Lambda} \rmU^T .
 \end{equation}
 $$
 
-Once a matrix is decomposed, it became straightforward to compute it's inverse. Since $$\rmU^T = \rmU^{-1}$$, we have:
+As a final note, it is possible to leverage such eigendecomposition to easily compute the inverse of a matrix $$\rmA$$. Since $$\rmU^T = \rmU^{-1}$$, we have:
 
 $$
 \begin{equation}
-\rmA^{-1} = \rmU \mathbf{\Lambda}^{-1} \rmU^T
+\rmA^{-1} = \rmU \mathbf{\Lambda}^{-1} \rmU^T .
 \end{equation}
 $$
 
+Thus, this method can be applied to solve a system of linear equations.
 
 ## Singular Value Decomposition (SVD)
 
-While eigendecomposition require squared matrices, SVD allow the factorization of rectangular matrices into **singular vectors** and **singular values**. Given any $$\rmA \in \mathbb{R}${m \times n}$$, it can be decomposed as:
+While eigendecomposition require squared matrices, **SVD** allow the factorization of rectangular matrices into **singular vectors** and **singular values**. Given any $$\rmA \in \mathbb{R}^{m \times n}$$, it is possible to depompose it as:
 
 $$
 \begin{equation}
@@ -493,6 +509,10 @@ $$
   0 & 0 
 \end{array}\right]
 $$
+
+
+## LU Decomposition
+
 
 
 # Reference
