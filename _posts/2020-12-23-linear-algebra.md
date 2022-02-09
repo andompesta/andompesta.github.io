@@ -335,7 +335,7 @@ It is often convinient to study linear transformations, not on their matrix form
 Among the most common decomposition methods, **eigenvectors** and **eigenvalues** are the most common matrix decomposition thecnique.
 
 
-Given a linear transformation $$L = \left[\begin{array}{cc} 3 & 0\\ 0 & 2 \end{array}\right]$$, most of the vectors $$\mathbf{v}_i$$ are rotated by $$L$$ away from their original span.
+Given a linear transformation $$L = \left[\begin{array}{cc} 3 & 1\\ 0 & 2 \end{array}\right]$$, most of the vectors $$\mathbf{v}_i$$ are rotated by $$L$$ away from their original span.
 Instead some special vectors $$\mathbf{e}_i$$ are only streched or squished by $$L$$, but they remain on the original span. Moreover, every vector on the span of $$\mathbf{e}_i$$ is also only scaled by $$L$$.
 
 
