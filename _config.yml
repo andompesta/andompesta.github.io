@@ -1,6 +1,6 @@
 title: Sandro's Notes
 description: Welcome to my personal notes on Machine Learning.
-baseurl: "/notes"
+baseurl: ""
 show_downloads: false
 google_analytics: 
 theme: jekyll-theme-minimal
