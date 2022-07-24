@@ -1,3 +1,4 @@
+<!-- TAKEN FROM: https://aristath.github.io/blog/static-site-comments-using-github-issues-api -->
 <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
 <script>
     const GH_API_URL = 'https://api.github.com/repos/andompesta/andompesta.github.io/issues/{{ page.comments_id }}/comments?per_page=100'; // ?client_id=614103a901a8c932cee2&client_secret=53f28097492c04d2c5066975eb47d25479a36aba
@@ -12,7 +13,7 @@
                 document.getElementById('gh-comments-list').appendChild(createCommentEl(response[i]));
             }
 
-            if (0 === response.length) {
+            if (response.length == 0) {
                 document.getElementById('no-comments-found').style.display = 'block';
             }
         } else {
@@ -20,7 +21,6 @@
         }
     };
 
-    
     function createCommentEl(response) {
         let user = document.createElement('a');
         user.setAttribute('href', response.user.url.replace('api.github.com/users', 'github.com'));
@@ -29,6 +29,7 @@
         let userAvatar = document.createElement('img');
         userAvatar.classList.add('avatar');
         userAvatar.setAttribute('src', response.user.avatar_url);
+        userAvatar.setAttribute('style', "max-width:60px;width:100%");
 
         user.appendChild(userAvatar);
 
@@ -64,10 +65,10 @@
 
 <div class="github-comments">
     <h2>Comments</h2>
-    <ul id="gh-comments-list"></ul>
-    <p id="no-comments-found">No comments found for this article.</p>
     <p id="leave-a-comment">Join the discussion for this article on <a
-            href="https://github.com/andompesta/andompesta.github.io/issues/{{ page.comments_id }}">this ticket</a>. Comments appear on this
-        page instantly.
+            href="https://github.com/andompesta/andompesta.github.io/issues/{{ page.comments_id }}">this ticket</a>.
+        Comments appear on this page instantly.
     </p>
+
+    <ul id="gh-comments-list"></ul>
 </div>
