@@ -151,6 +151,33 @@ class LinkedList:
         return node
 ```
 
+#### Floyd’s Cycle Finding Algorithm
+
+One of the most famous algorithm for LinkedList is the so called Floyd's finding algorithm.
+This algorithm is used to find a loop in a linked list. It uses two pointers one moving twice as fast as the other one.
+The faster one is called the faster pointer and the other one is called the slow pointer.
+While traversing the linked list one of these things will occur:
+
+  - the fast pointer may reach the end (NULL) this shows that there is no loop in the linked list.
+  - the fast pointer again catches the slow pointer at some time therefore a loop exists in the linked list.
+
+```python
+def detectLoop(llist):
+    slow_pointer = llist.head
+    fast_pointer = llist.head
+
+    while (slow_pointer != None
+           and fast_pointer != None
+           and fast_pointer.next != None):
+        slow_pointer = slow_pointer.next
+        fast_pointer = fast_pointer.next.next
+        if (slow_pointer == fast_pointer):
+            return 1
+
+    return 0
+```
+
+
 ### Stack
 
 The Stack is a special kind of linked list that follows the **LIFO** principle. Intuitivly it's a deck of cards where the top card of the deck (the last added element added) is the first card to picked (the first element to remove next).
