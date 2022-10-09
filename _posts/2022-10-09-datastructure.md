@@ -171,6 +171,7 @@ Python provide a native implementation of hash table under the dict class.
 </table>
 </div>
 
+
 ## Linked List
 A linked list is a linear data structure that includes a series of connected nodes.
 Usually every nodes is composed by a data filed that contains some value and a pointer to the next element (if there is).
@@ -406,3 +407,225 @@ Queues are an implementation of LinkedList that follows the **FIFO** principle. 
 </tbody>
 </table>
 </div>
+
+## Binary Trees
+A binary tree is a tree data structure in which each parent node can have at most two children.
+Each node of a binary tree consists of three items:
+  - value of the node;
+  - the address to the left child;
+  - the address to the right child.
+
+<div style="text-align:center;">
+<table style="border:none; background:transparent; text-align:center;">
+<tbody>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Complexity</th>
+    </tr>
+    <tr>
+        <td> <b>Construct</b> </td>
+        <td> Construct a binary tree </td>
+        <td> Time and Space: $O(N)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Travers</b> </td>
+        <td> Traverse a binary tree </td>
+        <td> Time $O(N)$ and Space: $O(height)$ </td>
+    </tr>
+</tbody>
+</table>
+</div>
+
+Binary trees are generaly represetned by linked nodes structures.
+
+```python
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+    def pre_order_traverse(self):
+        print(self.value)
+        if self.left:
+            self.left.pre_order_traverse()
+        if self.right:
+            self.right.pre_order_traverse()
+
+    def in_order_traverse(self):
+        if self.left:
+            self.left.in_order_traverse()
+
+        print(self.value)
+
+        if self.right:
+            self.right.in_order_traverse()
+
+    def post_order_traverse(self):
+        if self.left:
+            self.left.post_order_traverse()
+
+        if self.right:
+            self.right.post_order_traverse()
+
+        print(self.value)
+
+def build(array):
+    root = None
+    n = len(array)
+
+    def add_child(idx):
+        if idx < n:
+            node = Node(array[idx])
+
+            node.left = add_child(idx*2 + 1)
+
+            node.right = add_child(idx*2 + 2)
+
+        return node
+
+    root = add_child(0)
+    return root
+```
+However, binary trees can be also represented using arrays in which:
+  - root node is stored at index 0;
+  - left child is stored at index $$(i \cdot 2) + 1$$ where, i is the index of the parent;
+  - right child is stored at index $$(i \cdot 2) + 1$$, i is the index of the parent.
+
+```python
+class Tree:
+    def __init__(self, array):
+        self.array = array
+
+    def left(self, parent_idx):
+        if (parent_idx * 2) + 1 < len(self.array):
+            return self.array[(parent_idx * 2) + 1]
+
+    def right(self, parent_idx):
+        if (parent_idx * 2) + 2 < len(self.array):
+            return self.array[(parent_idx * 2) + 2]
+
+    def set_left(self, val, parent_idx):
+        self.array[(parent_idx * 2) + 1] = val
+
+    def set_right(self, val, parent_idx):
+        self.array[(parent_idx * 2) + 2] = val
+
+    def in_order(self, parent_idx=0):
+        if self.left(parent_idx):
+            self.in_order((parent_idx * 2) + 1)
+
+        print(self.array[parent_idx])
+
+        if self.right(parent_idx):
+            self.in_order((parent_idx * 2) + 2)
+```
+
+
+### Binary Search Tree
+Binary search tree is a data structure that quickly allows us to maintain a sorted list of numbers and search trought it.
+
+The properties that separate a binary search tree from a regular binary tree are:
+  - all nodes of left subtree are less than the root node;
+  - all nodes of right subtree are more than the root node;
+  - both subtrees of each node are also BSTs i.e. they have the above two properties.
+
+Searching is extreamly efficent as can be done in $O(\log N)$ time and constant space.
+Intuitively, searching is so efficent as we can analys only one of the two subtrees based on the relation between the current node's value and the looked for value.
+Thus, at every step we half the searching space.
+
+<div style="text-align:center;">
+<table style="border:none; background:transparent; text-align:center;">
+<tbody>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Complexity</th>
+    </tr>
+    <tr>
+        <td> <b>Search</b> </td>
+        <td> Search for an element in the tree </td>
+        <td> Time $O(\log N)$ and Space: $O(N)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Insertion</b> </td>
+        <td> Insert a node to the tree </td>
+        <td> Time $O(\log N)$ and Space: $O(N)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Deletion</b> </td>
+        <td> Remove an element from the tree </td>
+        <td> Time $O(\log N)$ and Space: $O(N)$ </td>
+    </tr>
+</tbody>
+</table>
+</div>
+
+
+```python
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.left, self.right = None, None
+
+    def search(self, value):
+
+        if self.value == value:
+            return True
+        elif value < self.value and self.value.left is not None:
+            return self.value.left.search(value)
+        elif value > self.value and self.value.right is not None:
+            return self.value.right.search(value)
+        else:
+            return False
+    
+    @staticmethod
+    def insert(node, value):
+        if node is None:
+            return Node(value)
+
+        if value < node.value:
+            node.left = Node.insert(node.left, value)
+        else:
+            node.right = Node.insert(node.right, value)
+
+        return node
+
+    @staticmethod
+    def remove(node, value):
+        if value < node.value:
+            node.left = Node.remove(node.left, value)
+        elif value > node.value:
+            node.right = Node.remove(node.right, value)
+
+        else:
+            # case 1: it is a leaf node
+            if node.left is None and node.right is None:
+                return None
+
+            # case 2: there is only 1 child
+            elif node.left is not None and node.right is None:
+                node.value = node.left.value
+                node.left = None
+            elif node.left is None and node.right is not None:
+                node.value = node.right.value
+                node.right = None
+
+            # case 3: take as new node, the right child or the left node of the right child if it exist
+            else:
+                # get new min value from right
+                temp = node.right
+                prev = node
+                while temp.left is not None:
+                    prev, temp = temp, temp.left
+
+                node.value = temp.value
+
+                if prev != node:
+                    prev.left = temp.right
+                else:
+                    node.right = temp.right
+            return node
+        return node
+```
