@@ -64,3 +64,215 @@ The asymptotic notations is the mathematical tool used to perform this analysis,
     </tbody>
 </table>
 </div>
+
+
+# Data Structures
+
+## Linked List
+A linked list is a linear data structure that includes a series of connected nodes.
+Usually every nodes is composed by a data filed that contains some value and a pointer to the next element (if there is).
+While arrays are contiguous in memory, linked lists allows for a dynamic memory management where nodes can be scattered across the memory and simply point to each other.
+Linked lists are the fundamental backbone for other data structure as stacks and queue.
+
+<div style="text-align:center;">
+<table style="border:none; background:transparent; text-align:center;">
+<tbody>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Complexity</th>
+    </tr>
+    <tr>
+        <td> <b>Insert</b> </td>
+        <td> Add an element to the list </td>
+        <td> Time and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Remove</b> </td>
+        <td> Remove an element from the list </td>
+        <td> Time and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Search</b> </td>
+        <td> Search an element in the list </td>
+        <td> Time and Space: $O(N)$ </td>
+    </tr>
+</tbody>
+</table>
+</div>
+
+
+```python
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
+class LinkedList:
+    # Initializing a stack.
+    # Use a dummy node, which is
+    # easier for handling edge cases.
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    # Check if the stack is empty
+    def isEmpty(self):
+        return self.head is None
+
+    # Insert at the end
+    def insert(self, value):
+        node = Node(value)
+        if self.isEmpty():
+            self.head = node
+            self.tail = node
+        else:
+            self.tail.next = node
+            self.tail = self.tail.next
+
+    # remove from the beginning.
+    def remove(self):
+        if self.isEmpty():
+            raise Exception("Remove from an empty list")
+
+        node = self.head
+        if self.head == self.tail:
+            self.tail = self.tail.next
+        self.head = self.head.next
+        return node
+
+    # sarch the node with a given value
+    def search(self, value):
+        node = self.head
+        while node is not None:
+            if node.value == value:
+                break
+            node = node.next
+        return node
+```
+
+### Stack
+
+The Stack is a special kind of linked list that follows the **LIFO** principle. Intuitivly it's a deck of cards where the top card of the deck (the last added element added) is the first card to picked (the first element to remove next).
+
+<div style="text-align:center;">
+<table style="border:none; background:transparent; text-align:center;">
+<tbody>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Complexity</th>
+    </tr>
+    <tr>
+        <td> <b>Push</b> </td>
+        <td> Add an element to the top of a stack </td>
+        <td> Time and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Pop</b> </td>
+        <td> Remove an element from the top of a stack </td>
+        <td> Time and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Peek</b> </td>
+        <td> Get the value of the top element without removing it </td>
+        <td> Time and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>IsEmpty</b> </td>
+        <td> Check if the stack is empty </td>
+        <td> Time and Space: $O(1)$ </td>
+    </tr>
+</tbody>
+</table>
+</div>
+
+```python
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+        self.prev = None
+
+
+class Stack:
+    # Initializing a stack.
+    # Use a dummy node, which is
+    # easier for handling edge cases.
+    def __init__(self):
+        self.head = None
+        self.size = 0
+
+    # Get the current size of the stack
+    def getSize(self):
+        return self.size
+
+    # Check if the stack is empty
+    def isEmpty(self):
+        return self.size == 0
+
+    # Get the top item of the stack
+    def peek(self):
+        # Sanitary check to see if we
+        # are peeking an empty stack.
+        if self.isEmpty():
+            raise Exception("Peeking from an empty stack")
+        return self.head.value
+
+    # Push a value into the stack.
+    def push(self, value):
+        node = Node(value)
+        if self.head is None:
+            self.head = node
+        else:
+            node.prev = self.head
+            self.head.next = node
+            self.head = node
+        self.size += 1
+
+    # Remove a value from the stack and return.
+    def pop(self):
+        if self.isEmpty():
+            raise Exception("Popping from an empty stack")
+        remove = self.head
+        self.head = self.head.prev
+        self.head.next = None
+        self.size -= 1
+        return remove.value
+```
+
+### Queue
+
+Queues are an implementation of LinkedList that follows the **FIFO** principle. Similarly to ticket queue outside a cinema hall, where the first person entering the queue is the first person who gets the ticket.
+
+<div style="text-align:center;">
+<table style="border:none; background:transparent; text-align:center;">
+<tbody>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Complexity</th>
+    </tr>
+    <tr>
+        <td> <b>Enqueue</b> </td>
+        <td> Add an element to the end of the queue </td>
+        <td> Time and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Dequeue</b> </td>
+        <td> Remove an element from the front of the queue </td>
+        <td> Time and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Peek</b> </td>
+        <td> Get the value of the front of the queue without removing it </td>
+        <td> Time and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>IsEmpty</b> </td>
+        <td> Check if the queue is empty </td>
+        <td> Time and Space: $O(1)$ </td>
+    </tr>
+</tbody>
+</table>
+</div>
