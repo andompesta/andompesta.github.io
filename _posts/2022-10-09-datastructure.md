@@ -68,6 +68,109 @@ The asymptotic notations is the mathematical tool used to perform this analysis,
 
 # Data Structures
 
+## Array
+
+Arrays are collections of items stored at a contiguous memory locations.
+Such property makes array easy to traverse and genearlly it provides random access to its element in constant complexity.
+
+Genearally speaking arrays have fixed size and new element can't be added if the array is already full.
+However, it is possible to implement dynamic arrays at the expences of a memory overhead (unused memory is reserved for new items that will be added later on).
+Dynamic arrays achieve constant time complexity when it comes to append and delete operation in the general case, but if resize is needed then a new copy of the current array has to be create; thus requireing high memory and time complexity.
+The dynamic structure is obtained by creating a new array double size of the original array and copy all element from the previous array to the new array.
+
+<div style="text-align:center;">
+<table style="border:none; background:transparent; text-align:center;">
+<tbody>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Complexity</th>
+    </tr>
+    <tr>
+        <td> <b>Append</b> </td>
+        <td> Add an element to the end of the array </td>
+        <td> Time and Space: $O(1)$ (in ammortized time) </td>
+    </tr>
+    <tr>
+        <td> <b>Insert</b> </td>
+        <td> Insert an element to the i-th position of the array </td>
+        <td> Time and Space: $O(N)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Remove</b> </td>
+        <td> Remove the i-th element of the array </td>
+        <td> Time: $O(N)$ and Space: $O(N)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Remove Last</b> </td>
+        <td> Remove the last element of the array </td>
+        <td> Time and Space: $O(1)$ (in ammortized time) </td>
+    </tr>
+    <tr>
+        <td> <b>Search</b> </td>
+        <td> Check if an element is present in the list </td>
+        <td> Time: $O(N)$ and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Get</b> </td>
+        <td> Get the i-th element in the list </td>
+        <td> Time: $O(1)$ and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Sort</b> </td>
+        <td> Get the i-th element in the list </td>
+        <td> Time: $O(N \log N)$ and Space: $O(N)$ </td>
+    </tr>
+</tbody>
+</table>
+</div>
+
+
+### Hash Tables
+Hash tabels are one of the most importat data strcutre build uppon arrays. By organising data in (key, values) pairs it allows for fast insertion, lookup and access to data.
+It is composed by an array and the position of each key in this array is determined by the function:
+
+$$idx = hash(key) \% size(hash\_table)$$.
+
+Python provide a native implementation of hash table under the dict class.
+
+<div style="text-align:center;">
+<table style="border:none; background:transparent; text-align:center;">
+<tbody>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Complexity</th>
+    </tr>
+    <tr>
+        <td> <b>Insert</b> </td>
+        <td> Add an element to the dictionary </td>
+        <td> Time and Space: $O(1)$ (in ammortized time) </td>
+    </tr>
+    <tr>
+        <td> <b>Remove</b> </td>
+        <td> Remove a key from the dictonary </td>
+        <td> Time: $O(1)$ and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Search</b> </td>
+        <td> Check if a key is present in the dictionary </td>
+        <td> Time: $O(1)$ and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Get</b> </td>
+        <td> Get a given key in the dictionary </td>
+        <td> Time: $O(1)$ and Space: $O(1)$ </td>
+    </tr>
+    <tr>
+        <td> <b>Iterate</b> </td>
+        <td> Iterate over all element of the dictionary </td>
+        <td> Time: $O(N)$ and Space: $O(1)$ </td>
+    </tr>
+</tbody>
+</table>
+</div>
+
 ## Linked List
 A linked list is a linear data structure that includes a series of connected nodes.
 Usually every nodes is composed by a data filed that contains some value and a pointer to the next element (if there is).
