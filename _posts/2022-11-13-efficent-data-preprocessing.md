@@ -6,34 +6,37 @@ author: "Sandro Cavallari"
 tag: "Deep Learning"
 ---
 
-If do any work related to machine lrearning you need to work with datasets and the large and cleaner the dataset the better your performance.
-In the last few years, I have faced the joint problem of preprocess large amount of data and efficently feed the produced dataset input my training pipeline.
-While developing fancy model is a fun task for which you can find limitless sresources on the web, in my experience it is more important streamline you data preprocessing and injestion pipelines; a topic that is not well covered by the ML-community.
-Backed by the fast iteration philosophy, this document aims at find the most efficent training process so to minimise the cost of experimentation as more experiment results in better performance: as [Elon Musk says](https://www.youtube.com/embed/E7MQb9Y4FAE?start=330&autoplay=1){:target="_blank"} "high production rate solve many ills".
+Jobs related to machine learning usually require managing massive datasets.
+A well-established rule of thumb that applies to most machine learning projects is that the larger and cleaner the dataset, the better the performance.
+Thus, the problem of preprocessing large amounts of data and efficiently feeding the produced dataset into the training pipeline emerges.
+While developing fancy models is a fun task for which limitless resources are available on the web, the ML community needs to cover better the topic of streamlining data preprocessing and ingestion pipelines.
+Backed by the fast iteration philosophy, this document aims to find the most efficient training process to minimise the cost of experimentation as more experiment results in better performance: as [Elon Musk says](https://www.youtube.com/embed/E7MQb9Y4FAE?start=330&autoplay=1){:target="_blank"}, “high production rate solve many ills”.
 
 
 # Data Preprocessing
 
 It is not a secret that the fuel of machine learning applications is data.
-For example, online advertisment leverage behavioural data to personalise advertisments, translateion services leverage parallel documents while serve engigne uses users feedback to learn better query-document rankings.
-However, generating these datasets from the raw events is no easy task. In my experience, the larger the company the messier the data; thus you need carefull crafted trasformation jobs.
-Data preprocessing is the tedious step of collecting and integrating events from different raw data-sources and produce a well formated dataset that can be consumed by your training script. As such it is usually divided in two stages:
+For example, online advertising leverage behavioural data to personalise the displayed products, translation services leverage parallel documents, and research engine use users' feedback to learn better query-document rankings.
+However, generating these datasets from the raw events is a challenging task.
+It is common knowledge that the larger the company, the messier the data; thus, carefully crafted transformation jobs are needed.
+Data preprocessing is the tedious step of collecting and integrating events from raw data sources and producing a well-formatted dataset that a training script can consume.
+As such, it is usually divided into two stages:
 
-- **Data engineering** is the process of combine different data-sources into a prepared dataset. During this process we want to ensure that data-sources are properly integrated and aggregated to the right granularity, possible errors are carefully handled, noise examples are removed and the produced dataset conform to a well defined schema.
+- **Data engineering** is the process of combining different data sources into a prepared dataset. During this process, we want to ensure that data sources are appropriately integrated and aggregated to the right granularity, possible errors are carefully handled, noise examples are removed, and the resulting dataset conforms to a well-defined schema.
 
-- **Feature engineering**  is the action of covnerting all the column of the generated dataset to the appropriate numerical format needed by the model. As such, this process is sometimese postponed to the data loading and augmentation process.
+- **Feature engineering** aims at converting all the columns of the generated dataset to the appropriate numerical format needed by the model. As such, this process is sometimes postponed to the data loading and augmentation process.
+
+Nowadays, there is a multitude of libraries that can be used for data preprocessing.
+[Apache Spark](https://spark.apache.org/){:target="_blank"} appears to be the best tool for data preprocessing jobs.
+It provides a Pandas-like interface; it is distributed so it can scale vertically and horizontally, integrated with the most common cloud environments, and supports batch and streaming data sources.
+While there a multiple approaches to speed up a preprocessing job, this article only focuses on comparing the different runtime engines supported by Spark:
+
+  - base engine designed to run on CPU clusters used as the baseline,
+  - [photon](https://www.databricks.com/product/photon){:target="_blank"} engigne: engine: a C++ implementation of Spark that leverages vectorization operation to reduce the computation time,
+  - [rapids](https://www.nvidia.com/en-us/deep-learning-ai/software/rapids/){:target="_blank"} engine: an emerging GPU-based environment provided by NVIDIA.
 
 
-Nowadays there are a multitude of libraries that can be used for data preprocess, [Apache Spark](https://spark.apache.org/) appreas to be the best tool for data preprocessing jobs.
-It provides a Pandas-like interface, by nature it is distributed thus it can scale vertically and horizontally, it is integrated in the most common clound environments and it supports batch as well as streaming data sources.
-While there a multiple approaches to speedup a preprocessing job, this article only focuses in comparing the different runtime engigne supported by spark:
-
-  - base engigne designed to run on CPU clusters ued as baseline,
-  - [photon](https://www.databricks.com/product/photon){:target="_blank"} engigne: a C++ implementation of spark that leverage vectorazation operation to reduce the computation time,
-  - [rapids](https://www.nvidia.com/en-us/deep-learning-ai/software/rapids/) engigne: an emerging GPU accelerated environment.
-
-To compare the different engigne, we have used 8 datasources forming a total amout of 33 GB of data to preprocess or 100000000 rows to preprocess.
-The cluster definitions used for the experiment is reported in Tab. [[1]](#tab:cluster_definition) while the experiment results are shown in Fig [[1]](#fig:preprocessing_benchmark).
+To compare the different engines, we have used 8 data sources, forming a total amount of 33 GB of data to preprocess or 100000000 rows to preprocess. The cluster definitions used for the experiment are reported in Tab. [[1]](#tab:cluster_definition), while the results are shown in Fig [[1]](#fig:preprocessing_benchmark).
 
 <div style="text-align:center;" id="tab:cluster_definition">
     <p style="font-size:small;">
@@ -79,8 +82,8 @@ The cluster definitions used for the experiment is reported in Tab. [[1]](#tab:c
     </table>
 </div>
 
-Fig. 1 demonstrate how it is possible to obtain a 27.5 to 58% speedup just by adopting an acceleated engigne. Overall, rapids appears as the most promising option as it provite a 2x speedup at a competitive price w.r.t. the CPU baseline.
-However, not that in this test the dataset size is small compared to the available cluster memory and special care is usually required  when working with GPUs as it is quite common to get out of bound memory errors.
+Fig. 1 demonstrate how obtaining a 27.5 to 58% speedup is possible just by adopting an accelerated engine. Rapids is the most promising option as it provides a 2x speedup at a competitive price w.r.t. the CPU baseline.
+However, not that in this test, the dataset size is small compared to the available cluster memory, and special care is usually required when working with GPUs as it is pretty common to get out-of-bound memory errors.
 
 <div style="text-align:center;" id="fig:preprocessing_benchmark">
     <figure>
