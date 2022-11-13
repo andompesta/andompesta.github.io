@@ -1,9 +1,10 @@
 ---
 layout: post
 mathjax: true
-title:  "Efficent and scalable training pipeline"
+title:  "Efficient and scalable machine learning pipelines"
 author: "Sandro Cavallari"
 tag: "Deep Learning"
+comments_id: 3
 ---
 
 Jobs related to machine learning usually require managing massive datasets.
@@ -95,6 +96,9 @@ However, not that in this test, the dataset size is small compared to the availa
 </div>
 
 
+<!-- TODO: -->
+<!-- 1) bridge spark to ml-frameworks: -->
+<!-- 2) comapre tfrecords (natively supported by Linkeding library) and petastorm parquet   -->
 
 <!--  villan: fast large dataset ingestion from distributed frameworks -->
 <!--  why: with extreamly large datasets you need scalable and fast injestion pipelines -->
