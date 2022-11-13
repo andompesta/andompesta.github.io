@@ -83,7 +83,7 @@ To compare the different engines, we have used 8 data sources, forming a total a
     </table>
 </div>
 
-Fig. 1 demonstrate how obtaining a 27.5 to 58% speedup is possible just by adopting an accelerated engine. Rapids is the most promising option as it provides a 2x speedup at a competitive price w.r.t. the CPU baseline.
+Fig. 1 demonstrate how obtaining a 27.5 to 58% reduction in processing time just by adopting an accelerated engine. Rapids is the most promising option as it provides a 2x speedup at a competitive price w.r.t. the CPU baseline.
 However, not that in this test, the dataset size is small compared to the available cluster memory, and special care is usually required when working with GPUs as it is pretty common to get out-of-bound memory errors.
 
 <div style="text-align:center;" id="fig:preprocessing_benchmark">
