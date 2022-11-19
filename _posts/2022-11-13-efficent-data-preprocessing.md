@@ -15,7 +15,7 @@ Backed by the fast iteration philosophy, this document aims to find the most eff
 
 
 To be as general as possible, this article follow the work done by [Chia, P.J., Attanasio, G., Bianchi, F. et al.](ref:chia) and will focus on finetuning a [CLIP-like model](https://openai.com/blog/clip/) on the [farfetch dataset](https://eval.ai/web/challenges/challenge-page/1721/overview).
-This choice is done as it will enable us to preprocess a large amount of images as well as text, which are the most common data-type currently used in machine learning.
+This task's choice enables us to preprocess a large number of images as well as text, which are the most common data-type currently used in machine learning.
 
 # Data Preprocessing
 
@@ -40,9 +40,10 @@ While there a multiple approaches to speed up a preprocessing job, this article 
   - [rapids](https://www.nvidia.com/en-us/deep-learning-ai/software/rapids/){:target="_blank"} engine: an emerging GPU-based environment provided by NVIDIA.
 
 
-To compare the different engines, the text pre-processing task is used.
-The objective of text preprocessing is to clean, tokenize, pad and add special tokens to each prodict description.
-For consistency we adopted the same tokenizer used in the original [CLIP implementation](https://github.com/openai/CLIP/blob/main/clip/simple_tokenizer.py).
+To compare the different engines, the text preprocessing task is used for benchmarking.
+As above mentioned, the dataset is the farfetch dataset that contains about 400K products, but about 300K are used for this test due to missing meaningful descriptions.
+Text preprocessing aims to clean, tokenize, pad and add special tokens to each product description.
+For consistency, we adopted the same tokenizer used in the original [CLIP implementation](https://github.com/openai/CLIP/blob/main/clip/simple_tokenizer.py).
 However, a pyspark UDF is used to apply the preprocessing to the original dataframe:
 
 ```python
@@ -106,7 +107,7 @@ def main():
     )
     ...
 ```
-
+Cluster configuration and experiment results are reported in Tab. [[1]](tab:cluster_definition) and Fig. [[1]](fig:preprocessing_benchmark).
 
 <div style="text-align:center;" id="tab:cluster_definition">
     <p style="font-size:small;">
@@ -152,8 +153,10 @@ def main():
     </table>
 </div>
 
-Fig. 1 demonstrate how obtaining a 31.5 to 49% reduction in processing time just by adopting an accelerated engine. Rapids is the most promising option as it provides a 2x speedup at a competitive price w.r.t. the CPU baseline.
+The experiment result shows that a reduction of 31.5 to 49% in processing time achievable just by adopting an accelerated engine.
+Rapids is the most promising option as it provides a 2x speedup at a competitive price w.r.t. the CPU baseline.
 However, not that in this test, the dataset size is small compared to the available cluster memory, and special care is usually required when working with GPUs as it is pretty common to get out-of-bound memory errors.
+
 
 <div style="text-align:center;" id="fig:preprocessing_benchmark">
     <figure>
