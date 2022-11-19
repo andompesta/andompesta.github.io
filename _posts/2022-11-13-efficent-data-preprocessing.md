@@ -49,8 +49,8 @@ However, a pyspark UDF is used to apply the preprocessing to the original datafr
 def encode(value):
     # encode values according to NdarrayCodec
     # https://petastorm.readthedocs.io/en/latest/_modules/petastorm/codecs.html?highlight=bytearray
-    memfile = BytesIO()
-    save(memfile, value)
+    memfile = io.BytesIO()
+    np.save(memfile, value)
     return bytearray(memfile.getvalue())
 
 def get_preprocess_data_fn(
