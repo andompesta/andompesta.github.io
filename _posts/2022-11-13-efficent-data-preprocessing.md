@@ -168,6 +168,74 @@ However, not that in this test, the dataset size is small compared to the availa
 </div>
 
 
+# Data Ingestion
+
+Data ingestion is another crucial component for any successfull ML project.
+Too little credit have been given to the develipers of [tensorflow Dataset](https://www.tensorflow.org/api_docs/python/tf/data/Dataset) and [pyTorch DataLoaders](https://pytorch.org/docs/stable/data.html) as they provides common APIs for loading and manipulate the created datasets.
+However, these dataloaders utilities are limited when it comes to process large datasets that does not fix the memory and that needs to operate in a distributed environmnet.
+On the one hand, Tensorflow Dataset are extreamly efficent when working with TFRecords, but does not support parquet dataformat and requires a significant amount of boilerplate code to be parsed.
+On the other hand, pyTorch Dataloaders leave the scope of loading the dataset into the memory for rapid access indexed access to the user.
+
+Due to these limitations, multiple third party solutions arised.
+This section focuses on [Petastorm](https://petastorm.readthedocs.io/en/latest/index.html), a general purpous solution provided by Uber which easily integrate into Databricks.
+One of the main advantages of Petastorm with respect to other solutions resides in its support of multi-dimentional tensors.
+At the core of Petastorm there is the [Codecs](https://petastorm.readthedocs.io/en/latest/_modules/petastorm/codecs.html?highlight=Codec) concept, an API that specify methods to encode and decode custom datatypes.
+For example numpy arrays and images, two dtype not supported by Spark, are encoded by Petastorm into a Spark DataFrames as BinaryType and decoded at loading phase.
+When a new column containing a non-native datatype is added to the DataFrame, the [encode](https://github.com/uber/petastorm/blob/170b22a18ee1c0346d2b289f096804e34a0c5d25/petastorm/codecs.py#L136) function is applied to every row.
+
+```python
+def encode(value)
+    memfile = BytesIO()
+    np.save(memfile, value)
+    return bytearray(memfile.getvalue())
+```
+
+Similarly, once the dataset is stored on any distributed file system, the Petastorm [Reader](https://github.com/uber/petastorm/blob/170b22a18ee1c0346d2b289f096804e34a0c5d25/petastorm/reader.py#L344) decodes each row of the dataset while feeding the data into the training pipeline.
+
+```python
+def decode(value)
+    memfile = BytesIO(value)
+    return np.load(memfile)
+```
+
+
+Overall, Petastorm appears as a viable solution for use-cases where:
+  - the computational cost of the model is order of magnitude higher than loading the data;
+  - each example is composed by few columns containing large vectors.
+
+<div style="text-align:center;" id="fig:datasets">
+    <figure>
+        <img src="{{site.baseurl}}/assets/img/efficent_data_preprocessing/datasets.png" style="max-width: 90%">
+        <figcaption style="font-size:small;">
+            Figure 2: Visual representations of the different dataset types. Note that for NLP and CV tasks the inputs are raw data format, but the models are extreamly complex. Instead RecSys systems are usualy bounded by the IO oprations related to large amount of users-items pairs; rather than the model complexity. Figure adapted from <a href="https://medium.com/nvidia-merlin/why-isnt-your-recommender-system-training-faster-on-gpu-and-what-can-you-do-about-it-6cb44a711ad4">Why isn’t your recommender system training faster on GPU? (And what can you do about it?)</a>.
+        </figcaption>
+    </figure>
+</div>
+
+As shown in Fig. [[2]](#fig:datasets), this is a common scenario in DeepLearning where NLP or CV applications requires complex models to learn meaningful data representations, but not for reccomandation systems where tabular datasets are the defact standards.
+Thus, a separate experiment for tabular data is reported in the next section.
+
+To evaluate Petastorm dataloaders, the dataset previously prepared is used.
+The dataset consists of about 300K image/text pairs.
+Images are represented as `3 x 224 x 224` arrays, while text by a list of `77` elements.
+Each batch is composed by 64 examples.
+The objective is to find the best worker-type and number of worker combination as possible.
+Thus, a grid search is reported if Fig [[3]](#fig:petastorm_reading), where thread-based and process-based workers are compared with a settings that uses 5, 10 and 20 workers.
+
+
+<div style="text-align:center;" id="fig:petastorm_reading">
+    <figure>
+        <img src="{{site.baseurl}}/assets/img/efficent_data_preprocessing/petastorm-reading-benchmark.png" style="max-width: 90%">
+        <figcaption style="font-size:small;">
+            Figure 3: Dataset loading benchmarking. Upper figure represent the overall execution time for a single epoch, while bottom figure shows the amount of batch per seconds (BpS) processed.
+        </figcaption>
+    </figure>
+</div>
+
+
+The results show that a settings with 5 processes is the fastes as it is able to process 74 batches per seconds (BpS), which is a 172 % improvement over the default configuration (threaded with 10 workers).
+
+
 <!-- TODO: -->
 <!-- 1) bridge spark to ml-frameworks: -->
 <!-- 2) comapre tfrecords (natively supported by Linkeding library) and petastorm parquet   -->
@@ -179,7 +247,9 @@ However, not that in this test, the dataset size is small compared to the availa
 
 <!--  preprocess large datasets is key, thus the needs for distributed framework. How to efficently feed the generated dataset into your model for training ? -->
 
-## Refereces
+
+
+# Refereces
 
 <ol>
     <li id="ref:chia"> Chia, P.J., Attanasio, G., Bianchi, F. et al. Contrastive language and vision learning of general fashion concepts. Sci Rep 12, 18958 (2022). https://doi.org/10.1038/s41598-022-23052-9 </li>
