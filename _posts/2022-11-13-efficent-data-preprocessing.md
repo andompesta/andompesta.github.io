@@ -48,8 +48,8 @@ However, a pyspark UDF is used to apply the preprocessing to the original datafr
 
 ```python
 def encode(value):
-    # encode values according to NdarrayCodec
-    # https://petastorm.readthedocs.io/en/latest/_modules/petastorm/codecs.html?highlight=bytearray
+    # Petastorm specific enconding function for numpy array datatype.
+    # Read following section for a better explanation.
     memfile = io.BytesIO()
     np.save(memfile, value)
     return bytearray(memfile.getvalue())
@@ -180,8 +180,8 @@ Due to these limitations, multiple third party solutions arised.
 This section focuses on [Petastorm](https://petastorm.readthedocs.io/en/latest/index.html), a general purpous solution provided by Uber which easily integrate into Databricks.
 One of the main advantages of Petastorm with respect to other solutions resides in its support of multi-dimentional tensors.
 At the core of Petastorm there is the [Codecs](https://petastorm.readthedocs.io/en/latest/_modules/petastorm/codecs.html?highlight=Codec) concept, an API that specify methods to encode and decode custom datatypes.
-For example numpy arrays and images, two dtype not supported by Spark, are encoded by Petastorm into a Spark DataFrames as BinaryType and decoded at loading phase.
-When a new column containing a non-native datatype is added to the DataFrame, the [encode](https://github.com/uber/petastorm/blob/170b22a18ee1c0346d2b289f096804e34a0c5d25/petastorm/codecs.py#L136) function is applied to every row.
+For example numpy arrays and images, two dtype not supported by Spark, are encoded by Petastorm into a Spark DataFrames as BinaryType and decoded at training time.
+As abovementioned, when a new column containing a non-native datatype is added to the DataFrame, the [encode](https://github.com/uber/petastorm/blob/170b22a18ee1c0346d2b289f096804e34a0c5d25/petastorm/codecs.py#L136) function is applied to every row.
 
 ```python
 def encode(value)
