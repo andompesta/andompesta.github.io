@@ -7,3 +7,4 @@ Gemfile.lock
 .markdownlint.yaml
 .shellcheckrc
 svgo.config.js
+.DS_Store
