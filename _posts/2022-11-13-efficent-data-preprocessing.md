@@ -279,9 +279,9 @@ The following setups are used to fine-tune each framework:
     </figure>
 </div>
 
-Fig. [[4]](#fig:dataloader-tabular-bnc) highlights how a general-purpose solution like Petastorm does not fit the RecSys settings as it is more than 1000x slower than Merlin.
+Fig. [[4]](#fig:dataloader-tabular-bnc) highlights how a general-purpose solution like Petastorm does not fit the RecSys settings as it is more than `1000x` slower than Merlin.
 Tensorflow Datasets are showing decent performances, but handling TFRecords is challenging as they consume a large amount of disk space and need to know the dataset schema at parsing time.
-Without many surprises, Merlin demonstrates astonishing performances being more than 4000 batches per second with is about 5 times faster than Tensorflow while being almost a plug-and-play solution if the datasets are stored in a parquet format.
+Without many surprises, Merlin demonstrates astonishing performances being more than `4000` batches per second and it is 10 times faster than  Tensorflow while being almost a plug-and-play solution if the datasets are stored in a parquet format.
 Unfortunately, Merlin does not support any other datatype than numerical values; thus datasets containing strings and multi-dimensional arrays are not supported.
 
 
