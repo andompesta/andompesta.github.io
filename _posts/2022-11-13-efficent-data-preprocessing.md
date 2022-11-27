@@ -188,7 +188,7 @@ As this two datatypes present different challences, distinct benchmarks are cond
     <figure>
         <img src="{{site.baseurl}}/assets/img/efficent_data_preprocessing/datasets-type.png" style="max-width: 98%">
         <figcaption style="font-size:small;">
-            Figure 2: Visual representations of the different dataset types. Note that for NLP or CV tasks the inputs are raw data format, but the models are extreamly complex. Instead RecSys systems are usualy bounded by the IO oprations related to large amount of users-items pairs; rather than the model complexity. Figure adapted from <a href="https://medium.com/nvidia-merlin/why-isnt-your-recommender-system-training-faster-on-gpu-and-what-can-you-do-about-it-6cb44a711ad4">Why isn’t your recommender system training faster on GPU? (And what can you do about it?)</a>.
+            Figure 2: Visual representations of the different dataset types. Note that for NLP or CV tasks the inputs are in a raw data format, but the models are complex. Instead, RecSys systems are limited by the I/O operations needed to process the large amount of user-items pairs; rather than the model complexity. Figure adapted from <a href="https://medium.com/nvidia-merlin/why-isnt-your-recommender-system-training-faster-on-gpu-and-what-can-you-do-about-it-6cb44a711ad4">Why isn’t your recommender system training faster on GPU? (And what can you do about it?)</a>.
         </figcaption>
     </figure>
 </div>
@@ -196,14 +196,14 @@ As this two datatypes present different challences, distinct benchmarks are cond
 
 ## Complex Raw Datasets
 
-These type of dataset are composed by a mixture of texts, images and audios in the form of large multi-dimentional arrays.
-The large input space requires of a complex and deep model to learn good representations of the data.
-Thus, it is assumed that the bottleneck of the training phase is represented by the high computational cost of the forward and backward pass of the model.
-Instead the data loading process is assumed to be comparatively less expencive.
+These types of datasets are composed of a mixture of texts, images and audio in the form of large multi-dimensional arrays.
+The large input space requires deep models to learn good embeddings of the data.
+Thus, it is assumed that the forward and backward passes of the model is the main bottelneck of the training phase due to the model's complexity.
+Instead, the data loading process is assumed to be comparatively less expensive.
 
-Based on these assumptions, a common pattern emerged across the dataloaders solutions: spawining workers threads/processes to ingest the data while the GPUs are used for training.
-Among the others [Petastorm](https://petastorm.readthedocs.io/en/latest/index.html), a general-purpose solution provided by Uber that easily integrates with Databricks, follows exactly this pattern.
-At the core of Petastorm, there is the [Codecs](https://petastorm.readthedocs.io/en/latest/_modules/petastorm/codecs.html?highlight=Codec) concept, an API that specify methods to encode and decode custom datatypes.
+Based on these assumptions, a common pattern emerged across the dataloaders solutions: spawning thread-based or process-based workers to ingest the data while the GPUs are used for training.
+Among the others, [Petastorm](https://petastorm.readthedocs.io/en/latest/index.html), a general-purpose solution provided by Uber that easily integrates with Databricks, follows exactly this pattern.
+At the core of Petastorm, there is the [Codecs](https://petastorm.readthedocs.io/en/latest/_modules/petastorm/codecs.html?highlight=Codec) concept, an API that specifies methods to encode and decode custom datatypes.
 For example, numpy arrays and images, two types not supported by Spark, are encoded by Petastorm into a Spark DataFrames as BinaryType and decoded at training time.
 As above mentioned, when a new column containing a non-native datatype is added to the DataFrame, the [encode](https://github.com/uber/petastorm/blob/170b22a18ee1c0346d2b289f096804e34a0c5d25/petastorm/codecs.py#L136) function is applied to every row.
 
@@ -240,51 +240,49 @@ Thus, a grid search is reported if Fig [[3]](#fig:dataloader-cn-nlp-bnc), where 
     </figure>
 </div>
 
-
-The results show that a setting with 5 processes is the fastest as it can process 74 batches per second (BpS), which is a 172 % improvement over the default configuration (threaded with 10 workers).
-74 batches per seconds might sounds not that much, but the computaitonal cost of a deep model would likley be order of magnitue larger, even if working in a data-parallel settings.
-Thus, most of the research focuses on speed up the model computational time with strategies like: model pruning, mixed-percisios, ecc.
+The results show that a setting with 5 processes is the fastest as it can process `74` batches per second (BpS), which is a `172 %` improvement over the default configuration (threaded with 10 workers).
+`74` batches per second might seem like a bad result, but the computational cost of a deep model would likely be an order of magnitude larger, even if working in a data-parallel setting.
+Thus, most of the research focuses on speeding up the model computational time with strategies like model pruning, mixed-precision, ecc.
 
 
 ## Tabular Datasets
 
-Tabular datasets are common in reccomandation systems (RecSys) applications where the objective is to score (user, item) or (query, document) pairs.
-Reccomandation systems have key differences w.r.t. others deep learning application:
-  - most of the applications are real-time; thus the models need to satisfy tight latency constraints;
-  - the dataets are usually extreamly large since it is extreamly inexpencive to collecting (weakly) labeled examples;
-  - the inputs are composed by a large set of handcrafted fetures.
+Tabular datasets are commonly found in recommendation systems (RecSys) applications where the objective is to score (user, item) or (query, document) pairs.
+RecSys have key differences w.r.t. other deep learning applications:
+  - many recommendation applications need to perform in a real-time environment; thus the models need to satisfy tight latency constraints;
+  - the datasets are usually large since the collection of (weakly) labelled examples is inexpensive;
+  - the inputs are composed of a large set of handcrafted features.
 
-In the RecSys settings, efficent dataloading pipelines are an extreamly importnat component of the training phase as the computational costs of the models is relativly small w.r.t. the loading operations.
-Note that, this is the exact opposit of the traditional deep learning environment, thus the multi-worker solution might perform poorly.
-To this end, custom designed solutions for tabular datasets such as [NVIDIA Merlin](https://github.com/NVIDIA-Merlin) emerged.
-Merlin is a complete toolkit for hardware accellerated RecSys systems build on top of Dask, cuDF and Rapids.
-[Merlin dataloaders](https://github.com/NVIDIA-Merlin/dataloader) are specifcally built for the RecSys usecase; thus it lerverages cuDF to efficenlty load data into the GPUs and [DLPack](https://github.com/dmlc/dlpack) to transfer the data to the appropriate backend framework (usually Tensorflow, PyTorch or JAX).
+In the RecSys settings, efficient data-loading pipelines are an extremely important component of the training phase as the computational cost of the model is relatively small w.r.t. the loading operations.
+Note that, this is the exact opposite of the traditional deep learning environment, thus the multi-worker solution might perform poorly.
+To this end, custom-designed solutions for tabular datasets such as [NVIDIA Merlin](https://github.com/NVIDIA-Merlin) emerged.
+Merlin is a complete toolkit for hardware-accelerated RecSys systems built on top of Dask, cuDF and Rapids.
+[Merlin dataloader](https://github.com/NVIDIA-Merlin/dataloader) is a package specifcally built for the RecSys usecase; it leverages cuDF to efficiently load data into the GPUs and [DLPack](https://github.com/dmlc/dlpack) to transfer the data to the appropriate backend framework (usually Tensorflow, PyTorch or JAX).
 
-To evaluate the importance of having efficent dataloading solutions in this settings, a benchmark of Petastorm, Tensorflow Datasets with TFRecords and  Merlin dataloaders is conducted.
-The dataset used of the experiment is composed of ~8 M examples.
-Each row is composed by 100 columns containing only scala values.
+To evaluate the importance of having efficient data-loading solutions in this setting, a benchmark of Petastorm, Tensorflow Datasets with TFRecords and  Merlin dataloader is conducted.
+The dataset used for the experiment is composed of ~8 M examples.
+Each row is composed of 100 columns containing only scalar values.
 A batch is 64 examples is loaded at each step.
 
 
-The following setups are used to fine-tune each solutions:
- - Petastorm uses 5 or 10 workers in a thread or process based solutions
- - Tensorflow uses 5 or 10 workers for reading and parsing the TFRecords
- - Merlin dataloaders uses the default configuration
+The following setups are used to fine-tune each framework:
+  - Petastorm uses 5 or 10 workers in a thread or process-based solutions;
+  - Tensorflow uses 5 or 10 workers for reading and parsing the TFRecords;
+  - Merlin uses the default configuration.
 
 <div style="text-align:center;" id="fig:dataloader-tabular-bnc">
     <figure>
         <img src="{{site.baseurl}}/assets/img/efficent_data_preprocessing/dataloader-tablular-bnc.png" style="max-width: 98%">
         <figcaption style="font-size:small;">
-            Figure 4: Bencharking of dataloaders for tabular datasets.
+            Figure 4: Benchmarking of dataloaders for tabular datasets. The results demonstrate how the custom-design proposed by Merlin achieves 5x to 1000x better performance against other deep learning solutions.
         </figcaption>
     </figure>
 </div>
 
-Fig. [[4]](#fig:dataloader-tabular-bnc) highlight how a general purpouse solution like Petastomr does not fit the RecSys settings as it is more than 1000x slower than Merlin.
-Tensorflow Datasets are showing decent performances, but handling TFRecords is challenging as they require large disk space and need to know the schema to be parsed.
-Without much surprise Merlin demonstrate astonising performances being more than 4000 batch per seconds with is about 5 times faster than Tensorflow, while being almost a plug and play solution if the datasets is stored in a parquet format.
-Unfortunetly, Merlin does not support any other datatype than numerica values; thus strings needs to be encoded as part of the preprocessing step.
-
+Fig. [[4]](#fig:dataloader-tabular-bnc) highlights how a general-purpose solution like Petastorm does not fit the RecSys settings as it is more than 1000x slower than Merlin.
+Tensorflow Datasets are showing decent performances, but handling TFRecords is challenging as they consume a large amount of disk space and need to know the dataset schema at parsing time.
+Without many surprises, Merlin demonstrates astonishing performances being more than 4000 batches per second with is about 5 times faster than Tensorflow while being almost a plug-and-play solution if the datasets are stored in a parquet format.
+Unfortunately, Merlin does not support any other datatype than numerical values; thus datasets containing strings and multi-dimensional arrays are not supported.
 
 
 # Refereces
