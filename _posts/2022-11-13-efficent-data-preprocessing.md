@@ -245,8 +245,31 @@ The results show that a setting with 5 processes is the fastest as it can proces
 74 batches per seconds might sounds not that much, but the computaitonal cost of a deep model would likley be order of magnitue larger, even if working in a data-parallel settings.
 Thus, most of the research focuses on speed up the model computational time with strategies like: model pruning, mixed-percisios, ecc.
 
+
 ## Tabular Datasets
 
+Tabular datasets are common in reccomandation systems (RecSys) applications where the objective is to score (user, item) or (query, document) pairs.
+Reccomandation systems have key differences w.r.t. others deep learning application:
+  - most of the applications are real-time; thus the models need to satisfy tight latency constraints;
+  - the dataets are usually extreamly large since it is extreamly inexpencive to collecting (weakly) labeled examples;
+  - the inputs are composed by a large set of handcrafted fetures.
+
+In the RecSys settings, efficent dataloading pipelines are an extreamly importnat component of the training phase as the computational costs of the models is relativly small w.r.t. the loading operations.
+Note that, this is the exact opposit of the traditional deep learning environment, thus the multi-worker solution might perform poorly.
+To this end, custom designed solutions for tabular datasets such as [NVIDIA Merlin](https://github.com/NVIDIA-Merlin) emerged.
+Merlin is a complete toolkit for hardware accellerated RecSys systems build on top of Dask, cuDF and Rapids.
+[Merlin dataloaders](https://github.com/NVIDIA-Merlin/dataloader) are specifcally built for the RecSys usecase; thus it lerverages cuDF to efficenlty load data into the GPUs and [DLPack](https://github.com/dmlc/dlpack) to transfer the data to the appropriate backend framework (usually Tensorflow, PyTorch or JAX).
+
+To evaluate the importance of having efficent dataloading solutions in this settings, a benchmark of Petastorm, Tensorflow Datasets with TFRecords and  Merlin dataloaders is conducted.
+The dataset used of the experiment is composed of ~8 M examples.
+Each row is composed by 100 columns containing only scala values.
+A batch is 64 examples is loaded at each step.
+
+
+The following setups are used to fine-tune each solutions:
+ - Petastorm uses 5 or 10 workers in a thread or process based solutions
+ - Tensorflow uses 5 or 10 workers for reading and parsing the TFRecords
+ - Merlin dataloaders uses the default configuration
 
 <div style="text-align:center;" id="fig:dataloader-tabular-bnc">
     <figure>
@@ -256,6 +279,11 @@ Thus, most of the research focuses on speed up the model computational time with
         </figcaption>
     </figure>
 </div>
+
+Fig. [[4]](#fig:dataloader-tabular-bnc) highlight how a general purpouse solution like Petastomr does not fit the RecSys settings as it is more than 1000x slower than Merlin.
+Tensorflow Datasets are showing decent performances, but handling TFRecords is challenging as they require large disk space and need to know the schema to be parsed.
+Without much surprise Merlin demonstrate astonising performances being more than 4000 batch per seconds with is about 5 times faster than Tensorflow, while being almost a plug and play solution if the datasets is stored in a parquet format.
+Unfortunetly, Merlin does not support any other datatype than numerica values; thus strings needs to be encoded as part of the preprocessing step.
 
 
 
