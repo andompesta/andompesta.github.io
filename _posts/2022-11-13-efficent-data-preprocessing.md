@@ -1,7 +1,7 @@
 ---
 layout: post
 mathjax: true
-title:  "Efficient and scalable machine learning pipelines"
+title:  "Efficient and Scalable Machine Learning Pipelines"
 author: "Sandro Cavallari"
 tag: "Deep Learning"
 comments_id: 3
