@@ -27,22 +27,22 @@ Please note that this website is ment to keep only my personal material,this it 
 
 ## Musk's Development Principles
 
-1. **Make the requirements less dumb**.
+1) **Make the requirements less dumb**.
 
 "Your requirements are definitely dumb, it does not matter who gave them to you." Uses this step to test assumptions and question-the-question, especialy if it come from a ‘smart person’ since you might not question them enough.
 
-2. **Delete the part or process.**
+2) **Delete the part or process.**
 
 "If you’re not adding things back in at least 10% of the time, you’re clearly not deleting enough." 
 Starting lean and building up when and if required, but be strongly bias throward removing thinks. Each requirement or constraint must be accountable to a person, so you can ask that person about its relevance and purpose.
 
-3. **Simplify or optimise the design.**
+3) **Simplify or optimise the design.**
 
 "Possibly the most common error of a smart engineer is to optimise a thing that should not exist".
 Do your work and go through the first two steps before trying to optimise.
 To do this effectively you need an holistic view of the project and you need to consider the overall cost-benefit for a more complicated design.
 
-4. **Accelerate cycle time.**
+4) **Accelerate cycle time.**
 
 "Try a bunch of things, and do more of what works". Once you have find the right direction is time to accelerate the lifecycle. Aim for an experiment a day. Note that, it is extreamly importanto to do the first 3 steps before as "if you’re digging your grave, don’t dig faster."
 
