@@ -73,6 +73,7 @@ In 1944, the CIA wrote a handbook on how to sabotage (enemy) organizations from 
  24. Be as irritable and quarrelsome as possible without getting yourself into trouble.
  25. Misunderstand all sorts of regulations concerning such matters as rationing, transportation, traffic regulations.
 
+Credit to [Roel Staes linkedIn post](https://www.linkedin.com/feed/update/urn:li:activity:7018144158573854721/).
 
 ![alt text](assets/img/handbook.jpeg)
 
