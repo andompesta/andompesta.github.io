@@ -16,7 +16,7 @@ You re more than welcome to have a look at all my works on [gitHub](https://gith
 Please note that this website is ment to keep only my personal material,this it my contains errors and typos.
 
 
-## Skunkworks Rules
+## My vision of Skunkworks Rules
 
 1. The Skunk Works workers must be delegated practically complete control of his program in all aspects.
 2. The number of people having any connection with the project must be restricted in an almost vicious manner. Use a small number of good people (10% to 25% compared to the so-called normal systems).
