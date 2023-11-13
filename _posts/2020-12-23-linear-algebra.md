@@ -547,8 +547,6 @@ $$
 \end{array}\right]
 $$
 
-{% include export.html %}
-
 
 # Reference
 
