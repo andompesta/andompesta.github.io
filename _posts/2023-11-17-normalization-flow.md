@@ -50,7 +50,7 @@ $$
     </figure>
 </div>
 
-While 
+<!-- add multidimensional chenge of variable and jacobians/determinant -->
 # Credits
 
 The content of this post is based on the lectures and code of [Pieter Abbeel](https://sites.google.com/view/berkeley-cs294-158-sp20/home), [Justin Solomon](https://groups.csail.mit.edu/gdpgroup/6838_spring_2021.html) and [Karpathy's](https://github.com/karpathy/pytorch-normalizing-flows) tutorial.
