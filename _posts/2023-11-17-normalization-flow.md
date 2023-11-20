@@ -8,14 +8,14 @@ comments_id: 9
 ---
 
 Normalizing Flows (NF)[[1]](#ref:normalization-flow-review) are a powerful thecnique that allows to learn and sample from complex probability distributions.
-They are known to be generative models that allow for exact likelihood estimation of real input data $p(x)$.
-Instead of relaing on approximation like in variational inference, normalizing flow operate by feed a simple distribution from which it is possible sample from $p(z)$ trought a series of maps to produce a richer distribution:
+They are known to be generative models that allow for exact likelihood estimation of continuous input data $p(x)$.
+Instead of relaing on approximation like in variational inference, normalizing flow operate by transforming samples of a simple distribution $z \sim p(z)$ into samples of a more complex distribution:
 
 $$
 x = f_{\theta}(z), ~~ z \sim p(z; \psi)
 $$
 
-where $f_{\theta}(\cdot)$ is a mapping function from $z$ to $x$ parametrized by $\theta$ and $p(z; \psi)$ is the base (sometimes also refered as prior) distribution parametrized by $\psi$.
+where $f_{\theta}(\cdot)$ is a mapping function from $z$ to $x$ parametrized by $\theta$ and $p(z; \psi)$ is the base (sometimes also refered as prior) distribution parametrized by $\psi$ from which we can sample from.
 The defining propertires of a normalizing flow are:
  - $f_{\theta}(\cdot)$ must be invertible;
  - $f_{\theta}(\cdot)$ and $f_{\theta}^{-1}(\cdot)$ must be differentiable.
@@ -52,19 +52,19 @@ $$
 </div>
 
 
-In the previous paragraph we introduced the concept of volume-preserving transformations; following the same reasoning, it is possible to extend the same concept to the multidimentional space by considering $\frac{\partial z}{\partial x}$ not as a simple derivative, but rather as the **Jacobian** matrix:
+In the previous paragraph we introduced the concept of area-preserving transformations; following the same reasoning, it is possible to extend this concept to the multidimentional space by considering $\frac{\partial z}{\partial x}$ not as a simple derivative, but rather as the **Jacobian** matrix:
 
 $$
 J_{z}(x) = \begin{bmatrix} 
     \frac{\partial z_1}{\partial x_1} & \dots & \frac{\partial z_1}{\partial x_D}\\
     \vdots & \ddots &  \vdots \\
     \frac{\partial z_D}{\partial x_1} & \dots & \frac{\partial z_D}{\partial x_D}
-\end{bmatrix},
+\end{bmatrix}.
 $$
 
-and the difference in areas as diffence in volumes quantified by the **determinant** of the Jacobian matrix
+In the multidimentional setting the difference in areas became diffence in volumes quantified by the **determinant** of the Jacobian matrix
 $det(J_{z}(x)) \approx \frac{Vol(z)}{Vol(x)}$.
-Putting everithing togheter we can formalize the normalization flow:
+Putting everithing togheter we can formalize a miltidimentional normalization flow as:
 
 $$
 \begin{align*}
@@ -76,7 +76,7 @@ $$
 
 ### Flow as Finate Composition of Transformations
 
-The term flows derives from the fact that in the general case the transformations $f_{\theta}(\cdot)$ and $f_{\theta}^{-1}(\cdot)$ are defined as a finite compositions of simpler transformations $f_{\theta_i}$:
+In the general case the transformations $f_{\theta}(\cdot)$ and $f_{\theta}^{-1}(\cdot)$ are defined as finite compositions of simpler transformations $f_{\theta_i}$:
 
 $$
 \begin{align*}
@@ -91,7 +91,7 @@ p(x) & = p_K(z_{k}) = p_{K-1}(f_{\theta_K}^{-1}(z_{k})) \cdot \Big| det\Big(J_{f
 \end{align*}
 $$
 
-For every step $p(z_i)$ can be fully described by $z_{i-1}$ and $f_{\theta_i}$, thus it is possible to extended the previous reasoning to all i-steps of the overall generative process:
+In so doing, $p(z_i)$ is fully described by $z_{i-1}$ and $f_{\theta_i}$, thus it is possible to extended the previous reasoning to all i-steps of the overall generative process:
 
 $$
 p(x) = p(z_0) \cdot \prod_{i=1}^k \Big| det \big( J_{f_{\theta_i}}(z_{i-1}) \big) \Big|^{-1}.
@@ -103,6 +103,17 @@ Finally, to achieve a computationally efficent training and sampling procedure t
 While it is possible to leverage auto-diff libraries to compute the Jacobians of a squared transformation matrix: computing the determinant of such matrix it is generally computationally expencive ($O(n)^3$); thus a large amount of research when into designing transformations that have efficent Jacobian determinant formulations.
 
 ### Training Procedures and Inference
+
+As overmentioned NF are efficent models that allow sampling and learning complex distributions.
+Thus, the most common application for NF are density estimation and data generation.  
+On the one hand, density estimation is an handy task when someone is intersted in computing statistical quantities over unseen data. For example, [[3]](#ref:density-estimation) and [[4]](#ref:ffjord) demonstrate that NF models are able to estimate densities over tabular and image datasets. 
+Moreover, density estimation is the base capabilities that allows NF to be adopted for anomaly detection [[5]](#ref:nf-anomaly-detection) while it requires carefuly tuning for out-of-distribution detection [[6]](#ref:nf-for-odd).
+
+On the other hand,
+
+
+
+<!-- why we need to sample ? -->
 
 <!-- training process with max-likelihood -->
 <!-- KL divergence formulation -->
@@ -118,5 +129,8 @@ Moreover, I want to credit [Lil'Long](https://lilianweng.github.io/posts/2018-10
 <ol>
     <li id="ref:normalization-flow-review"> Papamakarios, G., Nalisnick, E., Rezende, D. J., Mohamed, S., & Lakshminarayanan, B. (2019). Normalizing Flows for Probabilistic Modeling and Inference. <a href="http://arxiv.org/abs/1912.02762">arxiv.org/abs/1912.02762</a></li>
     <li id="ref:change-of-variable"> Weisstein, Eric W. "Change of Variables Theorem." From MathWorld--A Wolfram Web Resource. <a href="https://mathworld.wolfram.com/ChangeofVariablesTheorem.html">mathworld.wolfram.com/ChangeofVariablesTheorem.html</a> </li>
-    
+    <li id="ref:density-estimation"> Dinh, L., Sohl-Dickstein, J., & Bengio, S. (2016). Density estimation using Real NVP. http://arxiv.org/abs/1605.08803</li>
+    <li id="ref:ffjord"> Grathwohl, W., Chen, R. T. Q., Bettencourt, J., Sutskever, I., & Duvenaud, D. (2018). FFJORD: Free-form Continuous Dynamics for Scalable Reversible Generative Models. http://arxiv.org/abs/1810.01367</li>
+    <li id="ref:nf-anomaly-detection"> Hirschorn, O., & Avidan, S. (n.d.). Normalizing Flows for Human Pose Anomaly Detection. https://github.com/orhir/STG-NF. </li>
+    <li id="ref:nf-for-odd"> Kirichenko, P., Izmailov, P., & Wilson, A. G. (n.d.). Why Normalizing Flows Fail to Detect Out-of-Distribution Data. https://github.com/PolinaKirichenko/flows_ood. </li>
 </ol>
