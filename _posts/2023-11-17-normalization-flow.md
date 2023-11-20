@@ -91,12 +91,16 @@ p(x) & = p_K(z_{k}) = p_{K-1}(f_{\theta_K}^{-1}(z_{k})) \cdot \Big| det\Big(J_{f
 \end{align*}
 $$
 
-Eventually, the very same process can then be extended to all step $i$ and obtain the final definition:
+For every step $p(z_i)$ can be fully described by $z_{i-1}$ and $f_{\theta_i}$, thus it is possible to extended the previous reasoning to all i-steps of the overall generative process:
 
 $$
-p(x) = p(z_0) \cdot \prod_{i=1}^k \Big| J_{f_{\theta_i}}(z_{i-1}) \Big|^{-1}.
+p(x) = p(z_0) \cdot \prod_{i=1}^k \Big| det \big( J_{f_{\theta_i}}(z_{i-1}) \big) \Big|^{-1}.
 $$
-<!-- complexity of daterminat computation -->
+
+Note that $f_{\theta}^{-1}$, in the contex of generative models, is also referd as a pushforwartd mapping from a simple density $p(z)$ to a more complex $p(x)$.
+The inverse transfomration $f_{\theta}$ is instead called the normalization flow as it normalizes a complex distribution into a simpler one, one step at a time.  
+Finally, to achieve a computationally efficent training and sampling procedure there is the need to efficently compute the determinants of $J_{f_{\theta_i}}$.
+While it is possible to leverage auto-diff libraries to compute the Jacobians of a squared transformation matrix: computing the determinant of such matrix it is generally computationally expencive ($O(n)^3$); thus a large amount of research when into designing transformations that have efficent Jacobian determinant formulations.
 
 ### Training Procedures and Inference
 
