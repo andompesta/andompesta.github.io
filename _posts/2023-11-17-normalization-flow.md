@@ -27,7 +27,6 @@ $$
     \int p(x) \partial x &= \int p(z) \partial z = 1 \\
     \implies p(x) & = p(z) \cdot |\frac{\partial z}{\partial x}| \\
     & = p\big(f_{\theta}^{-1}(x)\big) \cdot |\frac{\partial f_{\theta}^{-1}(x)}{\partial x}| \\
-    % & = p\big(f^{-1}(x; \theta)\big) \cdot |f^{-1'}(x; \theta)|.
 \end{align*}
 $$
 
@@ -99,8 +98,7 @@ $$
 
 Note that $f_{\theta}^{-1}$, in the contex of generative models, is also referd as a pushforwartd mapping from a simple density $p(z)$ to a more complex $p(x)$.
 The inverse transfomration $f_{\theta}$ is instead called the normalization flow as it normalizes a complex distribution into a simpler one, one step at a time.  
-Finally, to achieve a computationally efficent training and sampling procedure there is the need to efficently compute the determinants of $J_{f_{\theta_i}}$.
-While it is possible to leverage auto-diff libraries to compute the Jacobians of a squared transformation matrix: computing the determinant of such matrix it is generally computationally expencive ($O(n)^3$); thus a large amount of research when into designing transformations that have efficent Jacobian determinant formulations.
+
 
 ### Training Procedures and Inference
 
@@ -111,19 +109,35 @@ Moreover, density estimation is the base capabilities that allows NF to be adopt
 On the other hand, the main application for NF is related to data generation. As abote mentioned, under some mild assumtions,  NFs are capable of sampling new datapoints from a complex distribution $p(x)$. [[7]](#ref:glow) is the primal example of NF applied to image generation, while [[9]](#ref:wave-net) and [[10]](#ref:flow-wave-net) demonstrate that NF can sussesfully learn audio signals.
 
 
+One of the main advantages of NFs over other probabilistic generative model is that they can be easily trained by minimasing some divergence metric between $p(x: \theta)$ and the target distribution $p(x)$.
+In most of the cases NF are trained by minimasing the KL-diverngence between the two distributions:
+
+$$
+\begin{align*}
+    \mathcal{L}(\theta) & = D_{KL}[p(x) || p(x; \theta)] \\
+        & = - \sum_{x \sim p(x)} p(x) \cdot \log \frac{p(x; \theta)}{p(x)} \\
+        & = - \sum_{x \sim p(x)} p(x) \cdot \log p(x; \theta) + \sum_{x \sim p(x)} p(x) \cdot \log p(x) \\
+        & = - \mathbb{E}_{x \sim p(x)} \Big[ \log p(x; \theta) \Big] + \mathbb{E}_{x \sim p(x)} \Big[ \log p(x) \Big] \\
+        & = - \mathbb{E}_{x \sim p(x)}\Big[\log p(x; \theta)\Big] + const. ~~~ \text{Assuming $p(x)$ to be fixed during training.} \\
+        & = - \mathbb{E}_{x \sim p(x)}\Big[\log p\big(f_{\theta}^{-1}(x)\big) + \sum_{i=1}^{K} \log \Big| det\big( J_{f_{\theta_i}^{-1}}(z_{i}) \big)\Big| \Big] + const.
+\end{align*}
+$$
+
+where $p(f_{\theta}^{-1}(x)) = p(z_0)$ and $z_K$ is equal to $x$. Given a training dataset $\{ x_n \}_{n=1}^N$ the above loss reduces to the negative log-likelihood training by stocastic gradient descent:
+
+$$
+\mathcal{L}(\theta) = - \frac{1}{N} \sum_{n=1}^N \log p\big(f_{\theta}^{-1}(x)\big) + \sum_{i=1}^{K} \log \Big| det\big( J_{f_{\theta_i}^{-1}}(z_{i}) \big)\Big|.
+$$
+
+Finally, to achieve a computationally efficent training there is the need to efficently compute the determinants of $J_{f_{\theta_i}^{-1}}$.
+While it is possible to leverage auto-diff libraries to compute the gradiens with respect to $\theta_i$ of the Jacobians matrix and its determinant such computation is expencive ($O(n)^3$); thus a large amount of research when into designing transformations that have efficent Jacobian determinant formulations.
 
 
 
-<!-- why we need to sample ? -->
-
-<!-- training process with max-likelihood -->
-<!-- KL divergence formulation -->
-<!-- comparison of inference with other models -->
-<!-- tractable inference and sampling -->
 # Credits
 
 The content of this post is based on the lectures and code of [Pieter Abbeel](https://sites.google.com/view/berkeley-cs294-158-sp20/home), [Justin Solomon](https://groups.csail.mit.edu/gdpgroup/6838_spring_2021.html) and [Karpathy's](https://github.com/karpathy/pytorch-normalizing-flows) tutorial.
-Moreover, I want to credit [Lil'Long](https://lilianweng.github.io/posts/2018-10-13-flow-models/) and [Eric Jang](https://blog.evjang.com/2018/01/nf1.html) for their amazing tutorials.
+Moreover, I want to credit [Lil'Long](https://lilianweng.github.io/posts/2018-10-13-flow-models/) and [Eric Jang](https://blog.evjang.com/2018/01/nf1.html) for their amazing tutorials. For example, the pioneering work done by [Dinh et. al.](#ref:nice) is the first to leverage transformations with triangular matrix for efficent determinatnt computation.
 
 # Refences
 
@@ -131,11 +145,11 @@ Moreover, I want to credit [Lil'Long](https://lilianweng.github.io/posts/2018-10
     <li id="ref:normalization-flow-review"> Papamakarios, G., Nalisnick, E., Rezende, D. J., Mohamed, S., & Lakshminarayanan, B. (2019). Normalizing Flows for Probabilistic Modeling and Inference. <a href="http://arxiv.org/abs/1912.02762">arxiv.org/abs/1912.02762</a></li>
     <li id="ref:change-of-variable"> Weisstein, Eric W. "Change of Variables Theorem." From MathWorld--A Wolfram Web Resource. <a href="https://mathworld.wolfram.com/ChangeofVariablesTheorem.html">mathworld.wolfram.com/ChangeofVariablesTheorem.html</a> </li>
     <li id="ref:density-estimation"> Dinh, L., Sohl-Dickstein, J., & Bengio, S. (2016). Density estimation using Real NVP. http://arxiv.org/abs/1605.08803</li>
-    <li id="ref:ffjord"> Grathwohl, W., Chen, R. T. Q., Bettencourt, J., Sutskever, I., & Duvenaud, D. (2018). FFJORD: Free-form Continuous Dynamics for Scalable Reversible Generative Models. http://arxiv.org/abs/1810.01367</li>
+    <li id="ref:ffjord"> Grathwohl, W., Chen, R. T. Q., Bettencourt, J., Sutskever, I., & Duvenaud, D. (2018). FFJORD: Free-form Continuous Dynamics for Scalable Reversible Generative Models. <a href="http://arxiv.org/abs/1810.01367">arxiv.org/abs/1810.01367</a> </li>
     <li id="ref:nf-anomaly-detection"> Hirschorn, O., & Avidan, S. (n.d.). Normalizing Flows for Human Pose Anomaly Detection. https://github.com/orhir/STG-NF. </li>
     <li id="ref:nf-for-odd"> Kirichenko, P., Izmailov, P., & Wilson, A. G. (n.d.). Why Normalizing Flows Fail to Detect Out-of-Distribution Data. https://github.com/PolinaKirichenko/flows_ood. </li>
     <li id="ref:glow"> Kingma, Durk P., and Prafulla Dhariwal. "Glow: Generative flow with invertible 1x1 convolutions." Advances in neural information processing systems 31 (2018). </li>
-    <li id="ref:nice"> Dinh, L., Krueger, D., & Bengio, Y. (2014). NICE: Non-linear Independent Components Estimation. <a href="http://arxiv.org/abs/1410.8516"> arxiv.org/abs/1410.8516 </li>
-    <li id="ref:wave-net"> van den Oord, A., Dieleman, S., Zen, H., Simonyan, K., Vinyals, O., Graves, A., Kalchbrenner, N., Senior, A., & Kavukcuoglu, K. (n.d.). WAVENET: A GENERATIVE MODEL FOR RAW AUDIO.. </li>
+    <li id="ref:nice"> Dinh, L., Krueger, D., & Bengio, Y. (2014). NICE: Non-linear Independent Components Estimation. <a href="http://arxiv.org/abs/1410.8516"> arxiv.org/abs/1410.8516 </a> </li>
+    <li id="ref:wave-net"> van den Oord, A., Dieleman, S., Zen, H., Simonyan, K., Vinyals, O., Graves, A., Kalchbrenner, N., Senior, A., & Kavukcuoglu, K. (n.d.). WAVENET: A GENERATIVE MODEL FOR RAW AUDIO. </li>
     <li id="ref:flow-wave-net"> Kim, Sungwon, et al. "FloWaveNet: A generative flow for raw audio." arXiv preprint arXiv:1811.02155 (2018). </li>
 </ol>
