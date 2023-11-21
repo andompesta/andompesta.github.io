@@ -123,7 +123,7 @@ $$
 \end{align*}
 $$
 
-where $p(f_{\theta}^{-1}(x)) = p(z_0)$ and $z_K$ is equal to $x$. Given a training dataset $\{ x_n \}_{n=1}^N$ the above loss reduces to the negative log-likelihood training by stocastic gradient descent:
+where $p(f_{\theta}^{-1}(x)) = p(z_0)$ and $z_K$ is equal to $x$. Given a fixed training set $\{ x_n \}_{n=1}^N$ the above loss reduces to the negative log-likelihood usually optimized by stocastic gradient descent:
 
 $$
 \mathcal{L}(\theta) = - \frac{1}{N} \sum_{n=1}^N \log p\big(f_{\theta}^{-1}(x)\big) + \sum_{i=1}^{K} \log \Big| det\big( J_{f_{\theta_i}^{-1}}(z_{i}) \big)\Big|.
