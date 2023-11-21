@@ -7,7 +7,7 @@ tag: "Deep Learning"
 comments_id: 9
 ---
 
-Normalizing Flows (NF)[[1]](#ref:normalization-flow-review) are a powerful thecnique that allows to learn and sample from complex probability distributions.
+Normalizing Flows (NF)[[1]](#ref:normalization-flow-review) [[8]](#ref:nice) are a powerful thecnique that allows to learn and sample from complex probability distributions.
 They are known to be generative models that allow for exact likelihood estimation of continuous input data $p(x)$.
 Instead of relaing on approximation like in variational inference, normalizing flow operate by transforming samples of a simple distribution $z \sim p(z)$ into samples of a more complex distribution:
 
@@ -107,9 +107,10 @@ While it is possible to leverage auto-diff libraries to compute the Jacobians of
 As overmentioned NF are efficent models that allow sampling and learning complex distributions.
 Thus, the most common application for NF are density estimation and data generation.  
 On the one hand, density estimation is an handy task when someone is intersted in computing statistical quantities over unseen data. For example, [[3]](#ref:density-estimation) and [[4]](#ref:ffjord) demonstrate that NF models are able to estimate densities over tabular and image datasets. 
-Moreover, density estimation is the base capabilities that allows NF to be adopted for anomaly detection [[5]](#ref:nf-anomaly-detection) while it requires carefuly tuning for out-of-distribution detection [[6]](#ref:nf-for-odd).
+Moreover, density estimation is the base capabilities that allows NF to be adopted for anomaly detection [[5]](#ref:nf-anomaly-detection) while it requires carefuly tuning for out-of-distribution detection [[6]](#ref:nf-for-odd).  
+On the other hand, the main application for NF is related to data generation. As abote mentioned, under some mild assumtions,  NFs are capable of sampling new datapoints from a complex distribution $p(x)$. [[7]](#ref:glow) is the primal example of NF applied to image generation, while [[9]](#ref:wave-net) and [[10]](#ref:flow-wave-net) demonstrate that NF can sussesfully learn audio signals.
 
-On the other hand,
+
 
 
 
@@ -133,4 +134,8 @@ Moreover, I want to credit [Lil'Long](https://lilianweng.github.io/posts/2018-10
     <li id="ref:ffjord"> Grathwohl, W., Chen, R. T. Q., Bettencourt, J., Sutskever, I., & Duvenaud, D. (2018). FFJORD: Free-form Continuous Dynamics for Scalable Reversible Generative Models. http://arxiv.org/abs/1810.01367</li>
     <li id="ref:nf-anomaly-detection"> Hirschorn, O., & Avidan, S. (n.d.). Normalizing Flows for Human Pose Anomaly Detection. https://github.com/orhir/STG-NF. </li>
     <li id="ref:nf-for-odd"> Kirichenko, P., Izmailov, P., & Wilson, A. G. (n.d.). Why Normalizing Flows Fail to Detect Out-of-Distribution Data. https://github.com/PolinaKirichenko/flows_ood. </li>
+    <li id="ref:glow"> Kingma, Durk P., and Prafulla Dhariwal. "Glow: Generative flow with invertible 1x1 convolutions." Advances in neural information processing systems 31 (2018). </li>
+    <li id="ref:nice"> Dinh, L., Krueger, D., & Bengio, Y. (2014). NICE: Non-linear Independent Components Estimation. <a href="http://arxiv.org/abs/1410.8516"> arxiv.org/abs/1410.8516 </li>
+    <li id="ref:wave-net"> van den Oord, A., Dieleman, S., Zen, H., Simonyan, K., Vinyals, O., Graves, A., Kalchbrenner, N., Senior, A., & Kavukcuoglu, K. (n.d.). WAVENET: A GENERATIVE MODEL FOR RAW AUDIO.. </li>
+    <li id="ref:flow-wave-net"> Kim, Sungwon, et al. "FloWaveNet: A generative flow for raw audio." arXiv preprint arXiv:1811.02155 (2018). </li>
 </ol>
