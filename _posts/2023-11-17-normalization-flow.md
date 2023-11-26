@@ -73,7 +73,7 @@ p(x) & = p(z) \cdot |det(\frac{\partial z}{\partial x})| \\
 \end{align*}
 $$
 
-### Flow as Finate Composition of Transformations
+## Generative Process as Finate Composition of Transformations
 
 In the general case the transformations $f_{\theta}(\cdot)$ and $f_{\theta}^{-1}(\cdot)$ are defined as finite compositions of simpler transformations $f_{\theta_i}$:
 
@@ -93,14 +93,17 @@ $$
 In so doing, $p(z_i)$ is fully described by $z_{i-1}$ and $f_{\theta_i}$, thus it is possible to extended the previous reasoning to all i-steps of the overall generative process:
 
 $$
+\begin{equation}
 p(x) = p(z_0) \cdot \prod_{i=1}^k \Big| det \big( J_{f_{\theta_i}}(z_{i-1}) \big) \Big|^{-1}.
+\label{eq:flow_generator}
+\end{equation}
 $$
 
 Note that $f_{\theta}^{-1}$, in the contex of generative models, is also referd as a pushforwartd mapping from a simple density $p(z)$ to a more complex $p(x)$.
 The inverse transfomration $f_{\theta}$ is instead called the normalization flow as it normalizes a complex distribution into a simpler one, one step at a time.  
 
 
-### Training Procedures and Inference
+## Training Procedures
 
 As overmentioned NF are efficent models that allow sampling and learning complex distributions.
 Thus, the most common application for NF are density estimation and data generation.  
@@ -126,13 +129,18 @@ $$
 where $p(f_{\theta}^{-1}(x)) = p(z_0)$ and $z_K$ is equal to $x$. Given a fixed training set $\{ x_n \}_{n=1}^N$ the above loss reduces to the negative log-likelihood usually optimized by stocastic gradient descent:
 
 $$
+\begin{equation}
 \mathcal{L}(\theta) = - \frac{1}{N} \sum_{n=1}^N \log p\big(f_{\theta}^{-1}(x)\big) + \sum_{i=1}^{K} \log \Big| det\big( J_{f_{\theta_i}^{-1}}(z_{i}) \big)\Big|.
+\label{eq:flow_loss}
+\end{equation}
 $$
 
+Note that the loss function (Eq. $\eqref{eq:flow_loss}$) is computed starting from a datapoint $x$ and revert it to a plausable latent variable $z_0$. In so doing, the structural formulation of $p(z_0)$ is the major factor that define the training signals: if $p(z_0)$ is too loose, the training process does not have much to learn; if it is too strich, the training process might be too difficlt to learn.  
+Moreover, the training process is exactly the inverse of the generative process defined in Eq. $\eqref{eq:flow_generator}$; thus the sum of determinants.  
 Finally, to achieve a computationally efficent training there is the need to efficently compute the determinants of $J_{f_{\theta_i}^{-1}}$.
 While it is possible to leverage auto-diff libraries to compute the gradiens with respect to $\theta_i$ of the Jacobians matrix and its determinant such computation is expencive ($O(n)^3$); thus a large amount of research when into designing transformations that have efficent Jacobian determinant formulations.
 
-
+### Training Example
 
 # Credits
 
