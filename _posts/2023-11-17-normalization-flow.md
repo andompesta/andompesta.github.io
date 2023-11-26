@@ -142,6 +142,48 @@ While it is possible to leverage auto-diff libraries to compute the gradiens wit
 
 ### Training Example
 
+As overmentioned the training process of a NF is based on the mapping between a given input data $x$ to a particular base distribution $p(z_0)$. Usually, the base distribution is a well-known distribution such as multivariate gaussian, uniform or any other exponential destirbution. Similarly the mapping function it is usually implemented as a neural network.
+Starting from the first-principle: we can specify any NF model as composed of a base distribution and a series of flow that map $x$ to $z_0$:
+
+```python
+class NormalizingFlow(nn.Module):
+    def __init__(
+        self,
+        prior: Distribution,
+        flows: nn.ModuleList,
+    ):
+        super().__init__()
+        self.prior = prior
+        self.flows = flows
+
+    def forward(self, x: Tensor):
+        bs = x.size(0)
+        zs = [x]
+        sum_log_det = torch.zeros(bs).to(x.device)
+        for flow in self.flows:
+            z = flow(x)
+            log_det = flow.log_abs_det_jacobian(x, z)
+            zs.append(z)
+            sum_log_det += log_det
+            x = z
+
+        prior_logprob = self.prior.log_prob(z).view(bs, -1).sum(-1)
+        log_prob = prior_logprob + sum_log_det
+
+        intermediat_results = dict(
+            prior_logprob=prior_logprob,
+            sum_log_det=sum_log_det,
+            zs=zs,
+        )
+        return log_prob, intermediat_results
+```
+
+Supposed we are given a 1D dataset as shown in Fig. 2, we can fit a NF and map such dataset into any desidered prior distribution, let say a Beta distribution parametrized by $\alpha = 2$ and $\beta = 5$.
+
+Full code is contained in the following [notebook](https://github.com/andompesta/pytorch-normalizing-flows/blob/main/nf_demo.ipynb).
+
+
+
 # Credits
 
 The content of this post is based on the lectures and code of [Pieter Abbeel](https://sites.google.com/view/berkeley-cs294-158-sp20/home), [Justin Solomon](https://groups.csail.mit.edu/gdpgroup/6838_spring_2021.html) and [Karpathy's](https://github.com/karpathy/pytorch-normalizing-flows) tutorial.
