@@ -7,20 +7,19 @@ tag: "Deep Learning"
 comments_id: 9
 ---
 
-Normalizing Flows (NF)[[1]](#ref:normalization-flow-review) [[8]](#ref:nice) are a powerful thecnique that allows to learn and sample from complex probability distributions.
-They are known to be generative models that allow for exact likelihood estimation of continuous input data $p(x)$.
-Instead of relaing on approximation like in variational inference, normalizing flow operate by transforming samples of a simple distribution $z \sim p(z)$ into samples of a more complex distribution:
+Normalizing Flows (NF) represent a potent technique that facilitates the learning and sampling from intricate probability distributions [[1]](#ref:normalization-flow-review) [[8]](#ref:nice). These models, categorized as generative models, enable the precise estimation of likelihood for continuous input data, denoted as $p(x)$. In contrast to methods such as variational inference that rely on approximations, normalizing flows function by transforming samples from a simple distribution, denoted as $z \sim p(z)$, into samples from a more complex distribution using the following transformation:
 
 $$
-x = f_{\theta}(z), ~~ z \sim p(z; \psi)
+x = f_{\theta}(z), ~~ z \sim p(z; \psi).
 $$
 
-where $f_{\theta}(\cdot)$ is a mapping function from $z$ to $x$ parametrized by $\theta$ and $p(z; \psi)$ is the base (sometimes also refered as prior) distribution parametrized by $\psi$ from which we can sample from.
+Here, $f_{\theta}(\cdot)$ is a mapping function from $z$ to $x$, parametrized by $\theta$, and $p(z; \psi)$ is the base distribution (sometimes referred to as the prior distribution), parametrized by $\psi$, from which samples can be drawn. The essential properties defining a normalizing flow include:
+
 The defining propertires of a normalizing flow are:
- - $f_{\theta}(\cdot)$ must be invertible;
- - $f_{\theta}(\cdot)$ and $f_{\theta}^{-1}(\cdot)$ must be differentiable.
+ - $f_{\theta}(\cdot)$ must be invertible.
+ - Both $f_{\theta}(\cdot)$ and $f_{\theta}^{-1}(\cdot)$ must be differentiable.
 
-Under such constraint the density of $x$ is well-defined thanks to the change-of-variable theorem [[2]](#ref:change-of-variable):
+Adhering to these constraints ensures the well-defined density of $x$, as established by the change-of-variable theorem [[2]](#ref:change-of-variable):
 
 $$
 \begin{align*}
