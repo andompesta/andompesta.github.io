@@ -78,6 +78,56 @@ Credit to [Roel Staes linkedIn post](https://www.linkedin.com/feed/update/urn:li
 ![alt text](assets/img/handbook.jpeg)
 
 
+---
+
+# Razor's Rules
+
+Everyone is falimialr with the infamous [Occam's razor](https://en.wikipedia.org/wiki/Occam%27s_razor) rule. 
+However, recelty I stuped uppon a [George Mack](https://twitter.com/george__mack) tweet listing a bunch of other useful rules:
+
+1. **Bragging Razor**: If someone brags about their success or happiness, assume it’s half what they claim. If someone downplays their success or happiness, assume it’s double what they claim
+
+2. **High Agency Razor**: If unsure who to work with, pick the person that has the best chances of breaking you out of a 3rd world prison.
+
+3. **The Early-Late Razor**: If it's a talking point on Reddit, you might be early. If it's a talking point on LinkedIn, you're definitely late.
+
+4. **Luck Razor**: If stuck with 2 equal options, pick the one that feels like it will produce the most luck later down the line. I used this razor to go for drinks with a stranger rather than watch Netflix. In hindsight, it was the highest ROI decision I've ever made.
+
+5. **Buffett's Law**; "The value of every business is 100% subject to government interest rates" - Warren Buffett
+
+6. **The 6-Figure Razor**: If someone brags about "6 figures" -- assume it's closer to $100K than $900K.
+
+7. **Parent Rule**: Break down the investments your parents made in you: Time, Love, Energy, and Money. If they are still alive, aim to hit a positive ROI (or at least break even.)
+
+8. **Instagram Razor**: When you see a photo of an influencer looking attractive on Instagram -- assume there are 99 worse variations of that photo you haven't seen.They just picked the best one.
+
+9. **Narcissism Razor**: If worried about people's opinions, remember they are too busy worrying about other people's opinions of them. 99% of the time you're an extra in someone else's movie
+
+10. **Everyday Razor**: If you go from doing a task weekly to daily, you achieve 7 years of output in 1 year. If you apply a 1% compound interest each time, you achieve 54 years of output in 1 year.
+
+11. **Bezos Razor**: If unsure what action to pick, let your 90-year-old self on death bed choose it.
+
+12. **Creativity Razor**: If struggling to think creatively about a subject, transform it:
+    - Turn a thought into a written idea;
+    - A written idea into a drawing;
+    - A drawing into an equation;
+    - An equation into a conversation.  
+In the process of transforming it, you begin to spot new creative connections.
+
+13. **The Roman Empire Rule**: Historians now recognize the Roman Empire fell in 476 -- but it wasn't acknowledged by Roman society until many generations later. If you wait for the media to inform you, you'll either be wrong or too late.
+
+14. **Physics Razor**: If it doesn't deny the law of physics, then assume it's possible. Do not confuse society's current lack of knowledge -- with this knowledge being impossible to attain. E.g., the smartphone seems impossible to someone from the 1800s -- but it was possible, they just had a lack of knowledge.
+
+15. **Skinner's Law**: If procrastinating, you have 2 ways to solve it:
+    - Make the pain of inaction > Pain of action;
+    - Make the pleasure of action > Pleasure of inaction.
+
+16.  **Network Razor**: If you have 2 quality people that would benefit from an intro to one another, always do it. Networks don't divide as you share them, they multiply.
+
+17. **Gell-Mann Razor**: Assume every media article contains a % of false information. Sandbox the article from your worldview until you've: 1) Seen primary sources; 2) Spoken to 3 domain experts.
+
+18.  **Taleb's Surgeon**: If presented with two equal candidates for a role, pick the one with the least amount of charisma. The uncharismatic one has got there despite their lack of charisma. The charismatic one has got there with the aid of their charisma.
+
 <!-- sticazzi
 
 {{ site.baseurl}}{% post_url 2020-12-22-second %}
