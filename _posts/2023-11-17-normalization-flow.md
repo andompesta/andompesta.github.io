@@ -178,7 +178,50 @@ class NormalizingFlow(nn.Module):
         return log_prob, intermediat_results
 ```
 
-Supposed we are given a 1D dataset as shown in Fig. 2, we can fit a NF and map such dataset into any desidered prior distribution, let say a Beta distribution parametrized by $\alpha = 2$ and $\beta = 5$.
+Supposed we are given a 1D dataset as shown in Fig. [[2.a]](#fig:1d_dataset), we can fit a NF the underling probability distribution $p(x)$ of the given dataset.
+To successfully lrean the underling density we need a based distribution, let say a Beta distribution parametrized by $\alpha = 2$ and $\beta = 5$, and a functional definition for our flow, in this case a Gaussian Mixture Model with 4 different component.
+Given these ingridients we can train the model by minimizing the negative log likelihood by SGD.
+
+Fig. [[2.b]](#fig:1d_dataset) shows how 4 different components are used to correctly model $p(x)$, while the same results might be achieved by using only 2 components; in the general case the minimum number of needed components is not needed apriori.
+Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model fulfilly all the above mentioned requirements for a valid normalizing flow:
+ - the distribution of the latent vadiable $z$ follow a beta distribution;
+ - the flow is a monotonic increasing function from $x$ to $z$;
+ - the flow is differentiable and invertible.
+
+
+
+<div id="fig:1d_dataset">
+    <table>
+    <tr>
+        <td style="text-align: center">
+            <figure style="margin: 0px;">
+            <img src="{{site.baseurl}}/assets/img/norm_flow/1d/dataset.png" style="max-width: 380px">
+            <figcaption style="font-size:small;">
+                Figure 2.a: Training dataset build by sampling 750 elements from two distinct gaussian distributions.
+            </figcaption>
+            </figure>
+        </td>
+        <td style="text-align: center">
+            <figure style="margin: 0px;">
+            <img src="{{site.baseurl}}/assets/img/norm_flow/1d/fit-model.png" style="max-width: 500px">
+            <figcaption style="font-size:small;">
+                Figure 2.b: A normalizing flow fitted to the given dataset to learn $p(x)$. The normalizing flow is composed by a beta distributon as a prior and as a gaussian mixture model with 4 different component as a flow.
+            </figcaption>
+            </figure>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: center">
+            <figure style="margin: 0px;">
+            <img src="{{site.baseurl}}/assets/img/norm_flow/1d/learned-transformation.png">
+            <figcaption style="font-size:small;">
+                Figure 2.c: 
+            </figcaption>
+            </figure>
+        </td>
+    </tr>
+    </table>
+</div>
 
 Full code is contained in the following [notebook](https://github.com/andompesta/pytorch-normalizing-flows/blob/main/nf_demo.ipynb).
 
