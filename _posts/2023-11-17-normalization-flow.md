@@ -98,8 +98,8 @@ p(x) = p(z_0) \cdot \prod_{i=1}^k \Big| det \big( J_{f_{\theta_i}}(z_{i-1}) \big
 \end{equation}
 $$
 
-Note that $f_{\theta}^{-1}$, in the contex of generative models, is also referd as a pushforwartd mapping from a simple density $p(z)$ to a more complex $p(x)$.
-The inverse transfomration $f_{\theta}$ is instead called the normalization flow as it normalizes a complex distribution into a simpler one, one step at a time.  
+Note that $f_{\theta}$, in the contex of generative models, is also referd as a pushforwartd mapping from a simple density $p(z)$ to a more complex $p(x)$.
+The inverse transfomration $f_{\theta}^{-1}$ is instead called the normalization flow as it normalizes a complex distribution into a simpler one, one step at a time.  
 
 
 ## Training Procedures
@@ -198,9 +198,8 @@ for epoch in range(epochs):
 
     for idx, (x, y) in enumerate(dataloader):
         optimizer.zero_grad()
-        log_prob, _ = model(x)
-        # nll
-        loss = -log_prob.mean()
+        log_prob, _ = model(x)  # 
+        loss = -log_prob.mean()  # nll
         loss.backward()
         nn.utils.clip_grad_norm_(model.parameters(), 1)
         optimizer.step()
@@ -236,7 +235,7 @@ Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model is abl
             <figure style="margin: 0px;">
             <img src="{{site.baseurl}}/assets/img/norm_flow/1d/learned-transformation.png">
             <figcaption style="font-size:small;">
-                Figure 2.c: Learned normalizing flow from the unknown distribution $p(x)$ to the choosed prior distribution $p(z)$.
+                Figure 2.c: Learned normalizing flow from the unknown distribution $p(x)$ to the choosen prior $p(z)$.
             </figcaption>
             </figure>
         </td>
