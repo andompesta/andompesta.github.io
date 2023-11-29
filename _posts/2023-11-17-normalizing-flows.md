@@ -131,8 +131,9 @@ It is important to note that the loss function (Eq. $\eqref{eq:flow_loss}$) is c
 
 ### Training Example
 
-As overmentioned the training process of a NF is based on the mapping between a given input data $x$ to a particular base distribution $p(z_0)$. Usually, the base distribution is a well-known distribution such as multivariate gaussian, uniform or any other exponential destirbution. Similarly the mapping function it is usually implemented as a neural network.
-Starting from the first-principle: we can specify any NF model as composed of a base distribution and a series of flow that map $x$ to $z_0$:
+As previously mentioned, the training process of a NF involves mapping a given input data $x$ to a specific base distribution $p(z_0)$. Typically, the base distribution is a well-known distribution such as a multivariate Gaussian, Uniform, or any other exponential distribution. Similarly, the mapping function is usually implemented as a neural network.
+
+Starting from first principles, any NF model can be specified as comprising a base distribution and a series of flows that map $x$ to $z_0$. Here is a Python implementation:
 
 ```python
 class NormalizingFlow(nn.Module):
@@ -166,10 +167,11 @@ class NormalizingFlow(nn.Module):
         )
         return log_prob, intermediat_results
 ```
-where the prior can be any base distribution inplemented in [torch.distributions](https://pytorch.org/docs/stable/distributions.html) and flows can be any module that statisfy the NF properties.
 
-Supposed we are given a 1D dataset as shown in Fig. [[2.a]](#fig:1d_dataset), we can fit a NF the underling probability distribution $p(x)$ of the given dataset.
-To successfully learn the density of the dataset, we need a based distribution, let say a Beta distribution parametrized by $\alpha = 2$ and $\beta = 5$, and a functional definition for our flow, in this case a Gaussian Mixture Model with 4 different component.
+where the prior can be any base distribution inplemented in [torch.distributions](https://pytorch.org/docs/stable/distributions.html), and flows can be any module that statisfy the NF's properties.
+
+
+Suppose we are given a 1D dataset, as shown in Fig. [[2.a]](#fig:1d_dataset). We can fit an NF to the underlying probability distribution $p(x)$ of the dataset. To successfully learn the density of the dataset, we need a base distribution (let's say a Beta distribution parameterized by $\alpha = 2$ and $\beta = 5$) and a functional definition for our flow. In this case, let's use the cumulative distribution function of a Gaussian Mixture Model (GMM) with 4 different components:
 
 ```python
 model = NormalizingFlow(
@@ -181,7 +183,7 @@ model = NormalizingFlow(
 optimizer = optim.AdamW(model.parameters(), lr=5e-3, weight_decay=1e-5)
 ```
 
-Given these ingridients we can train the model by minimizing the negative log likelihood by SGD:
+With these ingredients, we can train the model by minimizing the negative log-likelihood using stochastic gradient descent (SGD):
 ```python
 for epoch in range(epochs):
     model.train()
@@ -194,9 +196,10 @@ for epoch in range(epochs):
         nn.utils.clip_grad_norm_(model.parameters(), 1)
         optimizer.step()
 ```
-Note that, no labels is used for training, as the objective is to directly maximise the predicted density of the dataset.
-Fig. [[2.b]](#fig:1d_dataset) shows the learned density and how the 4 different components are used to correctly model $p(x)$.
-While the same results might be achieved by using only 2 components, in the general case the minimum number of needed components is not needed apriori; thus using a larger number of components it is a good practice.
+Note that no labels are used for training, as the objective is to directly maximize the predicted density of the dataset.
+
+Fig. [[2.b]](#fig:1d_dataset) shows the learned density and how the 4 different components are used to correctly model $p(x)$. While the same results might be achieved by using only 2 components, in the general case, the minimum number of needed components is not known a priori; thus using a larger number of components is a good practice.
+
 Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model is able to map a dataset coming from an unknown density to the Beta distributin over-defined.
 
 
