@@ -29,9 +29,8 @@ $$
 \end{align*}
 $$
 
-By definition $\partial x$ represents the width of an infinitesimally small rectangle with heigh $p(x)$; thus $\frac{\partial f_{\theta}^{-1}(x)}{\partial x}$ is the ratio between the area of the rectangles defined in two different cordination system one in $x$ and one in $z$.
-For example, Fig. [1]($fig:change-of-variable) shows how the affine transformation $f_{\theta}^{-1}(x) = (5 \cdot x) - 2$ maps the Normal distribution $p(x; \mu=0, \sigma=1)$ into another Gaussian distribution $p(z; \mu=100, \sigma=5)$.
-As $\frac{\partial z}{\partial x} = 5$ the area $\partial x$ get streched by a factor of 5 when transformed into the variable $z$. Thus, $p(z)$ needs to be reduced by a factor of 5 in order to be a valid probability density function (every probability density needs to satisfy $\int p(z) \partial z = 1$):
+In its definition, $\partial x$ represents the width of an infinitesimally small rectangle with height $p(x)$. Consequently, $\frac{\partial f_{\theta}^{-1}(x)}{\partial x}$ denotes the ratio between the areas of rectangles defined in two distinct coordinate systems: one in terms of $x$ and the other in terms of $z$.  
+For illustrative purposes, consider Fig. [1]($fig:change-of-variable), which depicts how the affine transformation $f_{\theta}^{-1}(x) = (5 \cdot x) - 2$ maps the Normal distribution $p(x; \mu=0, \sigma=1)$ to another Gaussian distribution $p(z; \mu=-2, \sigma=5)$. With $\frac{\partial z}{\partial x} = 5$, the area $\partial x$ undergoes a stretching factor of 5 when transformed into the variable $z$. Consequently, $p(z)$ must be lowered by a factor of 5 to maintain its validity as a probability density function, satisfying the condition $\int p(z) \partial z = 1$:
 
 $$
 p(z) = \frac{p(x)}{\frac{\partial f_{\theta}^{-1}(x)}{\partial x}} = \frac{p(x)}{f_{\theta}^{-1'}(x)}.
@@ -41,16 +40,15 @@ $$
     <figure>
         <img src="{{site.baseurl}}/assets/img/norm_flow/change-of-variable.png" style="max-width: 98%">
         <figcaption style="font-size:small;">
-            Figure 1: Example of change-of-variable. The random variable $x$ is converted in to another random variable $z$ by means of the affine function $f_{\theta}^{-1}(x) = 5x - 2$; in other words $z=5x-2$.
-            To be a valid density function $p(z)$ needs to satisfy the property $\int p(z) \partial z = 1$ however as the transformation $f_{\theta}^{-1'}(x)$ streches the space by a factor of 5, we need to reduce the density by the same amount.
-            To this end note the difference between the max value of $p(z)$ and $p(x)$.
-            The picture in the bottom left gives a visual representation of how $\partial x$ get strached by the transformation $f_{\theta}^{-1}(\cdot)$.
+            Figure 1: Illustration of a Change-of-Variable. The random variable $x$ undergoes a transformation into another variable $z$ through the affine function $f_{\theta}^{-1}(x) = 5x - 2$; equivalently, $z$ can be expressed as $5x-2$.
+            Ensuring the validity of the density function $p(z)$ requires satisfying the condition $\int p(z) \partial z = 1$.However, due to the stretching effect of the transformation $f_{\theta}^{-1'}(x)$ by a factor of 5, the density must be adjusted accordingly.
+
+            Take note of the disparity between the maximum values of $p(z)$ and $p(x)$ for a visual representation, as depicted in the lower-left image illustrating the stretching of $\partial x$ caused by the transformation $f_{\theta}^{-1}(\cdot)$.
         </figcaption>
     </figure>
 </div>
 
-
-In the previous paragraph we introduced the concept of area-preserving transformations; following the same reasoning, it is possible to extend this concept to the multidimentional space by considering $\frac{\partial z}{\partial x}$ not as a simple derivative, but rather as the **Jacobian** matrix:
+In the preceding paragraph, we introduced the concept of area-preserving transformations. Extending this notion to the multidimensional space involves considering $\frac{\partial z}{\partial x}$ not as a simple derivative but as the **Jacobian** matrix:
 
 $$
 J_{z}(x) = \begin{bmatrix} 
@@ -60,9 +58,7 @@ J_{z}(x) = \begin{bmatrix}
 \end{bmatrix}.
 $$
 
-In the multidimentional setting the difference in areas became diffence in volumes quantified by the **determinant** of the Jacobian matrix
-$det(J_{z}(x)) \approx \frac{Vol(z)}{Vol(x)}$.
-Putting everithing togheter we can formalize a miltidimentional normalization flow as:
+In the multidimensional setting, the difference in areas translates to a difference in volumes quantified by the determinant of the Jacobian matrix, denoted as $det(J_{z}(x)) \approx \frac{Vol(z)}{Vol(x)}$. Consolidating these concepts, we can formalize a multidimensional normalization flow as follows:
 
 $$
 \begin{align*}
