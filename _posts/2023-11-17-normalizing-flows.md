@@ -1,7 +1,7 @@
 ---
 layout: post
 mathjax: true
-title:  "Normalization Flow"
+title:  "Normalizing Flows"
 author: "Sandro Cavallari"
 tag: "Deep Learning"
 comments_id: 9
@@ -29,9 +29,8 @@ $$
 \end{align*}
 $$
 
-By definition $\partial x$ represents the width of an infinitesimally small rectangle with heigh $p(x)$; thus $\frac{\partial f_{\theta}^{-1}(x)}{\partial x}$ is the ratio between the area of the rectangles defined in two different cordination system one in $x$ and one in $z$.
-For example, Fig. [1]($fig:change-of-variable) shows how the affine transformation $f_{\theta}^{-1}(x) = (5 \cdot x) - 2$ maps the Normal distribution $p(x; \mu=0, \sigma=1)$ into another Gaussian distribution $p(z; \mu=100, \sigma=5)$.
-As $\frac{\partial z}{\partial x} = 5$ the area $\partial x$ get streched by a factor of 5 when transformed into the variable $z$. Thus, $p(z)$ needs to be reduced by a factor of 5 in order to be a valid probability density function (every probability density needs to satisfy $\int p(z) \partial z = 1$):
+In its definition, $\partial x$ represents the width of an infinitesimally small rectangle with height $p(x)$. Consequently, $\frac{\partial f_{\theta}^{-1}(x)}{\partial x}$ denotes the ratio between the areas of rectangles defined in two distinct coordinate systems: one in terms of $x$ and the other in terms of $z$.  
+For illustrative purposes, consider Fig. [1]($fig:change-of-variable), which depicts how the affine transformation $f_{\theta}^{-1}(x) = (5 \cdot x) - 2$ maps the Normal distribution $p(x; \mu=0, \sigma=1)$ to another Gaussian distribution $p(z; \mu=-2, \sigma=5)$. With $\frac{\partial z}{\partial x} = 5$, the area $\partial x$ undergoes a stretching factor of 5 when transformed into the variable $z$. Consequently, $p(z)$ must be lowered by a factor of 5 to maintain its validity as a probability density function, satisfying the condition $\int p(z) \partial z = 1$:
 
 $$
 p(z) = \frac{p(x)}{\frac{\partial f_{\theta}^{-1}(x)}{\partial x}} = \frac{p(x)}{f_{\theta}^{-1'}(x)}.
@@ -41,16 +40,15 @@ $$
     <figure>
         <img src="{{site.baseurl}}/assets/img/norm_flow/change-of-variable.png" style="max-width: 98%">
         <figcaption style="font-size:small;">
-            Figure 1: Example of change-of-variable. The random variable $x$ is converted in to another random variable $z$ by means of the affine function $f_{\theta}^{-1}(x) = 5x - 2$; in other words $z=5x-2$.
-            To be a valid density function $p(z)$ needs to satisfy the property $\int p(z) \partial z = 1$ however as the transformation $f_{\theta}^{-1'}(x)$ streches the space by a factor of 5, we need to reduce the density by the same amount.
-            To this end note the difference between the max value of $p(z)$ and $p(x)$.
-            The picture in the bottom left gives a visual representation of how $\partial x$ get strached by the transformation $f_{\theta}^{-1}(\cdot)$.
+            Figure 1: Illustration of a Change-of-Variable. The random variable $x$ undergoes a transformation into another variable $z$ through the affine function $f_{\theta}^{-1}(x) = 5x - 2$; equivalently, $z$ can be expressed as $5x-2$.
+            Ensuring the validity of the density function $p(z)$ requires satisfying the condition $\int p(z) \partial z = 1$.However, due to the stretching effect of the transformation $f_{\theta}^{-1'}(x)$ by a factor of 5, the density must be adjusted accordingly.
+
+            Take note of the disparity between the maximum values of $p(z)$ and $p(x)$ for a visual representation, as depicted in the lower-left image illustrating the stretching of $\partial x$ caused by the transformation $f_{\theta}^{-1}(\cdot)$.
         </figcaption>
     </figure>
 </div>
 
-
-In the previous paragraph we introduced the concept of area-preserving transformations; following the same reasoning, it is possible to extend this concept to the multidimentional space by considering $\frac{\partial z}{\partial x}$ not as a simple derivative, but rather as the **Jacobian** matrix:
+In the preceding paragraph, we introduced the concept of area-preserving transformations. Extending this notion to the multidimensional space involves considering $\frac{\partial z}{\partial x}$ not as a simple derivative but as the **Jacobian** matrix:
 
 $$
 J_{z}(x) = \begin{bmatrix} 
@@ -60,9 +58,7 @@ J_{z}(x) = \begin{bmatrix}
 \end{bmatrix}.
 $$
 
-In the multidimentional setting the difference in areas became diffence in volumes quantified by the **determinant** of the Jacobian matrix
-$det(J_{z}(x)) \approx \frac{Vol(z)}{Vol(x)}$.
-Putting everithing togheter we can formalize a miltidimentional normalization flow as:
+In the multidimensional setting, the difference in areas translates to a difference in volumes quantified by the determinant of the Jacobian matrix, denoted as $det(J_{z}(x)) \approx \frac{Vol(z)}{Vol(x)}$. Consolidating these concepts, we can formalize a multidimensional normalization flow as follows:
 
 $$
 \begin{align*}
@@ -74,7 +70,7 @@ $$
 
 ## Generative Process as Finate Composition of Transformations
 
-In the general case the transformations $f_{\theta}(\cdot)$ and $f_{\theta}^{-1}(\cdot)$ are defined as finite compositions of simpler transformations $f_{\theta_i}$:
+In the general case, the transformations $f_{\theta}(\cdot)$ and $f_{\theta}^{-1}(\cdot)$ are defined as finite compositions of simpler transformations $f_{\theta_i}$:
 
 $$
 \begin{align*}
@@ -89,7 +85,7 @@ p(x) & = p_K(z_{k}) = p_{K-1}(f_{\theta_K}^{-1}(z_{k})) \cdot \Big| det\Big(J_{f
 \end{align*}
 $$
 
-In so doing, $p(z_i)$ is fully described by $z_{i-1}$ and $f_{\theta_i}$, thus it is possible to extended the previous reasoning to all i-steps of the overall generative process:
+By this process, $p(z_i)$ is fully described by $z_{i-1}$ and $f_{\theta_i}$, allowing the extension of the previous reasoning to all i-steps of the overall generative process:
 
 $$
 \begin{equation}
@@ -98,21 +94,17 @@ p(x) = p(z_0) \cdot \prod_{i=1}^k \Big| det \big( J_{f_{\theta_i}}(z_{i-1}) \big
 \end{equation}
 $$
 
-Note that $f_{\theta}^{-1}$, in the contex of generative models, is also referd as a pushforwartd mapping from a simple density $p(z)$ to a more complex $p(x)$.
-The inverse transfomration $f_{\theta}$ is instead called the normalization flow as it normalizes a complex distribution into a simpler one, one step at a time.  
+It is noteworthy that in the context of generative models, $f_{\theta}$ is also referred to as a pushforward mapping from a simple density $p(z)$ to a more complex $p(x)$. On the other hand, the inverse transformation $f_{\theta}^{-1}$ is known as the normalization function, as it systematically "normalizes" a complex distribution into a simpler one, one step at a time.
 
 
 ## Training Procedures
 
-As overmentioned NF are efficent models that allow sampling and learning complex distributions.
-Thus, the most common application for NF are density estimation and data generation.  
-On the one hand, density estimation is an handy task when someone is intersted in computing statistical quantities over unseen data. For example, [[3]](#ref:density-estimation) and [[4]](#ref:ffjord) demonstrate that NF models are able to estimate densities over tabular and image datasets. 
-Moreover, density estimation is the base capabilities that allows NF to be adopted for anomaly detection [[5]](#ref:nf-anomaly-detection) while it requires carefuly tuning for out-of-distribution detection [[6]](#ref:nf-for-odd).  
-On the other hand, the main application for NF is related to data generation. As abote mentioned, under some mild assumtions,  NFs are capable of sampling new datapoints from a complex distribution $p(x)$. [[7]](#ref:glow) is a primal example of NF applied to image generation, while [[9]](#ref:wave-net) and [[10]](#ref:flow-wave-net) demonstrate that NF can sussesfully learn audio signals.
+As previously mentioned, NFs serve as efficient models for both sampling from and learning complex distributions.
+The primary applications of NFs lie in density estimation and data generation.  
+Density estimation proves valuable for computing statistical quantities over unseen data, as demonstrated in works such as [[3]](#ref:density-estimation) and [[4]](#ref:ffjord), where NF models effectively estimate densities for tabular and image datasets. Additionally, NFs find application in anomaly detection [[5]](#ref:nf-anomaly-detection), although requiring careful tuning for out-of-distribution detection [[6]](#ref:nf-for-odd).  
+On the flip side, data generation stands out as the central application for NFs. As mentioned earlier, NFs, under mild assumptions, can sample new data points from a complex distribution $p(x)$. Exemplifying this, [[7]](#ref:glow) showcases NFs applied to image generation, while [[9]](#ref:wave-net) and [[10]](#ref:flow-wave-net) demonstrate successful learning of audio signals through NFs.
 
-
-One of the main advantages of NFs over other probabilistic generative model is that they can be easily trained by minimasing some divergence metric between $p(x: \theta)$ and the target distribution $p(x)$.
-In most of the cases NF are trained by minimasing the KL-diverngence between the two distributions:
+A key advantage of NFs over other probabilistic generative models lies in their ease of training, achieved by minimizing a divergence metric between $p(x; \theta)$ and the target distribution $p(x)$. In most cases, NFs are trained by minimizing the Kullback-Leibler (KL) divergence between these two distributions:
 
 $$
 \begin{align*}
@@ -125,7 +117,7 @@ $$
 \end{align*}
 $$
 
-where $p(f_{\theta}^{-1}(x)) = p(z_0)$ and $z_K$ is equal to $x$. Given a fixed training set $\{ x_n \}_{n=1}^N$ the above loss reduces to the negative log-likelihood usually optimized by stocastic gradient descent:
+Here, $p(f_{\theta}^{-1}(x)) = p(z_0)$, and $z_K$ is equal to $x$. For a fixed training set $X_N = \\{ x_n \\}_{n=1}^N$, the loss function is derived as the negative log-likelihood typically optimized using stochastic gradient descent:
 
 $$
 \begin{equation}
@@ -134,15 +126,14 @@ $$
 \end{equation}
 $$
 
-Note that the loss function (Eq. $\eqref{eq:flow_loss}$) is computed starting from a datapoint $x$ and revert it to a plausable latent variable $z_0$. In so doing, the structural formulation of $p(z_0)$ is the major factor that define the training signals: if $p(z_0)$ is too loose, the training process does not have much to learn; if it is too strich, the training process might be too difficlt to learn.  
-Moreover, the training process is exactly the inverse of the generative process defined in Eq. $\eqref{eq:flow_generator}$; thus the sum of determinants.  
-Finally, to achieve a computationally efficent training there is the need to efficently compute the determinants of $J_{f_{\theta_i}^{-1}}$.
-While it is possible to leverage auto-diff libraries to compute the gradiens with respect to $\theta_i$ of the Jacobians matrix and its determinant such computation is expencive ($O(n)^3$); thus a large amount of research when into designing transformations that have efficent Jacobian determinant formulations.
+
+It is important to note that the loss function (Eq. $\eqref{eq:flow_loss}$) is computed by starting from a datapoint $x$ and reversing it to a plausible latent variable $z_0$. Consequently, the structural formulation of $p(z_0)$ plays a critical role in defining the training signals: if $p(z_0)$ is too lax, the training process lacks substantial information; if it is too stringent, the training process may become overly challenging. Furthermore, the training process is the inverse of the generative process defined in Eq. $\eqref{eq:flow_generator}$, emphasizing the importance of the sum of determinants. Achieving computationally efficient training requires the efficient computation of determinants of $J_{f_{\theta_i}^{-1}}$. While auto-diff libraries can compute gradients with respect to $\theta_i$ of the Jacobian matrix and its determinant, such computations are computationally expensive ($O(n)^3$). Therefore, significant research efforts have focused on designing transformations with efficient Jacobian determinant formulations.
 
 ### Training Example
 
-As overmentioned the training process of a NF is based on the mapping between a given input data $x$ to a particular base distribution $p(z_0)$. Usually, the base distribution is a well-known distribution such as multivariate gaussian, uniform or any other exponential destirbution. Similarly the mapping function it is usually implemented as a neural network.
-Starting from the first-principle: we can specify any NF model as composed of a base distribution and a series of flow that map $x$ to $z_0$:
+As previously mentioned, the training process of a NF involves mapping a given input data $x$ to a specific base distribution $p(z_0)$. Typically, the base distribution is a well-known distribution such as a multivariate Gaussian, Uniform, or any other exponential distribution. Similarly, the mapping function is usually implemented as a neural network.
+
+Starting from first principles, any NF model can be specified as comprising a base distribution and a series of flows that map $x$ to $z_0$. Here is a Python implementation:
 
 ```python
 class NormalizingFlow(nn.Module):
@@ -177,16 +168,39 @@ class NormalizingFlow(nn.Module):
         return log_prob, intermediat_results
 ```
 
-Supposed we are given a 1D dataset as shown in Fig. [[2.a]](#fig:1d_dataset), we can fit a NF the underling probability distribution $p(x)$ of the given dataset.
-To successfully lrean the underling density we need a based distribution, let say a Beta distribution parametrized by $\alpha = 2$ and $\beta = 5$, and a functional definition for our flow, in this case a Gaussian Mixture Model with 4 different component.
-Given these ingridients we can train the model by minimizing the negative log likelihood by SGD.
+where the prior can be any base distribution inplemented in [torch.distributions](https://pytorch.org/docs/stable/distributions.html), and flows can be any module that statisfy the NF's properties.
 
-Fig. [[2.b]](#fig:1d_dataset) shows how 4 different components are used to correctly model $p(x)$, while the same results might be achieved by using only 2 components; in the general case the minimum number of needed components is not needed apriori.
-Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model fulfilly all the above mentioned requirements for a valid normalizing flow:
- - the distribution of the latent vadiable $z$ follow a beta distribution;
- - the flow is a monotonic increasing function from $x$ to $z$;
- - the flow is differentiable and invertible.
 
+Suppose we are given a 1D dataset, as shown in Fig. [[2.a]](#fig:1d_dataset). We can fit an NF to the underlying probability distribution $p(x)$ of the dataset. To successfully learn the density of the dataset, we need a base distribution (let's say a Beta distribution parameterized by $\alpha = 2$ and $\beta = 5$) and a functional definition for our flow. In this case, let's use the cumulative distribution function of a Gaussian Mixture Model (GMM) with 4 different components:
+
+```python
+model = NormalizingFlow(
+    prior=Beta(2.0, 5.0),
+    flows=nn.ModuleList([
+        GMMFlow(n_components=4, dim=1)
+    ]),
+)
+optimizer = optim.AdamW(model.parameters(), lr=5e-3, weight_decay=1e-5)
+```
+
+With these ingredients, we can train the model by minimizing the negative log-likelihood using stochastic gradient descent (SGD):
+```python
+for epoch in range(epochs):
+    model.train()
+
+    for idx, (x, y) in enumerate(dataloader):
+        optimizer.zero_grad()
+        log_prob, _ = model(x)
+        loss = -log_prob.mean()  # nll
+        loss.backward()
+        nn.utils.clip_grad_norm_(model.parameters(), 1)
+        optimizer.step()
+```
+Note that no labels are used for training, as the objective is to directly maximize the predicted density of the dataset.
+
+Fig. [[2.b]](#fig:1d_dataset) shows the learned density and how the 4 different components are used to correctly model $p(x)$. While the same results might be achieved by using only 2 components, in the general case, the minimum number of needed components is not known a priori; thus using a larger number of components is a good practice.
+
+Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model is able to map a dataset coming from an unknown density to the Beta distributin over-defined.
 
 
 <div id="fig:1d_dataset">
@@ -214,7 +228,7 @@ Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model fulfil
             <figure style="margin: 0px;">
             <img src="{{site.baseurl}}/assets/img/norm_flow/1d/learned-transformation.png">
             <figcaption style="font-size:small;">
-                Figure 2.c: 
+                Figure 2.c: Learned normalizing flow from the unknown distribution $p(x)$ to the choosen prior $p(z)$.
             </figcaption>
             </figure>
         </td>
@@ -223,6 +237,10 @@ Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model fulfil
 </div>
 
 Full code is contained in the following [notebook](https://github.com/andompesta/pytorch-normalizing-flows/blob/main/nf_demo.ipynb).
+
+<!-- 2d example -->
+
+<!-- review of different methods to achieve fast determinant computation -->
 
 
 
