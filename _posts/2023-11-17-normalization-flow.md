@@ -112,7 +112,7 @@ Moreover, density estimation is the base capabilities that allows NF to be adopt
 On the other hand, the main application for NF is related to data generation. As abote mentioned, under some mild assumtions,  NFs are capable of sampling new datapoints from a complex distribution $p(x)$. [[7]](#ref:glow) is a primal example of NF applied to image generation, while [[9]](#ref:wave-net) and [[10]](#ref:flow-wave-net) demonstrate that NF can sussesfully learn audio signals.
 
 
-One of the main advantages of NFs over other probabilistic generative model is that they can be easily trained by minimasing some divergence metric between $p(x: \theta)$ and the target distribution $p(x)$.
+One of the main advantages of NFs over other probabilistic generative model is that they can be easily trained by minimasing some divergence metric between $p(x; \theta)$ and the target distribution $p(x)$.
 In most of the cases NF are trained by minimasing the KL-diverngence between the two distributions:
 
 $$
@@ -126,7 +126,7 @@ $$
 \end{align*}
 $$
 
-where $p(f_{\theta}^{-1}(x)) = p(z_0)$ and $z_K$ is equal to $x$. Given a fixed training set $\{ x_n \}_{n=1}^N$ the above loss reduces to the negative log-likelihood usually optimized by stocastic gradient descent:
+where $p(f_{\theta}^{-1}(x)) = p(z_0)$ and $z_K$ is equal to $x$. Given a fixed training set $X_N = \\{ x_n \\}_{n=1}^N$ the above loss reduces to the negative log-likelihood usually optimized by stocastic gradient descent:
 
 $$
 \begin{equation}
