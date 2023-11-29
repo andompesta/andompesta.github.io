@@ -4,7 +4,7 @@ mathjax: true
 title:  "Normalizing Flows"
 author: "Sandro Cavallari"
 tag: "Deep Learning"
-comments_id: 9
+comments_id: 13
 ---
 
 Normalizing Flows (NF) represent a potent technique that facilitates the learning and sampling from intricate probability distributions [[1]](#ref:normalization-flow-review) [[8]](#ref:nice). These models, categorized as generative models, enable the precise estimation of likelihood for continuous input data, denoted as $p(x)$. In contrast to methods such as variational inference that rely on approximations, normalizing flows function by transforming samples from a simple distribution, denoted as $z \sim p(z)$, into samples from a more complex distribution using the following transformation:
