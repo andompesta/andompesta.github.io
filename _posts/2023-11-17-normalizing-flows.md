@@ -1,7 +1,7 @@
 ---
 layout: post
 mathjax: true
-title:  "Normalization Flow"
+title:  "Normalizing Flows"
 author: "Sandro Cavallari"
 tag: "Deep Learning"
 comments_id: 9
@@ -199,7 +199,7 @@ for epoch in range(epochs):
 
     for idx, (x, y) in enumerate(dataloader):
         optimizer.zero_grad()
-        log_prob, _ = model(x)  # 
+        log_prob, _ = model(x)
         loss = -log_prob.mean()  # nll
         loss.backward()
         nn.utils.clip_grad_norm_(model.parameters(), 1)
@@ -245,6 +245,10 @@ Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model is abl
 </div>
 
 Full code is contained in the following [notebook](https://github.com/andompesta/pytorch-normalizing-flows/blob/main/nf_demo.ipynb).
+
+<!-- 2d example -->
+
+<!-- review of different methods to achieve fast determinant computation -->
 
 
 
