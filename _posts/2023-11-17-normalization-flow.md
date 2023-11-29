@@ -99,7 +99,8 @@ p(x) = p(z_0) \cdot \prod_{i=1}^k \Big| det \big( J_{f_{\theta_i}}(z_{i-1}) \big
 $$
 
 Note that $f_{\theta}$, in the contex of generative models, is also referd as a pushforwartd mapping from a simple density $p(z)$ to a more complex $p(x)$.
-The inverse transfomration $f_{\theta}^{-1}$ is instead called the normalization flow as it normalizes a complex distribution into a simpler one, one step at a time.  
+The inverse transfomration $f_{\theta}^{-1}$ is instead called the normalization function as it "normalizes"
+ a complex distribution into a simpler one, one step at a time.  
 
 
 ## Training Procedures
