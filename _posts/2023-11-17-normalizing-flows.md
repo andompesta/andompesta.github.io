@@ -99,15 +99,12 @@ It is noteworthy that in the context of generative models, $f_{\theta}$ is also 
 
 ## Training Procedures
 
-As overmentioned NF are efficent models that allow sampling and learning complex distributions.
-Thus, the most common application for NF are density estimation and data generation.  
-On the one hand, density estimation is an handy task when someone is intersted in computing statistical quantities over unseen data. For example, [[3]](#ref:density-estimation) and [[4]](#ref:ffjord) demonstrate that NF models are able to estimate densities over tabular and image datasets. 
-Moreover, density estimation is the base capabilities that allows NF to be adopted for anomaly detection [[5]](#ref:nf-anomaly-detection) while it requires carefuly tuning for out-of-distribution detection [[6]](#ref:nf-for-odd).  
-On the other hand, the main application for NF is related to data generation. As abote mentioned, under some mild assumtions,  NFs are capable of sampling new datapoints from a complex distribution $p(x)$. [[7]](#ref:glow) is a primal example of NF applied to image generation, while [[9]](#ref:wave-net) and [[10]](#ref:flow-wave-net) demonstrate that NF can sussesfully learn audio signals.
+As previously mentioned, NFs serve as efficient models for both sampling from and learning complex distributions.
+The primary applications of NFs lie in density estimation and data generation.  
+Density estimation proves valuable for computing statistical quantities over unseen data, as demonstrated in works such as [[3]](#ref:density-estimation) and [[4]](#ref:ffjord), where NF models effectively estimate densities for tabular and image datasets. Additionally, NFs find application in anomaly detection [[5]](#ref:nf-anomaly-detection), although requiring careful tuning for out-of-distribution detection [[6]](#ref:nf-for-odd).  
+On the flip side, data generation stands out as the central application for NFs. As mentioned earlier, NFs, under mild assumptions, can sample new data points from a complex distribution $p(x)$. Exemplifying this, [[7]](#ref:glow) showcases NFs applied to image generation, while [[9]](#ref:wave-net) and [[10]](#ref:flow-wave-net) demonstrate successful learning of audio signals through NFs.
 
-
-One of the main advantages of NFs over other probabilistic generative model is that they can be easily trained by minimasing some divergence metric between $p(x; \theta)$ and the target distribution $p(x)$.
-In most of the cases NF are trained by minimasing the KL-diverngence between the two distributions:
+A key advantage of NFs over other probabilistic generative models lies in their ease of training, achieved by minimizing a divergence metric between $p(x; \theta)$ and the target distribution $p(x)$. In most cases, NFs are trained by minimizing the Kullback-Leibler (KL) divergence between these two distributions:
 
 $$
 \begin{align*}
@@ -120,7 +117,7 @@ $$
 \end{align*}
 $$
 
-where $p(f_{\theta}^{-1}(x)) = p(z_0)$ and $z_K$ is equal to $x$. Given a fixed training set $X_N = \\{ x_n \\}_{n=1}^N$ the above loss reduces to the negative log-likelihood usually optimized by stocastic gradient descent:
+Here, $p(f_{\theta}^{-1}(x)) = p(z_0)$, and $z_K$ is equal to $x$. For a fixed training set $X_N = \\{ x_n \\}_{n=1}^N$, the loss function is derived as the negative log-likelihood typically optimized using stochastic gradient descent:
 
 $$
 \begin{equation}
@@ -129,10 +126,8 @@ $$
 \end{equation}
 $$
 
-Note that the loss function (Eq. $\eqref{eq:flow_loss}$) is computed starting from a datapoint $x$ and revert it to a plausable latent variable $z_0$. In so doing, the structural formulation of $p(z_0)$ is the major factor that define the training signals: if $p(z_0)$ is too loose, the training process does not have much to learn; if it is too strich, the training process might be too difficlt to learn.  
-Moreover, the training process is exactly the inverse of the generative process defined in Eq. $\eqref{eq:flow_generator}$; thus the sum of determinants.  
-Finally, to achieve a computationally efficent training there is the need to efficently compute the determinants of $J_{f_{\theta_i}^{-1}}$.
-While it is possible to leverage auto-diff libraries to compute the gradiens with respect to $\theta_i$ of the Jacobians matrix and its determinant such computation is expencive ($O(n)^3$); thus a large amount of research when into designing transformations that have efficent Jacobian determinant formulations.
+
+It is important to note that the loss function (Eq. $\eqref{eq:flow_loss}$) is computed by starting from a datapoint $x$ and reversing it to a plausible latent variable $z_0$. Consequently, the structural formulation of $p(z_0)$ plays a critical role in defining the training signals: if $p(z_0)$ is too lax, the training process lacks substantial information; if it is too stringent, the training process may become overly challenging. Furthermore, the training process is the inverse of the generative process defined in Eq. $\eqref{eq:flow_generator}$, emphasizing the importance of the sum of determinants. Achieving computationally efficient training requires the efficient computation of determinants of $J_{f_{\theta_i}^{-1}}$. While auto-diff libraries can compute gradients with respect to $\theta_i$ of the Jacobian matrix and its determinant, such computations are computationally expensive ($O(n)^3$). Therefore, significant research efforts have focused on designing transformations with efficient Jacobian determinant formulations.
 
 ### Training Example
 
