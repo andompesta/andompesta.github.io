@@ -70,7 +70,7 @@ $$
 
 ## Generative Process as Finate Composition of Transformations
 
-In the general case the transformations $f_{\theta}(\cdot)$ and $f_{\theta}^{-1}(\cdot)$ are defined as finite compositions of simpler transformations $f_{\theta_i}$:
+In the general case, the transformations $f_{\theta}(\cdot)$ and $f_{\theta}^{-1}(\cdot)$ are defined as finite compositions of simpler transformations $f_{\theta_i}$:
 
 $$
 \begin{align*}
@@ -85,7 +85,7 @@ p(x) & = p_K(z_{k}) = p_{K-1}(f_{\theta_K}^{-1}(z_{k})) \cdot \Big| det\Big(J_{f
 \end{align*}
 $$
 
-In so doing, $p(z_i)$ is fully described by $z_{i-1}$ and $f_{\theta_i}$, thus it is possible to extended the previous reasoning to all i-steps of the overall generative process:
+By this process, $p(z_i)$ is fully described by $z_{i-1}$ and $f_{\theta_i}$, allowing the extension of the previous reasoning to all i-steps of the overall generative process:
 
 $$
 \begin{equation}
@@ -94,9 +94,7 @@ p(x) = p(z_0) \cdot \prod_{i=1}^k \Big| det \big( J_{f_{\theta_i}}(z_{i-1}) \big
 \end{equation}
 $$
 
-Note that $f_{\theta}$, in the contex of generative models, is also referd as a pushforwartd mapping from a simple density $p(z)$ to a more complex $p(x)$.
-The inverse transfomration $f_{\theta}^{-1}$ is instead called the normalization function as it "normalizes"
- a complex distribution into a simpler one, one step at a time.  
+It is noteworthy that in the context of generative models, $f_{\theta}$ is also referred to as a pushforward mapping from a simple density $p(z)$ to a more complex $p(x)$. On the other hand, the inverse transformation $f_{\theta}^{-1}$ is known as the normalization function, as it systematically "normalizes" a complex distribution into a simpler one, one step at a time.
 
 
 ## Training Procedures
