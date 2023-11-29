@@ -176,17 +176,39 @@ class NormalizingFlow(nn.Module):
         )
         return log_prob, intermediat_results
 ```
+where the prior can be any base distribution inplemented in [torch.distributions](https://pytorch.org/docs/stable/distributions.html) and flows can be any module that statisfy the NF properties.
 
 Supposed we are given a 1D dataset as shown in Fig. [[2.a]](#fig:1d_dataset), we can fit a NF the underling probability distribution $p(x)$ of the given dataset.
-To successfully lrean the underling density we need a based distribution, let say a Beta distribution parametrized by $\alpha = 2$ and $\beta = 5$, and a functional definition for our flow, in this case a Gaussian Mixture Model with 4 different component.
-Given these ingridients we can train the model by minimizing the negative log likelihood by SGD.
+To successfully learn the density of the dataset, we need a based distribution, let say a Beta distribution parametrized by $\alpha = 2$ and $\beta = 5$, and a functional definition for our flow, in this case a Gaussian Mixture Model with 4 different component.
 
-Fig. [[2.b]](#fig:1d_dataset) shows how 4 different components are used to correctly model $p(x)$, while the same results might be achieved by using only 2 components; in the general case the minimum number of needed components is not needed apriori.
-Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model fulfilly all the above mentioned requirements for a valid normalizing flow:
- - the distribution of the latent vadiable $z$ follow a beta distribution;
- - the flow is a monotonic increasing function from $x$ to $z$;
- - the flow is differentiable and invertible.
+```python
+model = NormalizingFlow(
+    prior=Beta(2.0, 5.0),
+    flows=nn.ModuleList([
+        GMMFlow(n_components=4, dim=1)
+    ]),
+)
+optimizer = optim.AdamW(model.parameters(), lr=5e-3, weight_decay=1e-5)
+```
 
+Given these ingridients we can train the model by minimizing the negative log likelihood by SGD:
+```python
+for epoch in range(epochs):
+    model.train()
+
+    for idx, (x, y) in enumerate(dataloader):
+        optimizer.zero_grad()
+        log_prob, _ = model(x)
+        # nll
+        loss = -log_prob.mean()
+        loss.backward()
+        nn.utils.clip_grad_norm_(model.parameters(), 1)
+        optimizer.step()
+```
+Note that, no labels is used for training, as the objective is to directly maximise the predicted density of the dataset.
+Fig. [[2.b]](#fig:1d_dataset) shows the learned density and how the 4 different components are used to correctly model $p(x)$.
+While the same results might be achieved by using only 2 components, in the general case the minimum number of needed components is not needed apriori; thus using a larger number of components it is a good practice.
+Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model is able to map a dataset coming from an unknown density to the Beta distributin over-defined.
 
 
 <div id="fig:1d_dataset">
@@ -214,7 +236,7 @@ Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model fulfil
             <figure style="margin: 0px;">
             <img src="{{site.baseurl}}/assets/img/norm_flow/1d/learned-transformation.png">
             <figcaption style="font-size:small;">
-                Figure 2.c: 
+                Figure 2.c: Learned normalizing flow from the unknown distribution $p(x)$ to the choosed prior distribution $p(z)$.
             </figcaption>
             </figure>
         </td>
