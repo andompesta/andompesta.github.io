@@ -238,11 +238,74 @@ Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model is abl
 
 Full code is contained in the following [notebook](https://github.com/andompesta/pytorch-normalizing-flows/blob/main/nf_demo.ipynb).
 
-<!-- 2d example -->
 
-<!-- review of different methods to achieve fast determinant computation -->
+### 2D Training Example
+
+Let assume that we have a more complex dataset, for example assume that we would like to map samples from the famous 2 Moon dataset shown in Fig. [[3.a]](#fig:2d_dataset) into a latent variable following a Gaussian distribution.
+In this case using the cumulative distribution function of a Gaussian Mixture model might not be expressive enough.
+Neural Network are powerfull function approximators, however they do not guarantee any of the contitions required by a normalizing flow, moreover computing the determinant of a linear layer is computantionally expencive.
+
+<div id="fig:2d_dataset">
+    <table>
+    <tr>
+        <td style="text-align: center">
+            <figure style="margin: 0px;">
+            <img src="{{site.baseurl}}/assets/img/norm_flow/2d/dataset.png" style="max-width: 400px">
+            <figcaption style="font-size:small;">
+                Figure 3.a: 2D Moon dataset. 
+            </figcaption>
+            </figure>
+        </td>
+        <td style="text-align: center">
+            <figure style="margin: 0px;">
+            <img src="{{site.baseurl}}/assets/img/norm_flow/2d/2d_moon_flow.gif" style="max-width: 430px">
+            <figcaption style="font-size:small;">
+                Figure 3.b: Gif of all the steps needed by the normalization flow to map the 2 Moon dataset into a Gaussian distribution.
+            </figcaption>
+            </figure>
+        </td>
+    </tr>
+    </table>
+</div>
 
 
+In the recent years, **Coupling layers** [[3]](#ref:density-estimation) emerged as a good solution for NF as they are both efficent at sampling and training time; while providing competitive performances.
+The idea is to split the input variables of the i-th layer in equaly sized groups:
+- the first group of input variables ($z_i[0], ..., z_i[d]$) is considered constant during the i-th layer.
+- the second group of parameter ($z_{i}[d+1], .... z_{i}_D$) is transformed by a NN that depends only on $z_{i}[\leq d]$.
+Note that here we use the notation $z_{i}[d]$ as indicating the $d$ dimention of the latent variable at the i-th layer of a flow ($z_{i}$).
+
+Matematically we can express that tranformation applied on all the input variables on the i-th layer as:
+
+$$
+\begin{align*}
+    z_{i+1}[0], ..., z_{i+1}[d] & = z_{i}[0], ..., z_{i}[d] \\
+    z_{i+1}[d+1], ..., z_{i+1}[D] & = f(z_{i}[0], ..., z_{i}[d]; \theta_{i})
+\end{align*}
+$$
+where $f(\cdot; \theta)$ is any neural network. Intuitively a coupling layer is as an autoregressive layer in which the autoregressive mask only allow $z_{i+1}[>d]$ to depend on $z_{i}[\leq d]$.
+
+The beauty of coupling layers stand in the ease of inverting their transformation as well as in the computation of the determinand.
+By construction the Jaccobiam matrix of any such layer is lower triangular, more precisely it follow the structure:
+
+$$
+J_{z_{i+1}}(z_{i}) = \begin{bmatrix} 
+    \mathbb{I} $ \mathbb{O} \\
+    \mathbb{A} $ \mathbb{D} \\
+\end{bmatrix}.
+$$
+where $\mathbb{I}$ is an identity matrix of size $d \times d$, $\mathbb{O}$ is a zeros matrix of size $d \times (D-d)$, $\mathbb{A}$ is a full matrix of size $(D-d) \times d$ and $\mathbb{D}$ is a diagonal matrix of shape $(D-d) \times (D-d)$.
+The determinant of the Jaccobiam matrix is formed by the product of the diagonal elements of $\mathbb{D}$; thus being efficent to compute.
+
+
+<div id="fig:2d_normalizing_flow" style="text-align: center; align: center;">
+    <figure style="margin: 0px;">
+    <img src="{{site.baseurl}}/assets/img/norm_flow/2d/training-process.png">
+    <figcaption style="font-size:small;">
+        Figure 4: Normalizing flow from a 2 moon dataset to the guassian prior visualized step by step. Bottom right picture shows the distribution of the final latent variable extracted by the flow, demonstrating that it is clrearly Gaussian.
+    </figcaption>
+    </figure>
+</div>
 
 # Credits
 
