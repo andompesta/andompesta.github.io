@@ -271,9 +271,9 @@ Neural Network are powerfull function approximators, however they do not guarant
 
 In the recent years, **Coupling layers** [[3]](#ref:density-estimation) emerged as a good solution for NF as they are both efficent at sampling and training time; while providing competitive performances.
 The idea is to split the input variables of the i-th layer in equaly sized groups:
-- the first group of input variables ($z_i[0], ..., z_i[d]$) is considered constant during the i-th layer.
-- the second group of parameter ($z_{i}[d+1], .... z_{i}_D$) is transformed by a NN that depends only on $z_{i}[\leq d]$.
-Note that here we use the notation $z_{i}[d]$ as indicating the $d$ dimention of the latent variable at the i-th layer of a flow ($z_{i}$).
+- the first group of input variables ($z_i[0], ..., z_i[d]$) is considered constant during the i-th layer[^1].
+- the second group of parameter ($z_{i}[d+1], ..., z_{i}[D]$) is transformed by a NN that depends only on $z_{i}[\leq d]$.
+
 
 Matematically we can express that tranformation applied on all the input variables on the i-th layer as:
 
@@ -283,19 +283,20 @@ $$
     z_{i+1}[d+1], ..., z_{i+1}[D] & = f(z_{i}[0], ..., z_{i}[d]; \theta_{i})
 \end{align*}
 $$
-where $f(\cdot; \theta)$ is any neural network. Intuitively a coupling layer is as an autoregressive layer in which the autoregressive mask only allow $z_{i+1}[>d]$ to depend on $z_{i}[\leq d]$.
 
+where $f(\cdot; \theta_i)$ is any neural network. Intuitively a coupling layer is as an autoregressive layer in which the autoregressive mask only allow $z_{i+1}[>d]$ to depend on $z_{i}[\leq d]$.  
 The beauty of coupling layers stand in the ease of inverting their transformation as well as in the computation of the determinand.
 By construction the Jaccobiam matrix of any such layer is lower triangular, more precisely it follow the structure:
 
 $$
 J_{z_{i+1}}(z_{i}) = \begin{bmatrix} 
-    \mathbb{I} $ \mathbb{O} \\
-    \mathbb{A} $ \mathbb{D} \\
+    \mathbf{I} & \mathbf{O} \\
+    \mathbf{A} & \mathbf{D} \\
 \end{bmatrix}.
 $$
-where $\mathbb{I}$ is an identity matrix of size $d \times d$, $\mathbb{O}$ is a zeros matrix of size $d \times (D-d)$, $\mathbb{A}$ is a full matrix of size $(D-d) \times d$ and $\mathbb{D}$ is a diagonal matrix of shape $(D-d) \times (D-d)$.
-The determinant of the Jaccobiam matrix is formed by the product of the diagonal elements of $\mathbb{D}$; thus being efficent to compute.
+
+where $\mathbf{I}$ is an identity matrix of size $d \times d$, $\mathbf{O}$ is a zeros matrix of size $d \times (D-d)$, $\mathbf{A}$ is a full matrix of size $(D-d) \times d$ and $\mathbf{D}$ is a diagonal matrix of shape $(D-d) \times (D-d)$.
+The determinant of such matrix is formed by the product of the diagonal elements of $\mathbf{D}$; thus being efficent to compute.
 
 
 <div id="fig:2d_normalizing_flow" style="text-align: center; align: center;">
@@ -312,6 +313,8 @@ The determinant of the Jaccobiam matrix is formed by the product of the diagonal
 The content of this post is based on the lectures and code of [Pieter Abbeel](https://sites.google.com/view/berkeley-cs294-158-sp20/home), [Justin Solomon](https://groups.csail.mit.edu/gdpgroup/6838_spring_2021.html) and [Karpathy's](https://github.com/karpathy/pytorch-normalizing-flows) tutorial.
 Moreover, I want to credit [Lil'Long](https://lilianweng.github.io/posts/2018-10-13-flow-models/) and [Eric Jang](https://blog.evjang.com/2018/01/nf1.html) for their amazing tutorials. For example, the pioneering work done by [Dinh et. al.](#ref:nice) is the first to leverage transformations with triangular matrix for efficent determinatnt computation.
 
+
+[^1]: Here we use the notation $z_{i}[d]$ as indicating the $d$ dimention of the latent variable at the i-th layer of a flow ($z_{i}$).
 # Refences
 
 <ol>
@@ -326,3 +329,7 @@ Moreover, I want to credit [Lil'Long](https://lilianweng.github.io/posts/2018-10
     <li id="ref:wave-net"> van den Oord, A., Dieleman, S., Zen, H., Simonyan, K., Vinyals, O., Graves, A., Kalchbrenner, N., Senior, A., & Kavukcuoglu, K. (n.d.). WAVENET: A GENERATIVE MODEL FOR RAW AUDIO. </li>
     <li id="ref:flow-wave-net"> Kim, Sungwon, et al. "FloWaveNet: A generative flow for raw audio." arXiv preprint arXiv:1811.02155 (2018). </li>
 </ol>
+
+-----
+
+# Footnotes
