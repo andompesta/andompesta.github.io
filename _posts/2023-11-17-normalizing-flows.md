@@ -205,29 +205,29 @@ Finally, Fig. [[2.c]](#fig:1d_dataset) demonstrates how the learned model is abl
 
 <div id="fig:1d_dataset">
     <table>
-    <tr>
-        <td style="text-align: center">
-            <figure style="margin: 0px;">
+    <tr style="border-bottom: 1px solid #e5e5e5;">
+        <td style="border-right: 1px solid #e5e5e5;">
+            <figure>
             <img src="{{site.baseurl}}/assets/img/norm_flow/1d/dataset.png" style="max-width: 380px">
             <figcaption style="font-size:small;">
                 Figure 2.a: Training dataset build by sampling 750 elements from two distinct gaussian distributions.
             </figcaption>
             </figure>
         </td>
-        <td style="text-align: center">
-            <figure style="margin: 0px;">
+        <td>
+            <figure>
             <img src="{{site.baseurl}}/assets/img/norm_flow/1d/fit-model.png" style="max-width: 500px">
-            <figcaption style="font-size:small;">
+            <figcaption>
                 Figure 2.b: A normalizing flow fitted to the given dataset to learn $p(x)$. The normalizing flow is composed by a beta distributon as a prior and as a gaussian mixture model with 4 different component as a flow.
             </figcaption>
             </figure>
         </td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: center">
-            <figure style="margin: 0px;">
+        <td colspan="2">
+            <figure>
             <img src="{{site.baseurl}}/assets/img/norm_flow/1d/learned-transformation.png">
-            <figcaption style="font-size:small;">
+            <figcaption>
                 Figure 2.c: Learned normalizing flow from the unknown distribution $p(x)$ to the choosen prior $p(z)$.
             </figcaption>
             </figure>
@@ -241,25 +241,25 @@ Full code is contained in the following [notebook](https://github.com/andompesta
 
 ### 2D Training Example
 
-Let assume that we have a more complex dataset, for example assume that we would like to map samples from the famous 2 Moon dataset shown in Fig. [[3.a]](#fig:2d_dataset) into a latent variable following a Gaussian distribution.
-In this case using the cumulative distribution function of a Gaussian Mixture model might not be expressive enough.
-Neural Network are powerfull function approximators, however they do not guarantee any of the contitions required by a normalizing flow, moreover computing the determinant of a linear layer is computantionally expencive.
+Consider a more intricate dataset, such as the famous 2 Moon dataset depicted in Fig. [[3.a]](#fig:2d_dataset). The objective here is to map samples from this dataset into a latent variable that conforms to a Gaussian distribution.
+
+In this context, relying solely on the cumulative distribution function of a Gaussian Mixture model as NF formulation may not provide the necessary expressiveness. While Neural Networks serve as powerful function approximators, they do not inherently guarantee the conditions required by a normalizing flow. Furthermore, computing the determinant of a linear layer within a neural network is computationally expensive.
 
 <div id="fig:2d_dataset">
     <table>
     <tr>
-        <td style="text-align: center">
-            <figure style="margin: 0px;">
-            <img src="{{site.baseurl}}/assets/img/norm_flow/2d/dataset.png" style="max-width: 400px">
-            <figcaption style="font-size:small;">
+        <td style="border-right: 1px solid #e5e5e5;">
+            <figure>
+            <img src="{{site.baseurl}}/assets/img/norm_flow/2d/dataset.png" style="max-width: 380px">
+            <figcaption>
                 Figure 3.a: 2D Moon dataset. 
             </figcaption>
             </figure>
         </td>
-        <td style="text-align: center">
-            <figure style="margin: 0px;">
-            <img src="{{site.baseurl}}/assets/img/norm_flow/2d/2d_moon_flow.gif" style="max-width: 430px">
-            <figcaption style="font-size:small;">
+        <td>
+            <figure>
+            <img src="{{site.baseurl}}/assets/img/norm_flow/2d/2d_moon_flow.gif" style="max-width: 400px">
+            <figcaption>
                 Figure 3.b: Gif of all the steps needed by the normalization flow to map the 2 Moon dataset into a Gaussian distribution.
             </figcaption>
             </figure>
@@ -269,24 +269,48 @@ Neural Network are powerfull function approximators, however they do not guarant
 </div>
 
 
-In the recent years, **Coupling layers** [[3]](#ref:density-estimation) emerged as a good solution for NF as they are both efficent at sampling and training time; while providing competitive performances.
-The idea is to split the input variables of the i-th layer in equaly sized groups:
-- the first group of input variables ($z_i[0], ..., z_i[d]$) is considered constant during the i-th layer[^1].
-- the second group of parameter ($z_{i}[d+1], ..., z_{i}[D]$) is transformed by a NN that depends only on $z_{i}[\leq d]$.
+In recent years, **Coupling layers** [[3]](#ref:density-estimation) have emerged as effective solutions for Normalizing Flows. They prove efficient both during sampling and training, while delivering competitive performances. The fundamental idea involves splitting the input variables of the i-th layer into equally sized groups:
 
+- The first group of input variables ($z_i[0], ..., z_i[d]$) is considered constant during the i-th layer[^1].
+- The second group of parameters ($z_{i}[d+1], ..., z_{i}[D]$) undergoes transformation by a Neural Network that depends solely on $z_{i}[\leq d]$.
 
-Matematically we can express that tranformation applied on all the input variables on the i-th layer as:
+Mathematically, we can represent the transformation applied to all input variables in the i-th layer as:
 
 $$
 \begin{align*}
     z_{i+1}[0], ..., z_{i+1}[d] & = z_{i}[0], ..., z_{i}[d] \\
-    z_{i+1}[d+1], ..., z_{i+1}[D] & = f(z_{i}[0], ..., z_{i}[d]; \theta_{i})
+    d_{i}[d+1], ..., d_{i}[D], t_{i}[d+1], ..., t_{i}[D] & = f(z_{i}[0], ..., z_{i}[d]; \theta_{i}) \\
+    z_{i+1}[d+1], ..., z_{i+1}[D] & = (z_{i}[d+1] \cdot d_{i}[d+1]) + t_{i}[d+1], ..., (z_{i}[D] \cdot d_{i}[D]) + t_{i}[D]
 \end{align*}
 $$
 
-where $f(\cdot; \theta_i)$ is any neural network. Intuitively a coupling layer is as an autoregressive layer in which the autoregressive mask only allow $z_{i+1}[>d]$ to depend on $z_{i}[\leq d]$.  
-The beauty of coupling layers stand in the ease of inverting their transformation as well as in the computation of the determinand.
-By construction the Jaccobiam matrix of any such layer is lower triangular, more precisely it follow the structure:
+where $f(\cdot; \theta_i)$ is any neural network. Intuitively, a coupling layer is akin to an autoregressive layer, where the autoregressive mask only permits $z_{i+1}[>d]$ to depend on $z_{i}[\leq d]$.  
+As shown in Fig. 4, the beauty of coupling layers lies in the ease of inverting their transformation. Given the initial conditiokn $z_{i+1}[\leq d] = z_{i}[\leq d]$, it is possible to derive the affine parameters $d_{i}[> d]$ and $t_{i}[> d]$ by directly applying $f(\cdot; \theta_i)$ to $z_{i+1}[\leq d]$.
+
+<div id="fig:2d_dataset">
+    <table>
+    <tr>
+        <td style="border-right: 1px solid #e5e5e5;">
+            <figure>
+            <img src="{{site.baseurl}}/assets/img/norm_flow/coupling_layer-forward.png" style="max-width: 380px">
+            <figcaption>
+                Figure 4.a: Forward pass. 
+            </figcaption>
+            </figure>
+        </td>
+        <td>
+            <figure>
+            <img src="{{site.baseurl}}/assets/img/norm_flow/coupling_layer-backward.png" style="max-width: 380px">
+            <figcaption>
+                Figure 4.b: Backward pass.
+            </figcaption>
+            </figure>
+        </td>
+    </tr>
+    </table>
+</div>
+
+By construction, the Jacobian matrix of any such layer is lower triangular, following the structure:
 
 $$
 J_{z_{i+1}}(z_{i}) = \begin{bmatrix} 
@@ -295,18 +319,63 @@ J_{z_{i+1}}(z_{i}) = \begin{bmatrix}
 \end{bmatrix}.
 $$
 
-where $\mathbf{I}$ is an identity matrix of size $d \times d$, $\mathbf{O}$ is a zeros matrix of size $d \times (D-d)$, $\mathbf{A}$ is a full matrix of size $(D-d) \times d$ and $\mathbf{D}$ is a diagonal matrix of shape $(D-d) \times (D-d)$.
-The determinant of such matrix is formed by the product of the diagonal elements of $\mathbf{D}$; thus being efficent to compute.
+Here, $\mathbf{I}$ is an identity matrix of size $d \times d$, $\mathbf{O}$ is a zeros matrix of size $d \times (D-d)$, $\mathbf{A}$ is a full matrix of size $(D-d) \times d$ and $\mathbf{D}$ is a diagonal matrix of shape $(D-d) \times (D-d)$.
+The determinant of such a matrix is formed by the product of the diagonal elements of $\mathbf{D}$, making it efficient to compute.
 
+Fig. [5](#ref:2d_normalizing_flow) illustrates the dynamics of a NF trained on a 2 Moon dataset. Note how the final latent space (step 4) conforms to a Gaussian distribution.
 
 <div id="fig:2d_normalizing_flow" style="text-align: center; align: center;">
-    <figure style="margin: 0px;">
+    <figure>
     <img src="{{site.baseurl}}/assets/img/norm_flow/2d/training-process.png">
-    <figcaption style="font-size:small;">
-        Figure 4: Normalizing flow from a 2 moon dataset to the guassian prior visualized step by step. Bottom right picture shows the distribution of the final latent variable extracted by the flow, demonstrating that it is clrearly Gaussian.
+    <figcaption>
+        Figure 5: Normalizing flow from a 2 moon dataset to the guassian prior visualized step by step. Bottom right picture shows the distribution of the final latent variable extracted by the flow, demonstrating that it is clrearly Gaussian.
     </figcaption>
     </figure>
 </div>
+
+
+Finally, a simple implementation of a coupling layer in pytorch is proviceded as follow:
+
+```python
+class CouplingFlow(nn.Module):
+    def __init__(
+        self,
+        dim: int,
+        hidden_dim: int,
+        mask: Tensor,
+    ) -> None:
+        super().__init__()
+        assert dim % 2 == 0, "dim must be even"
+        assert dim == mask.size(-1), "mask dimension must equal dim"
+
+        self.dim = dim
+        self.hidden_dim = hidden_dim
+        self.register_buffer("mask", mask)
+
+        self.net = nn.Sequential(
+            nn.Linear(dim, hidden_dim),
+            nn.LeakyReLU(),
+            nn.Linear(hidden_dim, dim),
+        )
+
+    def forward(self, x: Tensor) -> Tensor:
+        x_masked = x * self.mask
+        output = self.net(x_masked)
+        log_d, t = output.chunk(2, dim=-1)
+        z = x_masked + ((1 - self.mask) * (x * torch.exp(log_d) + t))
+        return z
+
+    def log_abs_det_jacobian(
+        self,
+        x: Tensor,
+        z: Tensor,
+    ) -> Tensor:
+        x_masked = x * self.mask
+        log_d, t = self.net(x_masked).chunk(2, dim=-1)
+        return log_d.sum(dim=-1)
+```
+
+
 
 # Credits
 
@@ -314,7 +383,7 @@ The content of this post is based on the lectures and code of [Pieter Abbeel](ht
 Moreover, I want to credit [Lil'Long](https://lilianweng.github.io/posts/2018-10-13-flow-models/) and [Eric Jang](https://blog.evjang.com/2018/01/nf1.html) for their amazing tutorials. For example, the pioneering work done by [Dinh et. al.](#ref:nice) is the first to leverage transformations with triangular matrix for efficent determinatnt computation.
 
 
-[^1]: Here we use the notation $z_{i}[d]$ as indicating the $d$ dimention of the latent variable at the i-th layer of a flow ($z_{i}$).
+[^1]: Here we introduce the notation $z_{i}[d]$ as indicating the $d$ dimention of the latent variable at the i-th layer of a flow ($z_{i}$).
 # Refences
 
 <ol>
