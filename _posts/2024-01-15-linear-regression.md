@@ -69,34 +69,25 @@ In conclusion, both these regularization approaches generate a model that has a 
 
 ## Parameter's Analysis
 
-It might be the case that we are interested in understanding the relationship between the dependent variable and one of our predictors.
-Precisly we are interested in understadining if a parameter $w_i$ has a significant relationship with the response variable $Y$, in other words we are interessted in understanding if there is a singificant reduction in the loss if we add the predictor $X_i$.
+There are instances when we seek to comprehend how one of our predictors influences the dependent variable. Specifically, our interest lies in determining whether the parameter $w_i$ significantly affects the response variable $Y$ - that is, whether including the predictor $X_i$ leads to a notable reduction in the model's loss.
 
-Formally we are interested in test the following hypothesis:
+Formally, this involves testing the following hypotheses:
 
 $$
 H_0 : w_i = 0 \\
 H_1 : w_i \neq 0.
 $$
 
-With an abuse in notation let us define $L(Y, \hat{Y}: \theta_{\not i})$ and $L(Y, \hat{Y}: \theta_{i})$ as the sum of squared residuals of a model respectively without and with the i-predictor.
-Under the assumption of indipendence and homoscedasticity of the model's parameters, it is possible to compute estimate the significance of the i-predictor by performing the t-test:
+For clarity, let's denote $L(Y, \hat{Y}: \theta_{\not i})$ and $L(Y, \hat{Y}: \theta_{i})$ as the sum of squared residuals for models excluding and including the $i$-th predictor, respectively. Assuming independence and homoscedasticity of the model's parameters, the significance of the $i$-th predictor can be assessed using the F-test:
 
 $$
-F = \frac{ \frac{L(Y, \hat{Y}: \theta_{\not i}) - L(Y, \hat{Y}: \theta_{i})}{p_2} }{ \frac{L(Y, \hat{Y}: \theta_{i})}{n - p} }
+F = \frac{ \frac{L(Y, \hat{Y}: \theta_{\not i}) - L(Y, \hat{Y}: \theta_{i})}{p_2} }{ \frac{L(Y, \hat{Y}: \theta_{i})}{n - p} } .
 $$
 
-where $p$ and $p_2$ are the degree of freedom of the overal model and the model with only $i$-th predictor; while $n$ is the number of training examples.
+Here, represent the degrees of freedom for the overall model and the model containing only the $i$-th predictor; while $n$ is the number of training examples.
 
 
-The numerator of $F$ is the reduction in the residual sum of squares per degree of freedom spent.
-The denominator is the average residual sum of squares, a measure of noise in the model.
-Thus, an $F$-ratio of one would indicate that the variables in are just adding noise.
-A ratio in excess of one would be indicative of signal.
-We usually reject $H_0$, and conclude that the i-th variable have an effect on the response if the $F$-criterion exceeds the 95-th percentage point of the $F$-distribution with $p_2$ and $(n-p)$ degrees of freedom.
-
-
-​
+The numerator of $F$-test represents the reduction in the residual sum of squares per additional degree of freedom utilized. The denominator is an estimate of the residual variance, serving as a measure of the model's inherent noise. An $F$-ratio of one suggests that the predictors merely contribute noise. A ratio greater than one implies meaningful contribution, or signal, from the predictors. Typically, we reject $H_0$ and conclude that the $i$-th variable significantly impacts the response if the $F$-statistic exceeds the 95th percentile of the $F$-distribution with $p_2$ and $(n-p)$ degrees of freedom. A full derivation of this result is available [here](https://grodri.github.io/glms/notes/c2s4).
  
 
 
