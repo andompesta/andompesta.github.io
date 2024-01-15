@@ -87,20 +87,42 @@ $$
 Here, represent the degrees of freedom for the overall model and the model containing only the $i$-th predictor; while $n$ is the number of training examples.
 
 
-The numerator of $F$-test represents the reduction in the residual sum of squares per additional degree of freedom utilized. The denominator is an estimate of the residual variance, serving as a measure of the model's inherent noise. An $F$-ratio of one suggests that the predictors merely contribute noise. A ratio greater than one implies meaningful contribution, or signal, from the predictors. Typically, we reject $H_0$ and conclude that the $i$-th variable significantly impacts the response if the $F$-statistic exceeds the 95th percentile of the $F$-distribution with $p_2$ and $(n-p)$ degrees of freedom. A full derivation of this result is available [here](https://grodri.github.io/glms/notes/c2s4).
+The numerator of $F$-test represents the reduction in the residual sum of squares per additional degree of freedom utilized. The denominator is an estimate of the residual variance, serving as a measure of the model's inherent noise. An $F$-ratio of one suggests that the predictors merely contribute noise. A ratio greater than one implies meaningful contribution, or signal, from the predictors. Typically, we reject $H_0$ and conclude that the $i$-th variable significantly impacts the response if the $F$-statistic exceeds the 95th percentile of the $F$-distribution with $p_2$ and $(n-p)$ degrees of freedom. A full derivation of this result is available [here](https://grodri.github.io/glms/notes/c2s3).
  
+## R-squared
+The $R^2$ metric, also known as the coefficient of determination, is a statistical measure used to assess the goodness of fit of a regression model. 
+It represents the proportion of the variance in the dependent variable that is predictable from the independent variables. 
+In simpler terms, $R^2$ indicates how well the data fit the regression model (the closer the value of $R^2$ is to 1, the better the fit) and can be computed as:
 
+$$
+R^2 = \frac{\mathcal(Y, \hat{Y}; \varnothing) - \mathcal(Y, \hat{Y}; \theta)}{\mathcal(Y, \hat{Y}; \varnothing)}
+$$
 
-## Residual Plot
+here $\mathcal(Y, \hat{Y}; \varnothing)$ represent the sum of squared residuals of a model wihtout parameters, a.k.a a model that alwasy predict the mean of the response variable.
+Similarly, $\mathcal(Y, \hat{Y}; \theta)$ is the linear regression developed.
 
+The $R^2$ value ranges from 0 to 1. A vale of 0 means that the model does not explain any of the variability of the response data around its mean.
+On the other hand, an $R^2$  of 1 indicates that the model explains all the variability of the response data around its mean.
+In conclusion $R^2$ is a simple to compute, yet informative metric to determin how much our variance our model is able to predict correctly.
 
-How to minimise the residuals in a regression task?
+## Improvements
 
-    1) Feature Selection: Choose relevant and significant variables to include in the model.
-    2)Transformation of Variables: Apply transformations (like log, square root, or inverse) to make the relationship more linear.
-    3)Polynomial Regression: Use higher-order terms (quadratic, cubic, etc.) if the relationship is not purely linear.
-    2) Interaction Terms: Include interaction terms if the effect of one variable depends on another.
-    3) Regularization Techniques: Methods like Ridge, Lasso, or Elastic Net can help in reducing overfitting and improving prediction.
-    6)Residual Plots: Use residual plots to check for non-linearity, unequal error variances, and outliers.
-    7)Influence Measures: Identify and investigate influential observations that might disproportionately affect the model's performance.
-    8)Homoscedasticity Testing: Ensure that residuals have constant variance across different levels of predictors.
+In general it is possible to rank the model performance in terms of $\mathcal{L}$.
+Thus, here are useful methods to reduce the sum of squared residuals:
+
+1) Feature Selection: Choose relevant and significant variables to include in the model.
+
+2) Transformation of Variables: Apply transformations (like log, square root, or inverse) to make the relationship more linear.
+
+3) Polynomial Regression: Use higher-order terms (quadratic, cubic, etc.) if the relationship is not purely linear.
+   
+4) Interaction Terms: Include interaction terms if the effect of one variable depends on another. An interaction variable in a linear model represents the combined effect of two or more variables on the dependent variable, where the effect of one variable depends on the level of another variable. In other words, it's used to capture situations where the relationship between a predictor and the outcome changes based on the value of another predictor. Formally, an interaction variable in alinear model is defined as:
+
+$$
+Y = \epsilon + w_1 X_1 + ... + w_n X_n + w_{n+1} (X_i \cdot X_j)
+$$
+
+5) Regularization Techniques: Methods like Ridge, Lasso, or Elastic Net can help in reducing overfitting and improving prediction.
+6) Residual Plots: Use residual plots to check for non-linearity, unequal error variances, and outliers.
+7) Influence Measures: Identify and investigate influential observations that might disproportionately affect the model's performance.
+8) Homoscedasticity Testing: Ensure that residuals have constant variance across different levels of predictors.
