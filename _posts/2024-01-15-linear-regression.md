@@ -130,7 +130,7 @@ $$
 
 # Residual Plots
 
-Residuals plots are a type of diagrams that has the residuals on the y-axes and the predicted value on x-axes. The residuals should have a uniform distribution.
+[Residuals plots](https://sefidian.com/2020/04/27/understanding-and-interpreting-residuals-plot-for-linear-regression/) are a type of diagrams that has the residuals on the y-axes and the predicted value on x-axes. The residuals should have a uniform distribution.
 These types of plots are usefull to assess the performance of the model as well as assess how clean the dataset is. Namelly residuals plot can be used for:
 
 1. Checking Homoscedasticity: A key assumption in linear regression is that the residuals have constant variance at every level of the independent variable(s) (homoscedasticity). If the residuals fan out or form a pattern as the predicted values increase, this indicates heteroscedasticity, which can lead to inefficient estimates and affect hypothesis testing.
