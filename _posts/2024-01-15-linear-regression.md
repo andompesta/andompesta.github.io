@@ -126,3 +126,21 @@ $$
 6) Residual Plots: Use residual plots to check for non-linearity, unequal error variances, and outliers.
 7) Influence Measures: Identify and investigate influential observations that might disproportionately affect the model's performance.
 8) Homoscedasticity Testing: Ensure that residuals have constant variance across different levels of predictors.
+
+
+# Residual Plots
+
+Residuals plots are a type of diagrams that has the residuals on the y-axes and the predicted value on x-axes. The residuals should have a uniform distribution.
+These types of plots are usefull to assess the performance of the model as well as assess how clean the dataset is. Namelly residuals plot can be used for:
+
+1. Checking Homoscedasticity: A key assumption in linear regression is that the residuals have constant variance at every level of the independent variable(s) (homoscedasticity). If the residuals fan out or form a pattern as the predicted values increase, this indicates heteroscedasticity, which can lead to inefficient estimates and affect hypothesis testing.
+
+2. Identifying Non-Linearity: If the relationship between the variables is not linear, the residuals will often display a systematic pattern. A residuals plot can help identify such non-linear relationships, suggesting that a different model or a transformation of variables might be more appropriate.
+
+3. Detecting Outliers: Residuals plots can reveal outliers – points that have a much larger error than the other observations. These outliers can disproportionately influence the model fit and can be indicative of data entry errors, or that the outlier is from a different population.
+
+4. Evaluating Model Fit: If a model is a good fit for the data, the residuals should be randomly scattered around zero. Patterns or trends in the residuals suggest that the model is not capturing some aspect of the data, which could lead to biased or inaccurate predictions.
+
+5. Checking Independence of Residuals: For a good model, the residuals should be independent of each other. If there's a pattern over time (in time series data) or a pattern associated with another variable, this is a sign that the model is missing a key piece of information.
+
+6. Verifying Normal Distribution of Residuals: In many forms of regression analysis (like linear regression), it's assumed that residuals are normally distributed. By plotting the residuals and visually checking their distribution (or using statistical tests), we can validate this assumption. A common method is to use a Q-Q plot (quantile-quantile plot) to compare the distribution of the residuals to a normal distribution.
