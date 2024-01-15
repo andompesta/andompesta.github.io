@@ -10,67 +10,60 @@ tag: "Interviews"
 
 # Linear Regression
 
-Linear regression is one of the most used and simple ML model.
-It expresses a linear relationship between a dependendt variable (y-axe) and one or multiple indipendent variables (x-axe).
-THe basic formilation of a linear regression can be described as follows:
+Linear regression is a widely utilized and straightforward machine learning model. 
+It establishes a linear relationship between a dependent variable (represented on the y-axis) and one or more independent variables (represented on the x-axis). 
+The fundamental formulation of linear regression is as follows:
 
 $$
 Y = \epsilon + w_1 X_1 + ... + w_n X_n
 $$
 
 where:
-- $Y$ is the dependent variable, also known as the response or target or outcome variable.
-- $X_i$ are indipendent variabels, also known as predictors or features.
-- $w_i$ are the coefficients of the independent variables. These coefficients represent the change in the dependent variable for a one-unit change in the respective independent variable, assuming all other variables are held constant.
+- $Y$ is the dependent variable, also referred to as the response, target, or outcome variable.
+- $X_i$ represents the independent variables, also known as predictors or features.
+- $w_i$ are the coefficients corresponding to the independent variables. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.
 - $\epsilon$ is the bias term, which account for the viariability in $Y$ that can not be explained by linear model.
 
-The learning process adjust the model's coefficients in such a way that we minimise the sum of the squared residuals:
+The learning process involves adjusting the model's coefficients to minimize the sum of the squared differences between the observed and predicted values:
 
 $$
 \mathcal{L}(Y, \hat{Y}) = (Y - \hat{Y})^2
 $$
 
-where $\mathbf{Y}$ is the predicted value and $\hat{\mathbf{Y}}$ is the actual value for a given training example.
-Due to this loss formulation linear models are also known as least square estimators.
-The training process adjust the model's parameters $\theta$ so to minimise the loss:
+Here, $\mathbf{Y}$ is the predicted value and $\hat{\mathbf{Y}}$ is the actual value for a given training example. This loss formulation is why linear models are often referred to as least squares estimators. The training process adjusts the model's parameters $\theta$ to minimize this loss:
 
 $$
 \frac{\partial \mathcal{L}(Y, \hat{Y}; \theta)}{\partial \theta}.
 $$
 
+Linear regression relies on several key assumptions:
 
-Linear regression has several key assumptions:
-1. Linearity between the indipendent and dependent variables.
-2. Independence across predictors. This is important for stability and interpretability reasons. Correlated variables (colinearity) can cause the model to give big changes in the outcome-variable for small changes in the predictors variables, braking the assumtion of a liear relationship. Moreover, a model with indipendent variables is easier to interprate as each variable has unique contribution to the prediction.
-3. Homoscedasticity of residuals. If residuals are not normally distributed with constant variance it is difficult to ensure that the model is not biased and it is difficult to do error-analysis.
+1. Linearity: There must be a linear relationship between the independent and dependent variables.
+2. Independence: The predictors should be independent of each other. This is vital for the model's stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.
+3. Homoscedasticity: The residuals should be normally distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.
 
-Ensuring these assumptions are met is crucial for the reliability and validity of the regression analysis.
+Verifying these assumptions is crucial for ensuring the reliability and validity of the regression analysis.
 
 ## Robust Linear Model
 
-
-Most of the time real-world dataset are sunbject to multi-colinearity among indipendent variables.
-A good approach to alleviate the multi-colinearity problems is to use the [**Ridge Regression**](https://www.youtube.com/watch?v=Q81RR3yKn30&ab_channel=StatQuestwithJoshStarmer):
+In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through [**Ridge Regression**](https://www.youtube.com/watch?v=Q81RR3yKn30&ab_channel=StatQuestwithJoshStarmer), described by the formula:
 
 $$
 Y = \epsilon + w_1 X_1 + ... + w_n X_n + \lambda \sum_{1 \leq i \leq n} w_i^2.
 $$
 
-Note that Ridge Regression is equal to the linear regression plus a discount factor.
-The discount factor is composed by the square of the model's weights; thus we are minimising the square of the model weight.
-This penalty factor inrease the model bias, but reduces the prediction variance by imposing a normal prior to the model parameters.
+Ridge Regression is essentially linear regression augmented with a penalty term. This term comprises the squared coefficients of the model, effectively minimizing their magnitude. This added penalty increases the model's bias but decreases prediction variance by imposing a normal distribution prior on the model parameters.
 
 
 ----
 
-[**Lasso Regression**](https://www.youtube.com/watch?v=NGf0voTMlcs&ab_channel=StatQuestwithJoshStarmer) is another popular variant of the linear model.
-Like Ridge regression, Lasso regression add a penalty term to the linear model loss function; however, lasso regression minimise the absolute value of the parameters rather than square value:
+On the other hand, [**Lasso Regression**](https://www.youtube.com/watch?v=NGf0voTMlcs&ab_channel=StatQuestwithJoshStarmer) is another widely-used variation of linear regression. Similar to Ridge, Lasso adds a penalty to the loss function of the linear model. However, Lasso minimizes the absolute value of the coefficients rather than their square:
 
 $$
 Y = \epsilon + w_1 X_1 + ... + w_n X_n + \lambda \sum_{1 \leq i \leq n} |w_i|.
 $$
 
-The difference is that lasso regression generate a sparse model as can push model's parameters all the way to 0, while ridge regression only makes them really small.
+The key distinction is that Lasso regression can reduce some coefficients to zero, producing a sparse model, whereas Ridge regression only reduces them to near zero.
 
 In conclusion, both these regularization approaches generate a model that has a bigger bias, but better generalization capability.
 
