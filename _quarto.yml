@@ -1,0 +1,35 @@
+project:
+  output-dir: docs
+  type: website
+  # pre-render:
+    # - scripts/pre_create_papers_file.py
+    # - scripts/pre_check_skierg_records.py
+    # - scripts/pre_doi_from_rogue_scholar.py
+    # - scripts/pre_canonicalise_tags.py
+
+website:
+  title: "Sandro Cavallari"
+  description: "Personal website of Sandro Cavallari"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: posts
+        text: Posts
+      # - href: talks
+      #   text: Talks
+      - href: about.qmd
+        text: About
+
+format:
+  html:
+    theme:
+      - cosmo
+      - custom.scss
+    # toc: false
+    # toc_depth: 3
+    # toc_float: true
+    # toc_smooth_scroll: true
+    # toc_highlight: true
+    # fig-align: center
+
