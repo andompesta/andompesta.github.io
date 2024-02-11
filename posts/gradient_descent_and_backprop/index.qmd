@@ -9,6 +9,11 @@ title: Gradinet Descent and Backpropagation
 # number-sections: true
 bibliography: references.bib
 csl: diabetologia.csl
+format:
+  html:
+    toc: true
+    # html-math-method: katex
+    # css: styles.css
 ---
 
 

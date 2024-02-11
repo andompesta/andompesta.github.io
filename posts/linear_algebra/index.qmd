@@ -9,6 +9,9 @@ title:  "Basic Principles of Linear Algebra"
 bibliography: references.bib
 csl: diabetologia.csl
 comments_id: 2
+format:
+  html:
+    toc: true
 ---
 
 Linear algebra is the branch of math and statistics that is devoted to the study of matrices and vectors. As such, it is broadly used to model real-world problems in phisitcs and machine learning. Such post is a collections of my notes obtained from the 3Blue1Brown series on linear-algebra [@youtubeEssenceLinear] and Murphy's new book [@murphy2022probabilistic].
