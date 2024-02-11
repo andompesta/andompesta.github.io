@@ -21,8 +21,6 @@ website:
         text: Posts
       # - href: talks
       #   text: Talks
-      - href: about.qmd
-        text: About
 
 format:
   html:
