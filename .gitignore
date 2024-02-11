@@ -9,4 +9,5 @@ Gemfile.lock
 svgo.config.js
 .DS_Store
 /.quarto/
-
+/_site/
+/docs/
