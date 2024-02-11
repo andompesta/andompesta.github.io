@@ -194,7 +194,8 @@ Note that as matrix multiplication is equal to applying different linear transfo
 As linear transformations alter the original vector space, it is important to evaluate by how much the original space is expanded or contracted by a given linear transformation $L$. The **determinant** define how much the original unit surface is changed by $L$.
 
 The determinant has some interesting properties:
-1. A liner transantformation with 0 determinant ($ det(L) = 0$) means that squash all the vectrs on a single line/plane. Moreover, it also means that $L$ has linearly dependents columns.
+
+1. A liner transantformation with 0 determinant ($det(L) = 0$) means that squash all the vectrs on a single line/plane. Moreover, it also means that $L$ has linearly dependents columns.
 2. The determinant can be negative if it change orientation of the space.
 3. Determinant is associative: $det(L) \cdot det(M) = det(L \cdot M)$.
 
@@ -268,11 +269,11 @@ It is convininet to use inear algebra to represent a system of linear equations,
 
 Thus, any system of linear equations can be expressed as:
 
-$
+$$
 \begin{equation}
-A \rvx = \mathbf{b}
+A \mathbf{x} = \mathbf{b}
 \end{equation}
-$
+$$
 
 where $A \in \mathbb{R}^{m \times n}$ is a known linear transformation(a matrix), $\mathbf{b} \in \mathbb{R}^{m \times 1}$ is a known vector in the space of $A$, and $\rvx \in \mathbb{R}^{n \times 1}$ is an unkown vector that after the transformation $A$ lies over $\mathbf{b}$.
 
