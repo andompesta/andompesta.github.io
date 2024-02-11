@@ -10,7 +10,8 @@ title: Gradinet Descent and Backpropagation
 bibliography: references.bib
 csl: diabetologia.csl
 comments:
-  hypothesis: true
+  giscus:
+    repo: quarto-dev/quarto-web
 format:
   html:
     toc: true
