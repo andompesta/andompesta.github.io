@@ -135,7 +135,7 @@ For example, consider the case where you have two datasets; the former is compos
 As shown in [@fig-dataset] , let's assume that the negative examples overlap with the positive ones according to a uniform distribution.
 
 
-::: {#fig-elephants layout-nrow=2}
+::: {#fig-init layout-nrow=2}
 
 ![Two datasets with same label distribution but different amount of positive examples. Dataset 1 contains 50 positive examples while Dataset 2 contains only 25 positive examples. In both cases there are 100 negative lables.](img/datasets.png){#fig-dataset width=80%}
 
