@@ -7,6 +7,9 @@ project:
     # - scripts/pre_doi_from_rogue_scholar.py
     # - scripts/pre_canonicalise_tags.py
 
+execute:
+  freeze: auto
+
 website:
   title: "Sandro Cavallari"
   description: "Personal website of Sandro Cavallari"
