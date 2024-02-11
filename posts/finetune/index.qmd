@@ -209,3 +209,9 @@ Similarly, as the model keep overfitting a single training batch we expect the v
 
 ![Validation loss and accuracy for a single batch.](img/eval_overfit.png){#fig-val}
 :::
+
+
+# References
+
+::: {#refs}
+:::
