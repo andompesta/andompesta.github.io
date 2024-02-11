@@ -1,12 +1,3 @@
-_site
-.sass-cache
-Gemfile.lock
-*.gem
-.jekyll-cache
-.trunk
-.markdownlint.yaml
-.shellcheckrc
-svgo.config.js
 .DS_Store
 /.quarto/
 /_site/
