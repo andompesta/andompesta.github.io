@@ -4,11 +4,12 @@ categories:
 
 author: Sandro Cavallari
 date: 2020-12-23
-title:  "Basic Principles of Linear Algebra"
+title: "Basic Principles of Linear Algebra"
 # number-sections: true
 bibliography: references.bib
 csl: diabetologia.csl
-comments_id: 2
+comments:
+  hypothesis: true
 format:
   html:
     toc: true

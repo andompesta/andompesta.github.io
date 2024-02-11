@@ -9,6 +9,8 @@ title: Gradinet Descent and Backpropagation
 # number-sections: true
 bibliography: references.bib
 csl: diabetologia.csl
+comments:
+  hypothesis: true
 format:
   html:
     toc: true
