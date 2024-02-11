@@ -2,6 +2,12 @@
   {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/normalization_flow/index.html",
+      "/posts/finetune/index.html",
+      "/posts/data_preprocessing/index.html",
+      "/posts/datastructure/index.html",
+      "/posts/metrics/index.html",
+      "/posts/vea/index.html",
       "/posts/linear_algebra/index.html",
       "/posts/gradient_descent_and_backprop/index.html"
     ]

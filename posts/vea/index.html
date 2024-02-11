@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Sandro Cavallari">
+<meta name="dcterms.date" content="2021-01-10">
 
-<title>Sandro Cavallari</title>
+<title>Sandro Cavallari - Variational Autoencoders</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,25 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/academicons-1.9.2/all.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/academicons-1.9.2/size.css" rel="stylesheet">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,17 +69,46 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Sandro Cavallari</span>
     </a>
   </div>
@@ -91,11 +119,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./posts"> 
+    <a class="nav-link" href="../../posts"> 
 <span class="menu-text">Posts</span></a>
   </li>  
 </ul>
@@ -109,152 +137,139 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#variationa-autoencoders" id="toc-variationa-autoencoders" class="nav-link" data-scroll-target="#variationa-autoencoders">Variationa Autoencoders</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<div class="quarto-about-solana content page-columns page-full">
-  <div class="about-entity page-columns page-full">
-    <div class="entity-contents page-columns page-full">
-       <div class="about-links">
-  <a href="https://www.linkedin.com/in/sandro-cavallari-58961b72/" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="https://twitter.com/Andompesta90" class="about-link" rel="" target="">
-    <i class="bi bi-twitter"></i>
-     <span class="about-link-text">Twitter</span>
-  </a>
-  <a href="https://github.com/andompesta" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">Github</span>
-  </a>
-  <a href="mailto:ando.cavallari@gmail.com" class="about-link" rel="" target="">
-     <span class="about-link-text"><i class="fa-solid fa-envelope" aria-label="envelope"></i> Email</span>
-  </a>
-  <a href="https://scholar.google.com/citations?user=5MYDlisAAAAJ&amp;hl=it&amp;oi=ao" class="about-link" rel="" target="">
-     <span class="about-link-text"><i class="ai  ai-google-scholar"></i> Google Scholar</span>
-  </a>
-</div>
-      <div class="about-contents page-columns page-full"><main class="content page-columns page-full" id="quarto-document-content">
-<section id="welcome" class="level1">
-<h1>Welcome</h1>
-<p>This is my personal space where I keep all my notes from my ML experience. I’m mostly interested in NLP and graph embeddings/analytics. Thus expect most of the material to cover:</p>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Variational Autoencoders</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Deep Learning</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sandro Cavallari </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 10, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>In this article, I will delve into the theoretical foundations of Variational Autoencoders (VAE). You can find the code used for both Convolutional Neural Network (CNN) and normal feedforward autoencoder trained on the MNIST dataset on my <a href="https://github.com/andompesta/variational-autoencoder/tree/master">GitHub repository</a>.</p>
+<p>VAEs are generative models grounded in Bayesian inference theory and variational inference. The underlying concept involves generating data points from a given latent variable that encodes the characteristics of the desired data. To illustrate, consider the task of dwaring an animal. Initially, we conceptualize the animal with specific criteria, such as having four legs and the ability to swim. With these criteria, we can draw the animal by sampling from the animal kingdom.</p>
+<p>Let use define some notation:</p>
 <ul>
-<li>Fundamentals of Deep Learning;</li>
-<li>Fundamentals of Reinforcement Learning;</li>
-<li>Basic Stats;</li>
-<li>Basic of Neural ODE.</li>
+<li><span class="math inline">\(x\)</span> represents a data point.</li>
+<li><span class="math inline">\(z\)</span> is a latent variable.</li>
+<li><span class="math inline">\(p(x)\)</span> denotes the probability distribution of the data.</li>
+<li><span class="math inline">\(p(z)\)</span> signifies the probability of the latent variable indicating the type of generated data.</li>
+<li><span class="math inline">\(p(x|z)\)</span> represents the distribution of the generated data based on a latent variable. Analogously, it is akin to transforming imagination into reality.</li>
+<li><span class="math inline">\(D_{KL}\big(p(X) \parallel q(X)\big) = \sum_{x_i \in X} p(x_i) \log \frac{p(x_i)}{q(x_i)} = - \sum_{x_i \in X} p(x_i) \log \frac{q(x_i)}{p(x_i)}\)</span> is the Kullback-Leibler (KL) divergence between two discrete distributions.</li>
 </ul>
-<p>Please note that this website is ment to keep only my personal material, this it my contains errors and typos.</p>
-<hr>
-<p>Here are some working principles I try to apply during my working expeience.</p>
-<section id="my-vision-of-skunkworks-rules" class="level2">
-<h2 data-anchor-id="my-vision-of-skunkworks-rules">My vision of Skunkworks Rules</h2>
-<ol type="1">
-<li>The Skunk Works workers must be delegated practically complete control of his program in all aspects.</li>
-<li>The number of people having any connection with the project must be restricted in an almost vicious manner. Use a small number of good people (10% to 25% compared to the so-called normal systems).</li>
-<li>A very simple drawing and drawing release system with great flexibility for making changes must be provided.</li>
-<li>There must be a minimum number of reports required, but important work must be recorded thoroughly.</li>
-<li>Access by outsiders to the project and its personnel must be strictly controlled by appropriate security measures.</li>
-<li>Because only a few people will be used in engineering and most other areas, ways must be provided to reward good performance by pay not based on the number of personnel supervised.</li>
-</ol>
+<p>KL divergence possesses notable properties: firstly, <span class="math inline">\(D_{KL}\big(p(x) \parallel q(x)\big)\)</span> is not equal to <span class="math inline">\(D_{KL}\big(q(x) \parallel p(x)\big)\)</span>, indicating its asymmetric nature. Secondly, <span class="math inline">\(D_{KL} &gt; 0\)</span>.</p>
 </section>
-<section id="musks-development-principles" class="level2">
-<h2 data-anchor-id="musks-development-principles">Musk’s Development Principles</h2>
-<ol type="1">
-<li><p><strong>Make the requirements less dumb</strong>. “Your requirements are definitely dumb, it does not matter who gave them to you.” Uses this step to test assumptions and question-the-question, especialy if it come from a ‘smart person’ since you might not question them enough.</p></li>
-<li><p><strong>Delete the part or process.</strong> “If you’re not adding things back in at least 10% of the time, you’re clearly not deleting enough.” Starting lean and building up when and if required, but be strongly bias throward removing thinks. Each requirement or constraint must be accountable to a person, so you can ask that person about its relevance and purpose.</p></li>
-<li><p><strong>Simplify or optimise the design.</strong> “Possibly the most common error of a smart engineer is to optimise a thing that should not exist”. Do your work and go through the first two steps before trying to optimise. To do this effectively you need an holistic view of the project and you need to consider the overall cost-benefit for a more complicated design.</p></li>
-<li><p><strong>Accelerate cycle time.</strong> “Try a bunch of things, and do more of what works”. Once you have find the right direction is time to accelerate the lifecycle. Aim for an experiment a day. Note that, it is extreamly importanto to do the first 3 steps before as “if you’re digging your grave, don’t dig faster.”</p></li>
-</ol>
-<hr>
+<section id="variationa-autoencoders" class="level1">
+<h1>Variationa Autoencoders</h1>
+<p>Variational Autoencoders function as generative models, enabling the sampling of new data points from such a model. In general, generative models learn a functional form of <span class="math inline">\(p(x)\)</span> that allows for sampling. However, <span class="math inline">\(p(x)\)</span>is often unknown, and only a dataset <span class="math inline">\(\hat{X} = (x_i)^N_{i=1}\)</span> comprising some samples from <span class="math inline">\(p(x)\)</span> is provided.</p>
+<p>VAEs overcome this challenge by leveraging the concept that high-dimensional data is generated based on a low-dimensional latent variable <span class="math inline">\(z\)</span>; thus, the joint distribution can be factorized as <span class="math inline">\(p(x,z)=p(x∣z)p(z)\)</span>. Ultimately, through marginalization, we can define <span class="math inline">\(p(x)\)</span> as:</p>
+<p><span class="math display">\[
+p(x) = \int p(x|z) p(z) \partial z.
+\]</span></p>
+<p>In our earlier analogy, <span class="math inline">\(z\)</span> represents the imagined concept, while <span class="math inline">\(x\)</span> is the realization of all the selected concepts. As mentioned before, during the training phase of VAEs, access is neither given to <span class="math inline">\(p(x)\)</span> nor to the latent variable <span class="math inline">\(z\)</span> used to generate the dataset. However, throughout the training process, a reasonable posterior distribution <span class="math inline">\(p(z∣x)\)</span> is learned. This approach makes sense, as the goal is to make the latent variable likely under the observed data, thereby generating plausible data.</p>
+<p>According to Bayesian theory:</p>
+<p><span class="math display">\[
+p(z|x) = \frac{p(x|z)\cdot p(z)}{p(x)} = \frac{p(x, z)}{p(x)}.
+\]</span></p>
+<p>As mentioned earlier, <span class="math inline">\(p(x)\)</span> can be expressed through marginalization over <span class="math inline">\(z\)</span>; however, such computation is typically intractable as it involves integrating over all latent dimensions:</p>
+<p><span class="math display">\[
+p(x) \int ... \int \int p(x|z)\cdot p(z) \partial z_i.
+\]</span></p>
+<p>To overcome this computational challenge, variational inference suggests approximating <span class="math inline">\(p(z∣x)\)</span> with a simpler distribution <span class="math inline">\(q(z∣x)\)</span>. By assigning a tractable form to <span class="math inline">\(q(z∣x)\)</span>, such as a Gaussian distribution, and adjusting its parameters to closely match <span class="math inline">\(p(z∣x)\)</span>, we can overcome the intractability issue.</p>
+<p>Formally, we can rewrite our goal as: <span class="math display">\[
+\begin{align*}
+\min D_{KL}\big(q(z|x) || p(z|x)\big) &amp; = - \sum_{x \in \hat{X}} q(z|x) \log \frac{p(z|x)}{q(z|x)}  \\
+&amp; = - \sum_{x \in \hat{X}} q(z|x) \log \Big(\frac{p(x, z)}{q(z|x)}  \cdot \frac{1}{p(x)} \Big) \\
+&amp; = - \sum_{x \in \hat{X}} q(z|x) \log \Big(\frac{p(x, z)}{q(z|x)}  - \log p(x) \Big)  \\
+&amp; = - \sum_{x \in \hat{X}} q(z|x) \log \frac{p(x, z)}{q(z|x)} + \sum_{x \in \hat{X}} q(z|x) \log p(x) \\
+&amp; = \log p(x) - \sum_{x \in \hat{X}} q(z|x) \log \frac{p(x, z)}{q(z|x)} ~~~~ \small{\text{:as $\sum_{x \in \hat{X}} q(z|x) = 1$ and $p(x)$ do not depend on $z$}}
+\end{align*}
+\]</span></p>
+<p>By rearranging the above equation we can state that: <span class="math display">\[
+\log p(x) = D_{KL}\big(q(z|x) || p(z|x)\big) + \sum_{x \in \hat{X}} q(z|x) \log \frac{p(x, z)}{q(z|x)}.
+\]</span></p>
+<p>However, <span class="math inline">\(p(x)\)</span> is constant for a given dataset <span class="math inline">\(\hat{X}\)</span>, thus minimizing <span class="math inline">\(D_{KL}\big(q(z|x) || p(z|x)\big)\)</span> is equivalent to maximise <span class="math inline">\(\sum_{x \in \hat{X}} q(z|x) \log \frac{p(x, z)}{q(z|x)}\)</span> up to a constant factor. Such formulation of the KL-divergenve is also known as the Evidence Lower Bound (ELBO) and it is tractable:</p>
+<p><span class="math display">\[
+\begin{align*}
+\sum_{x \in \hat{X}} q(z|x) \log \frac{p(x, z)}{q(z|x)} &amp; = \sum_{x \in \hat{X}} q(z|x) \log \big( \frac{p(x|z) p(z)}{q(z|x)}\big)  \\
+&amp; = \sum_{x \in \hat{X}} q(z|x) \Big(\log p(x|z) + \log \frac{p(z)}{q(z|x)} \Big)  \\
+&amp; = \sum_{x \in \hat{X}} q(z|x) \log p(x|z) + \sum_{x \in \hat{X}} q(z|x) \log \frac{p(z)}{q(z|x)} \\
+&amp; = \mathbb{E}_{z \sim q(z|x)} \big[ \log p(x|z) \big] - \sum_{x \in \hat{X}} q(z|x) \log \frac{q(z|x)}{p(z)} \\
+&amp; = \mathbb{E}_{z \sim q(z|x)} \big[ \log p(x|z) \big] - \mathbb{E}_{z \sim q(z|x)} \big[ \log q(z|x) - \log p(z) \big] \\
+&amp; = \mathbb{E}_{z \sim q(z|x)} \big[ \log p(x|z) \big] - D_{KL}\big( q(z|x) \parallel p(z) \big).
+\end{align*}
+\]</span></p>
+<p>The initial component of the ELBO, denoted as <span class="math inline">\(\mathbb{E}_{z \sim q(z|x)} \big[ \log p(x|z) \big]\)</span> , is commonly known as the (negative) reconstruction error. This is because it involves encoding <span class="math inline">\(x\)</span> into <span class="math inline">\(z\)</span> and then decoding it back. The second segment, <span class="math inline">\(D_{KL}\big( q(z|x)\parallel p(z) \big)\)</span> can be viewed as a regularization term that imposes a specific distribution on <span class="math inline">\(q\)</span>.</p>
 </section>
-</section>
-<section id="not-to-do" class="level1 page-columns page-full">
-<h1>Not To Do</h1>
-<p>In 1944, the CIA wrote a handbook on how to sabotage (enemy) organizations from the inside. A few interesting tips:</p>
-<ol type="1">
-<li>Insist on doing everything through “channels.” Never permit short-cuts to be taken in order to expedite decisions.</li>
-<li>Make “speeches.” Talk as frequently as possible and at great length.</li>
-<li>When possible, refer all matters to committees, for “further study and consideration.” Attempt to make the committees as large as possible—never less than five.</li>
-<li>Bring up irrelevant issues as frequently as possible.</li>
-<li>Haggle over precise wordings of communications, minutes, resolutions.</li>
-<li>Refer back to matters decided upon at the last meeting and attempt to re-open the question of the advisability of that decision.</li>
-<li>Demand written orders.</li>
-<li>“Misunderstand” orders. Ask endless questions or engage in long correspondence about such orders. Quibble over them when you can.</li>
-<li>Do everything possible to delay the delivery of orders. Even though parts of an order may be ready beforehand, don’t deliver it until it is completely ready.</li>
-<li>In making work assignments, always sign out the unimportant jobs first.</li>
-<li>Insist on perfect work in relatively unimportant products; send back for refinishing those which have the least flaw. Approve other defective parts whose flaws are not visible to the naked eye.</li>
-<li>When training new workers, give incomplete or misleading instructions.</li>
-<li>To lower morale and with it, production, be pleasant to inefficient workers; give them undeserved promotions. Discriminate against efficient workers; complain unjustly about their work.</li>
-<li>Hold conferences when there is more critical work to be done.</li>
-<li>Multiply paper work in plausible ways.</li>
-<li>Start duplicate files.</li>
-<li>Multiply the procedures and clearances involved in issuing instructions, pay checks, and so on. See that three people have to approve everything where one would do.</li>
-<li>Apply all regulations to the last letter.</li>
-<li>Do your work poorly and blame it on bad tools, machinery, or equipment. Complain that these things are preventing you from doing your job right.</li>
-<li>Never pass on your skill and experience to a new or less skillful worker.</li>
-<li>Snarl up administration in every possible way. Fill out forms illegibly so that they will have to be done over; make mistakes or omit requested information in forms.</li>
-<li>Give lengthy and incomprehensible explanations when questioned.</li>
-<li>Act stupid.</li>
-<li>Be as irritable and quarrelsome as possible without getting yourself into trouble.</li>
-<li>Misunderstand all sorts of regulations concerning such matters as rationing, transportation, traffic regulations.</li>
-</ol>
-<div id="fig-fbi-handbook" class="quarto-figure quarto-figure-center quarto-float page-columns page-full">
-<figure class="quarto-float quarto-float-fig figure page-columns page-full">
-<div aria-describedby="fig-fbi-handbook-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<img src="assets/img/handbook.jpeg" class="img-fluid figure-img column-body">
+<section id="results" class="level1">
+<h1>Results</h1>
+<p>Based on the code, we have trained a CNN-based Variational Autoencoder on the MNIST dataset. <a href="#fig-loss" class="quarto-xref">Figure&nbsp;1</a> report the training loss, while <a href="#fig-new-example" class="quarto-xref">Figure&nbsp;2</a> shows us some generated example. As it is possible to see, there are still some artifact. Maybe a better activation function would provide better results.</p>
+<div id="fig-loss" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/loss.png" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fbi-handbook-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Credit to <a href="https://www.linkedin.com/feed/update/urn:li:activity:7018144158573854721/">Roel Staes linkedIn post</a>.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Training loss of a CNN based VAE on the MNIST dataset.
 </figcaption>
 </figure>
 </div>
-<hr>
-</section>
-<section id="razors-rules" class="level1">
-<h1>Razor’s Rules</h1>
-<p>Everyone is falimialr with the infamous <a href="https://en.wikipedia.org/wiki/Occam%27s_razor">Occam’s razor</a> rule. However, recelty I stuped uppon a <a href="https://twitter.com/george__mack">George Mack</a> tweet listing a bunch of other useful rules:</p>
-<ol type="1">
-<li><p><strong>Bragging Razor</strong>: If someone brags about their success or happiness, assume it’s half what they claim. If someone downplays their success or happiness, assume it’s double what they claim</p></li>
-<li><p><strong>High Agency Razor</strong>: If unsure who to work with, pick the person that has the best chances of breaking you out of a 3rd world prison.</p></li>
-<li><p><strong>The Early-Late Razor</strong>: If it’s a talking point on Reddit, you might be early. If it’s a talking point on LinkedIn, you’re definitely late.</p></li>
-<li><p><strong>Luck Razor</strong>: If stuck with 2 equal options, pick the one that feels like it will produce the most luck later down the line. I used this razor to go for drinks with a stranger rather than watch Netflix. In hindsight, it was the highest ROI decision I’ve ever made.</p></li>
-<li><p><strong>Buffett’s Law</strong>; “The value of every business is 100% subject to government interest rates” - Warren Buffett</p></li>
-<li><p><strong>The 6-Figure Razor</strong>: If someone brags about “6 figures” – assume it’s closer to $100K than $900K.</p></li>
-<li><p><strong>Parent Rule</strong>: Break down the investments your parents made in you: Time, Love, Energy, and Money. If they are still alive, aim to hit a positive ROI (or at least break even.)</p></li>
-<li><p><strong>Instagram Razor</strong>: When you see a photo of an influencer looking attractive on Instagram – assume there are 99 worse variations of that photo you haven’t seen.They just picked the best one.</p></li>
-<li><p><strong>Narcissism Razor</strong>: If worried about people’s opinions, remember they are too busy worrying about other people’s opinions of them. 99% of the time you’re an extra in someone else’s movie</p></li>
-<li><p><strong>Everyday Razor</strong>: If you go from doing a task weekly to daily, you achieve 7 years of output in 1 year. If you apply a 1% compound interest each time, you achieve 54 years of output in 1 year.</p></li>
-<li><p><strong>Bezos Razor</strong>: If unsure what action to pick, let your 90-year-old self on death bed choose it.</p></li>
-<li><p><strong>Creativity Razor</strong>: If struggling to think creatively about a subject, transform it:</p>
-<ul>
-<li>Turn a thought into a written idea;</li>
-<li>A written idea into a drawing;</li>
-<li>A drawing into an equation;</li>
-<li>An equation into a conversation.<br>
-In the process of transforming it, you begin to spot new creative connections.</li>
-</ul></li>
-<li><p><strong>The Roman Empire Rule</strong>: Historians now recognize the Roman Empire fell in 476 – but it wasn’t acknowledged by Roman society until many generations later. If you wait for the media to inform you, you’ll either be wrong or too late.</p></li>
-<li><p><strong>Physics Razor</strong>: If it doesn’t deny the law of physics, then assume it’s possible. Do not confuse society’s current lack of knowledge – with this knowledge being impossible to attain. E.g., the smartphone seems impossible to someone from the 1800s – but it was possible, they just had a lack of knowledge.</p></li>
-<li><p><strong>Skinner’s Law</strong>: If procrastinating, you have 2 ways to solve it:</p>
-<ul>
-<li>Make the pain of inaction &gt; Pain of action;</li>
-<li>Make the pleasure of action &gt; Pleasure of inaction.</li>
-</ul></li>
-<li><p><strong>Network Razor</strong>: If you have 2 quality people that would benefit from an intro to one another, always do it. Networks don’t divide as you share them, they multiply.</p></li>
-<li><p><strong>Gell-Mann Razor</strong>: Assume every media article contains a % of false information. Sandbox the article from your worldview until you’ve: 1) Seen primary sources; 2) Spoken to 3 domain experts.</p></li>
-<li><p><strong>Taleb’s Surgeon</strong>: If presented with two equal candidates for a role, pick the one with the least amount of charisma. The uncharismatic one has got there despite their lack of charisma. The charismatic one has got there with the aid of their charisma.</p></li>
-</ol>
-
-
-</section>
-</main></div>
-    </div>
-    <img src="assets/img/IMG_1695.JPG" class="about-image
-  rounded " style="width: 15em;">
-  </div>
+<div id="fig-new-example" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-new-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/cnn_variational_autoencoder_pred.png" class="img-fluid figure-img">
 </div>
- <!-- /main -->
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-new-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Generated examples.
+</figcaption>
+</figure>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -275,6 +290,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
@@ -635,6 +657,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-web" data-repo-id="MDEwOlJlcG9zaXRvcnkzNDc2MzMzNTg=" data-category="General" data-category-id="DIC_kwDOFLh2zs4CBQCO" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
 </div> <!-- /content -->
 
 

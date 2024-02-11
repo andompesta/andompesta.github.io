@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sandro Cavallari">
+<meta name="dcterms.date" content="2022-07-15">
+
+<title>Sandro Cavallari - Evaluation Metrics for Ads Ranking Systems</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Sandro Cavallari</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts"> 
+<span class="menu-text">Posts</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#roc-auc" id="toc-roc-auc" class="nav-link active" data-scroll-target="#roc-auc">ROC-AUC</a>
+  <ul class="collapse">
+  <li><a href="#highly-imbalanced-dataset" id="toc-highly-imbalanced-dataset" class="nav-link" data-scroll-target="#highly-imbalanced-dataset">Highly Imbalanced Dataset</a></li>
+  </ul></li>
+  <li><a href="#precision-recall-curve" id="toc-precision-recall-curve" class="nav-link" data-scroll-target="#precision-recall-curve">Precision-Recall curve</a></li>
+  <li><a href="#logloss" id="toc-logloss" class="nav-link" data-scroll-target="#logloss">LogLoss</a></li>
+  <li><a href="#brier-score" id="toc-brier-score" class="nav-link" data-scroll-target="#brier-score">Brier Score</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Evaluation Metrics for Ads Ranking Systems</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Statistics</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sandro Cavallari </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 15, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Ads ranking systems are the barebone of many modern business and became one of the main success story of machine learning applied to real-world problems. Given an user/client, the main goal of such ranking systems is to order a set of candidates ads according to their click or conversion score. As such it is commonly modelled as a binary classification task where the positive class (<span class="math inline">\(y^+\)</span>) represents clicks or conversions, and the negative class (<span class="math inline">\(y^-\)</span>) represents examples without interaction. In the most common case, the adopted classifier is a probabilistic classifier, which does not provide a class label, but rather the predicted probability of the positive class <span class="math inline">\(\mathbf{P}( y = y^+)\)</span>. According to the application, it is possible to obtain a predicted label by applying a threshold <span class="math inline">\(t\)</span> to <span class="math inline">\(\mathbf{P}( y = y^+)\)</span>:</p>
+<p><span class="math display">\[
+\hat{y} = \begin{cases}
+1 &amp; \text{if} ~ \mathbf{P}( y = y^+) \geq t \\
+0 &amp; \text{o.w.}
+\end{cases}
+\]</span></p>
+<p>In most classification problem a reasonable threshold is <span class="math inline">\(t=0.5\)</span>. However, in many domains the datasets are not balanced, models are not perfectly calibrated, and different use-cases have different <a href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity">sensitivity vs specificity</a> tradeoffs. For example, many real-world applications are dominated by negative examples; thus a more conservative classifier might be prefered. Conservative models produce positive classifications only with strong evidence; thus they are identified by a low False Positive Rate. Probabbilistic classifiers can be made more or less conservative by adjusting the threshold <span class="math inline">\(t\)</span>, and many experiments are required to detect the best trade-off. To this end, common evaliation metric that relay on the predicted labels, such as Accuracy or F1-score, are not suited in these domains as they fails to capture some important aspect of the model performance. To overcome this problem, it is desireable to have metric capable to identify model perforamnces based on the predicted probability rather than the predicted label and that are robust to unballanced datasets.</p>
+<div style="text-align:center;">
+<table id="tab:confiusion-matrix" style="border:none; background:transparent; text-align:center;" align="center">
+<tbody>
+<tr>
+<td style="border:none;" rowspan="2">
+</td>
+<td style="border:none;">
+</td>
+<td style="background:#bbeeee;" colspan="2">
+<b>Predicted condition</b>
+</td>
+</tr>
+<tr>
+<td style="background:#eeeeee;">
+<b>Total population </b> <br> P + N
+</td>
+<td style="background:#ccffff;">
+<b> Positive</b> <br> PP
+</td>
+<td style="background:#aadddd;">
+<b> Negative</b> <br> PN
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td rowspan="2" class="nowrap unsortable" style="line-height:99%;vertical-align:middle;padding:.4em .4em .2em;background-position:50% .4em !important;overflow:hidden;background:#eeeebb;">
+<b>Actual condition</b>
+</td>
+<td style="background:#ffffcc;">
+<b>Positive <br>P</b>
+</td>
+<td style="background:#ccffcc;">
+<b>True&nbsp;positive <br> <span style="font-size:85%;">hit</span></b> <br>TP
+</td>
+<td style="background:#ffdddd;">
+<b>False&nbsp;negative <br> <span style="font-size:85%;">miss</span></b> <br>FN
+</td>
+<td style="background:#eeffee;">
+<b>True positive rate <br> <span style="font-size:85%;"> Recall&nbsp;/&nbsp;sensitivity</span></b> <br> TPR = TP/P = 1 - FNR
+</td>
+<td style="background:#ffeeee;">
+<b>False&nbsp;negative&nbsp;rate <br> <span style="font-size:85%;">miss&nbsp;rate</span></b> <br> FNR = FN/P = 1 - TPR
+</td>
+</tr>
+<tr>
+<td style="background:#ddddaa;">
+<b>Negative</b> <br> N
+</td>
+<td style="background:#ffcccc;">
+<b>False&nbsp;positive <br> <span style="font-size:85%;">type&nbsp;I&nbsp;error / false&nbsp;alarm</span> </b> <br> FP
+</td>
+<td style="background:#bbeebb;">
+<b>True&nbsp;negative <br> <span style="font-size:85%;">correct&nbsp;rejection</span></b> <br> TN
+</td>
+<td style="background:#eedddd;">
+<b>False&nbsp;positive&nbsp;rate <br> <span style="font-size:85%;">probability&nbsp;of&nbsp;false&nbsp;alarm</span> </b> <br> FPR = FP/N = 1 − TNR
+</td>
+<td style="background:#ddeedd;">
+<b>True&nbsp;negative&nbsp;rate <br> <span style="font-size:85%;"> specificity / selectivity </span></b> <br> TNR = TN/N = 1 − FPR
+</td>
+</tr>
+<tr>
+<td style="border:none;">
+</td>
+<td style="border:none;">
+</td>
+<td style="background:#eeffee;">
+<b>Precision<br> <span style="font-size:85%;">positive&nbsp;predictive&nbsp;value</span> </b> <br> PR = TP
+</td>
+<td style="background:#ffeeee;">
+<b>Fale&nbsp;omission&nbsp;rate </b> <br> FOR = FN
+</td>
+</tr>
+</tbody>
+</table>
+<p style="font-size:small;">
+Table 1: definition of all the metric reported and build on to of a Confusion matrix, credito to <a href="https://en.wikipedia.org/wiki/Confusion_matrix" target="blank">wikipedia</a>
+</p>
+</div>
+<section id="roc-auc" class="level2">
+<h2 class="anchored" data-anchor-id="roc-auc">ROC-AUC</h2>
+<p>The Receiver Operating Characteristic (ROC) is an analysis tool initially proposed by <a href="#ref:provost">Provost et al.</a> to compare classifiers’ performance. The ROC curve is built as the interpolation between the <strong>False Positive Rate</strong> (FPR) on the x-axe, and the <strong>True Positive Rate</strong> (TPR) on the y-axe, computed at different thresholds. Intuitively, the TPR represents how well a classifier can identify all the positive examples. In contrast the FPR indicate how likely an error will occur in the negative class (for a formal definition of TPR and FPR, consult the confusion matrix reported in <a href="#tab:confiusion-matrix">Tab. 1</a>).</p>
+<div id="fig-roc-auc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-roc-auc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/roc-auc.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-roc-auc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Example of an ROC-AUC curve.
+</figcaption>
+</figure>
+</div>
+<p>As shown in <a href="#fig-roc-auc" class="quarto-xref">Figure&nbsp;1</a>, a model that have higher ROC cureve is deemed to have better performances. However, there is the need to summarise the knowledge captured by a ROC curve in a single scalar value to facilitate the comparison of different models. To this end, the area under the ROC curve is used as a summary statistic representative of the classifier performances. Thus, ROC-AUC is defined as:</p>
+<p><span class="math display">\[
+\text{ROC-AUC} = \int_0^1 TPR ~ \delta \small FPR.
+\]</span></p>
+<p>Note that ROC-AUC exhibits the following properties <span class="citation" data-cites="flach2015precision">[<a href="#ref-flach2015precision" role="doc-biblioref">1</a>]</span>:</p>
+<ol type="1">
+<li>It can be interpreted as “the probability that the scores given by a classifier will rank a randomly chosen positive instance higher than a randomly chosen negative one” <span class="citation" data-cites="fernandez2018learning">[<a href="#ref-fernandez2018learning" role="doc-biblioref">2</a>]</span> <span class="citation" data-cites="fawcett2006introduction">[<a href="#ref-fawcett2006introduction" role="doc-biblioref">3</a>]</span>. In other words, the ROC curve shows the ability of the classifier to rank the positive instances relativeto the negative instance only.</li>
+<li>A universal baseline is always available, as a random classifier will have ROC-AUC of 0.5.</li>
+<li>It cares about the ranking obtained from the predictions but does not consider the actual predicted value.</li>
+<li>A classifier do not need to produce accurate, calibrated probability estimates; it need only to produce relative accurate scores that serve to discriminate positive and negative instances <span class="citation" data-cites="fawcett2004roc">[<a href="#ref-fawcett2004roc" role="doc-biblioref">4</a>]</span>.</li>
+<li>The perfect model is represented by the point <span class="math inline">\((0, 1)\)</span> and has an AUC of 1.</li>
+<li>The point <span class="math inline">\((0, 0)\)</span> identifies a model that never issues a positive prediction.</li>
+<li>The point <span class="math inline">\((1, 1)\)</span> implements the opposite strategy: only positive predictions are made.</li>
+<li>ROC-AUC is a linear space, thus allowing for easy interpolation and visual interpretation.</li>
+</ol>
+<section id="highly-imbalanced-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="highly-imbalanced-dataset">Highly Imbalanced Dataset</h3>
+<p>In the general case, one of the most attractive properties of the ROC curve is its robustness to changes in the class distribution. This propertly derives from the fact that, ROC curves are defined as a ratios of quantities computed w.r.t. only the positive or only the negative class rather than a mix of the two. Thus, we expect a model to generate similar ROC curves regardless of the number of positive and negative examples present in the dataset. In so doing, ROC curves are a great tools to compare model across different datasets; for example dataset generated across different day.</p>
+<p>However, ROC curves are known to be “over-optimistic” at scoring model performances when the datasets are highly skewed, and there is a high interest in evaluating the model w.r.t. the positive class. For example, consider the case where you have two datasets; the former is composed of 100 negative points and 50 positive samples, while the latter is composed of 100 negative examples and 25 positive examples. As shown in <a href="#fig-dataset" class="quarto-xref">Figure&nbsp;2 (a)</a> , let’s assume that the negative examples overlap with the positive ones according to a uniform distribution.</p>
+<div id="fig-init" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-init-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-init" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-dataset" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-dataset-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/datasets.png" class="img-fluid figure-img" style="width:80.0%" data-ref-parent="fig-init">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-dataset-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Two datasets with same label distribution but different amount of positive examples. Dataset 1 contains 50 positive examples while Dataset 2 contains only 25 positive examples. In both cases there are 100 negative lables.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-init" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-datasets-auc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-datasets-auc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/datasets-auc.png" class="img-fluid figure-img" style="width:80.0%" data-ref-parent="fig-init">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-datasets-auc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) ROC-AUC computed on D1 and D2.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-init-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
+</div>
+<p>Let’s try to compute the AUC for both of the datasets:</p>
+<ul>
+<li>then for D1, as the threshold (<span class="math inline">\(t\)</span>) moves from <span class="math inline">\(0\)</span> to <span class="math inline">\(0.5\)</span> the True Positive Rate remains constant at 1; instead for <span class="math inline">\(t &gt; 0.5\)</span>, both TPR and FPR decrease linearly since positive and negative examples start to be homogeneously mixed.</li>
+<li>similarly, for D2, when <span class="math inline">\(0 \leq t \leq 0.75\)</span> then <span class="math inline">\(TPR = 1\)</span>; while for <span class="math inline">\(t&gt;0.75\)</span> TRP and FPR decreases linearnly.</li>
+</ul>
+<p>A graphical representation is provided in <a href="#fig-datasets-auc" class="quarto-xref">Figure&nbsp;2 (b)</a> showing how the ROC-AUC of the second dataset is more significant than the first dataset even if the models have the same maximum F1-score (maximum F1-score on D1 is achieved with <span class="math inline">\(t=0.5\)</span> while on D2 the best threshold is <span class="math inline">\(t=0.5\)</span>). A deeper analysis suggests that this over-estimation problem arises when a significant change in the false positive leads only to a slight shift in the false positive rate since the dataset is dominated by the negative class <span class="citation" data-cites="davis2006relationship">[<a href="#ref-davis2006relationship" role="doc-biblioref">5</a>]</span>.</p>
+</section>
+</section>
+<section id="precision-recall-curve" class="level2">
+<h2 class="anchored" data-anchor-id="precision-recall-curve">Precision-Recall curve</h2>
+<p>When the main objective is to evaluate a model on the positive class, PR-curves are more informative. <a href="#fig-pr-curve" class="quarto-xref">Figure&nbsp;3</a> shows how PR-curves are built by plotting the <strong>Precision</strong> as a function of the True Positive Rate (or Recall). By inspecting <a href="#tab:confiusion-matrix">Tab. 1</a>, it is visible how PR-curves effectively consider only statistics related to the positive class; thus, they are inherently robust to highly skewed datasets <span class="citation" data-cites="paula2016survey">[<a href="#ref-paula2016survey" role="doc-biblioref">6</a>]</span>. Perhaps motivated by the similarity with ROC-curves, PR-curves became a popular alternative to analysis models on highly skewed datasets.</p>
+<div id="fig-pr-curve" class="quarto-figure quarto-figure-center quarto-float anchored" width="80%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pr-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/pr-curve.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pr-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Precision-Recall curve and PR-AUC.
+</figcaption>
+</figure>
+</div>
+<p>As for ROC curves, the PR-AUC is defined as:</p>
+<p><span class="math display">\[
+\text{PR-AUC} = \int_0^1 PR ~ \delta \small TPR.
+\]</span></p>
+<p>Overall, we can distinguish the following properties for the PR-AUC:</p>
+<ol type="1">
+<li>PR-AUC has no intrinsic meaning except the geometric one.</li>
+<li>While ROC-AUC has a baseline value of <span class="math inline">\(0.5\)</span>, in PR-AUC there is no universal baseline to compare with.</li>
+<li>PR-AUC is not directly connected with the F1-score; thus is unrelated to the calibration score of the model.</li>
+<li>The perfect model is represented by the point <span class="math inline">\((1, 1)\)</span> and has an area of 1.</li>
+<li>PR space is an hyperbolic space; thus more difficult to inspect visually and find similar performing models.</li>
+</ol>
+</section>
+<section id="logloss" class="level2">
+<h2 class="anchored" data-anchor-id="logloss">LogLoss</h2>
+<p>One of the limitations of the previous metrics is their focus on the ranking obtained from the model output, but they ignore the predicted value itself. This is not an issue in most recommendation systems, but most real-time ad allocation systems require well-calibrated and accurate prediction values to implement an optimal bidding strategy. In this problem instance, choosing a threshold t is not important. Rather there is high interest in having predictions that, on average, <em>reliability</em> resemble the ground-true. That is: “the probability associated with the predicted class label should reflect its ground truth correctness likelihood” <span class="citation" data-cites="guo2017calibration">[<a href="#ref-guo2017calibration" role="doc-biblioref">7</a>]</span>. For example, consider a dataset composed of 10 samples and assume that the model assigns a probability of 0.6 to every instance. Then, if the model is <strong>calibrated</strong>, we expect 6 examples to belong to the positive class.</p>
+<p>Note that:</p>
+<ol type="1">
+<li>Calibration is a measure of <strong>uncertainty</strong>, not accuracy.</li>
+<li>A calibrated model allows for higher interpretability as the output probabilities have an intrinsic meaning.</li>
+</ol>
+<p>A standard metric used to monitor the model’s calibration is the negative <strong>LogLoss</strong>:</p>
+<p><span class="math display">\[
+\mathcal{L} = - \frac{1}{N} \sum_{i=1}^N \Big( y \log(\hat{p}) + (1 - y) \log(1 - \hat{p}) \Big);
+\]</span></p>
+<p>where <span class="math inline">\(y\)</span> represents the ground-true label, <span class="math inline">\(\hat{p}\)</span> is the predicted probability, and <span class="math inline">\(N\)</span> is the size of the dataset. The LogLoss has an extended application history as training loss for (deep) logistic regressions, yet here a claim is made to adopt it as a validation and test metric. Modern deep neural networks are highly accurate but overconfident, showing poor uncertainty estimation <span class="citation" data-cites="sensoy2018evidential">[<a href="#ref-sensoy2018evidential" role="doc-biblioref">8</a>]</span>. Thus, it is handy to have a scalar metric to summarise a model’s calbration characteristics and compare it to the prediction error.</p>
+</section>
+<section id="brier-score" class="level2">
+<h2 class="anchored" data-anchor-id="brier-score">Brier Score</h2>
+<p>Another popular method to capture the model calibration in a scalar value is by computing the Brier Score<span class="citation" data-cites="hernandez2011brier">[<a href="#ref-hernandez2011brier" role="doc-biblioref">9</a>]</span>:</p>
+<p><span class="math display">\[
+\mathcal{BS} = \frac{1}{N} \sum_{i=1}^N \Big( y_i - \hat{p}_i \Big)^2.
+\]</span></p>
+<p>The Brier Score is the mean-squared-error between the ground ture and the predicted probabilities; thus the lower the value the better.</p>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-flach2015precision" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Flach P, Kull M (2015) Precision-recall-gain curves: PR analysis done right. Advances in neural information processing systems 28</div>
+</div>
+<div id="ref-fernandez2018learning" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Fernández A, Garcı́a S, Galar M, Prati RC, Krawczyk B, Herrera F (2018) Learning from imbalanced data sets. Springer</div>
+</div>
+<div id="ref-fawcett2006introduction" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Fawcett T (2006) An introduction to ROC analysis. Pattern recognition letters 27(8):861–874</div>
+</div>
+<div id="ref-fawcett2004roc" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Fawcett T (2004) ROC graphs: Notes and practical considerations for researchers. Machine learning 31(1):1–38</div>
+</div>
+<div id="ref-davis2006relationship" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">Davis J, Goadrich M (2006) The relationship between precision-recall and ROC curves. In: Proceedings of the 23rd international conference on machine learning. pp 233–240</div>
+</div>
+<div id="ref-paula2016survey" class="csl-entry" role="listitem">
+<div class="csl-left-margin">6. </div><div class="csl-right-inline">Paula Branco L, Ribeiro R (2016) A survey of predictive modelling under imbalanced distributions. ACM Comput Surveys 49:31–48</div>
+</div>
+<div id="ref-guo2017calibration" class="csl-entry" role="listitem">
+<div class="csl-left-margin">7. </div><div class="csl-right-inline">Guo C, Pleiss G, Sun Y, Weinberger KQ (2017) On calibration of modern neural networks. In: International conference on machine learning. PMLR, pp 1321–1330</div>
+</div>
+<div id="ref-sensoy2018evidential" class="csl-entry" role="listitem">
+<div class="csl-left-margin">8. </div><div class="csl-right-inline">Sensoy M, Kaplan L, Kandemir M (2018) Evidential deep learning to quantify classification uncertainty. Advances in neural information processing systems 31</div>
+</div>
+<div id="ref-hernandez2011brier" class="csl-entry" role="listitem">
+<div class="csl-left-margin">9. </div><div class="csl-right-inline">Hernández-Orallo J, Flach PA, Ramirez CF (2011) Brier curves: A new cost-based visualisation of classifier performance. In: Icml. pp 585–592</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-web" data-repo-id="MDEwOlJlcG9zaXRvcnkzNDc2MzMzNTg=" data-category="General" data-category-id="DIC_kwDOFLh2zs4CBQCO" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+
+
+
+
+</body></html>

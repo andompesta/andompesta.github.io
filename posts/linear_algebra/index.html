@@ -120,7 +120,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -145,10 +145,6 @@ window.Quarto = {
     <a class="nav-link" href="../../posts"> 
 <span class="menu-text">Posts</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../about.qmd"> 
-<span class="menu-text">About</span></a>
-  </li>  
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
@@ -160,7 +156,31 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basic-matrix-operations" id="toc-basic-matrix-operations" class="nav-link active" data-scroll-target="#basic-matrix-operations">Basic Matrix Operations</a></li>
+  <li><a href="#basis-vectors" id="toc-basis-vectors" class="nav-link" data-scroll-target="#basis-vectors">Basis Vectors</a></li>
+  <li><a href="#span" id="toc-span" class="nav-link" data-scroll-target="#span">Span</a></li>
+  <li><a href="#linear-transformations" id="toc-linear-transformations" class="nav-link" data-scroll-target="#linear-transformations">Linear Transformations</a></li>
+  <li><a href="#determinant" id="toc-determinant" class="nav-link" data-scroll-target="#determinant">Determinant</a></li>
+  <li><a href="#system-of-linear-equations" id="toc-system-of-linear-equations" class="nav-link" data-scroll-target="#system-of-linear-equations">System of Linear Equations</a></li>
+  <li><a href="#change-of-basis" id="toc-change-of-basis" class="nav-link" data-scroll-target="#change-of-basis">Change of Basis</a></li>
+  <li><a href="#eigenvectors-and-eigenvalues" id="toc-eigenvectors-and-eigenvalues" class="nav-link" data-scroll-target="#eigenvectors-and-eigenvalues">Eigenvectors and Eigenvalues</a></li>
+  <li><a href="#matrix-decomposition" id="toc-matrix-decomposition" class="nav-link" data-scroll-target="#matrix-decomposition">Matrix Decomposition</a>
+  <ul class="collapse">
+  <li><a href="#eigendecomposition" id="toc-eigendecomposition" class="nav-link" data-scroll-target="#eigendecomposition">Eigendecomposition</a>
+  <ul class="collapse">
+  <li><a href="#lagrangian-methods-for-constrained-optimization" id="toc-lagrangian-methods-for-constrained-optimization" class="nav-link" data-scroll-target="#lagrangian-methods-for-constrained-optimization">Lagrangian Methods for Constrained Optimization</a></li>
+  </ul></li>
+  <li><a href="#singular-value-decomposition-svd" id="toc-singular-value-decomposition-svd" class="nav-link" data-scroll-target="#singular-value-decomposition-svd">Singular Value Decomposition (SVD)</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -199,20 +219,45 @@ window.Quarto = {
 
 
 <p>Linear algebra is the branch of math and statistics that is devoted to the study of matrices and vectors. As such, it is broadly used to model real-world problems in phisitcs and machine learning. Such post is a collections of my notes obtained from the 3Blue1Brown series on linear-algebra <span class="citation" data-cites="youtubeEssenceLinear">[<a href="#ref-youtubeEssenceLinear" role="doc-biblioref">1</a>]</span> and Murphy’s new book <span class="citation" data-cites="murphy2022probabilistic">[<a href="#ref-murphy2022probabilistic" role="doc-biblioref">2</a>]</span>.</p>
+<p><span class="math display">\[
+\newcommand{\rvepsilon}{\mathbf{\epsilon}}
+\newcommand{\rvtheta}{\mathbf{\theta}}
+\newcommand{\rva}{\mathbf{a}}
+\newcommand{\rvb}{\mathbf{b}}
+\newcommand{\rvc}{\mathbf{c}}
+\newcommand{\rve}{\mathbf{e}}
+\newcommand{\rvi}{\mathbf{i}}
+\newcommand{\rvj}{\mathbf{j}}
+\newcommand{\rvu}{\mathbf{u}}
+\newcommand{\rvv}{\mathbf{v}}
+\newcommand{\rvx}{\mathbf{x}}
+\newcommand{\rmA}{\mathbf{A}}
+\newcommand{\rmB}{\mathbf{B}}
+\newcommand{\rmC}{\mathbf{C}}
+\newcommand{\rmH}{\mathbf{H}}
+\newcommand{\rmI}{\mathbf{I}}
+\newcommand{\rmM}{\mathbf{M}}
+\newcommand{\rmS}{\mathbf{S}}
+\newcommand{\rmU}{\mathbf{U}}
+\newcommand{\rmV}{\mathbf{V}}
+\newcommand{\rmX}{\mathbf{X}}
+\newcommand{\rmY}{\mathbf{Y}}
+\newcommand{\real}{\mathbb{R}}
+\]</span></p>
 <section id="basic-matrix-operations" class="level1">
 <h1>Basic Matrix Operations</h1>
 <ol type="1">
-<li><strong>transpose</strong>: given a matrix <span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span>, its transpose <span class="math inline">\(A^T\)</span> is obtained ‘’flipping’’ the rows and colums</li>
+<li><strong>transpose</strong>: given a matrix <span class="math inline">\(\rmA \in \real^{m \times n}\)</span>, its transpose <span class="math inline">\(\rmA^T\)</span> is obtained ‘’flipping’’ the rows and colums</li>
 </ol>
 <p><span class="math display">\[
-A = \left[\begin{array}{cccc}
+\rmA = \left[\begin{array}{cccc}
   a_{11} &amp; a_{12} &amp; ... &amp; a_{1n}\\
   a_{21} &amp; a_{22} &amp; ... &amp; a_{2n}\\
   \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
   a_{m1} &amp; a_{m2} &amp; ... &amp; a_{mn}\\
 \end{array}\right]
 \Rightarrow
-A^T = \left[\begin{array}{cccc}
+\rmA^T = \left[\begin{array}{cccc}
   a_{11} &amp; a_{21} &amp; ... &amp; a_{m1}\\
   a_{12} &amp; a_{22} &amp; ... &amp; a_{m2}\\
   \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
@@ -221,58 +266,59 @@ A^T = \left[\begin{array}{cccc}
 \]</span></p>
 <p>The most important properties are:</p>
 <ul>
-<li><span class="math inline">\({(A^T)}^T = A\)</span></li>
-<li><span class="math inline">\((A \cdot B)^T = B^T \cdot A^T\)</span></li>
-<li><span class="math inline">\((A + B)^T = A^T + B^T\)</span></li>
+<li><span class="math inline">\({(\rmA^T)}^T = \rmA\)</span></li>
+<li><span class="math inline">\((\rmA \rmB)^T = \rmB^T \rmA^T\)</span></li>
+<li><span class="math inline">\((\rmA + \rmB)^T = \rmA^T \rmB^T\)</span></li>
 </ul>
 <ol start="2" type="1">
-<li><strong>matrix multiplication</strong>: while the summation of 2 matrixes is done element-wise. Matrix multiplication is done row-by-colum and requires matrixes of specific sizes. Given <span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span> and <span class="math inline">\(B \in \mathbb{R}^{n \times p}\)</span> it is possible to define <span class="math inline">\(C = A \cdot B \in \mathbb{R}^{m \times p}\)</span> s.t. <span class="math inline">\(c_{i,j} = \sum_{k=1}^{n} a_{ik} b_{kj}\)</span>. In other words, <span class="math inline">\(C\)</span> is a linear combination of the row of <span class="math inline">\(A\)</span> and the colum of <span class="math inline">\(B\)</span>.</li>
+<li><strong>matrix multiplication</strong>: while the summation of 2 matrixes is done element-wise. Matrix multiplication is done row-by-colum and requires matrixes of specific sizes. Given <span class="math inline">\(\rmA \in \real^{m \times n}\)</span> and <span class="math inline">\(\rmB \in \real^{n \times p}\)</span> it is possible to define <span class="math inline">\(\rmC = \rmA \rmB \in \real^{m \times p}\)</span> s.t. <span class="math inline">\(c_{i,j} = \sum_{k=1}^{n} a_{ik} b_{kj}\)</span>. In other words, <span class="math inline">\(\rmC\)</span> is a linear combination of the row of <span class="math inline">\(\rmA\)</span> and the colum of <span class="math inline">\(\rmB\)</span>.</li>
 </ol>
 <p><span class="math display">\[
-C = \left[\begin{array}{ccc}
-  - &amp; \mathbf{a}_{1:} &amp; -\\
-  - &amp; \mathbf{a}_{2:} &amp; -\\
+\rmC = \left[\begin{array}{ccc}
+  - &amp; \rva_{1:} &amp; -\\
+  - &amp; \rva_{2:} &amp; -\\
      &amp; \vdots &amp;   \\
-  - &amp; \mathbf{a}_{m:} &amp; -\\
+  - &amp; \rva_{m:} &amp; -\\
 \end{array}\right]
 \left[\begin{array}{cccc}
   | &amp; | &amp; | &amp; |\\
-  \mathbf{b}_{:1} &amp; \mathbf{b}_{:2} &amp; \dots &amp; \mathbf{b}_{:p}\\
+  \rvb_{:1} &amp; \rvb_{:2} &amp; \dots &amp; \rvb_{:p}\\
   | &amp; | &amp; | &amp; |\\
 \end{array}\right]
 =
 \left[\begin{array}{cccc}
-  \mathbf{a}_{1:}\mathbf{b}_{:1} &amp; \mathbf{a}_{1:}\mathbf{b}_{:2} &amp; \dots &amp; \mathbf{a}_{1:}\mathbf{b}_{:p}\\
-  \mathbf{a}_{2:}\mathbf{b}_{:1} &amp; \mathbf{a}_{2:}\mathbf{b}_{:2} &amp; \dots &amp; \mathbf{a}_{2:}\mathbf{b}_{:p}\\
+  \rva_{1:}\rvb_{:1} &amp; \rva_{1:}\rvb_{:2} &amp; \dots &amp; \rva_{1:}\rvb_{:p}\\
+  \rva_{2:}\rvb_{:1} &amp; \rva_{2:}\rvb_{:2} &amp; \dots &amp; \rva_{2:}\rvb_{:p}\\
      &amp; \vdots &amp; \vdots &amp;   \\
-  \mathbf{a}_{m:}\mathbf{b}_{:1} &amp; \mathbf{a}_{m:}\mathbf{b}_{:2} &amp; \dots &amp; \mathbf{a}_{m:}\mathbf{b}_{:p}\\
+  \rva_{m:}\rvb_{:1} &amp; \rva_{m:}\rvb_{:2} &amp; \dots &amp; \rva_{m:}\rvb_{:p}\\
 \end{array}\right].
 \]</span></p>
 <p>The most important properties are:</p>
 <ul>
-<li><span class="math inline">\((A \cdot B) \cdot C = A (B \cdot C)\)</span></li>
-<li><span class="math inline">\(A \cdot (B + C) = (A \cdot B) + (A \cdot C)\)</span></li>
-<li>$A B B A $</li>
+<li><span class="math inline">\((\rmA \rmB) \rmC = \rmA (\rmB \rmC)\)</span>,</li>
+<li><span class="math inline">\(\rmA(\rmB + \rmC) = (\rmA \rmB) + (\rmA \rmC)\)</span>,</li>
+<li><span class="math inline">\(\rmA \rmB \neq \rmB \rmA\)</span>.</li>
 </ul>
 <ol start="3" type="1">
-<li><strong>matrix inverse</strong>: As for real numbers, the inverso of a matrix <span class="math inline">\(A\)</span> is denoted as <span class="math inline">\(A^{-1}\)</span> and is defined as the matrix such that: <span class="math inline">\(A A^{-1} = I\)</span>. Besites being easy to define computing the inverse of a matrix is an expencive operations. Moreover, <span class="math inline">\(A^{-1}\)</span> exists if and only if <span class="math inline">\(det(A) \neq 0\)</span>.</li>
+<li><strong>matrix inverse</strong>: As for real numbers, the inverso of a matrix <span class="math inline">\(\rmA\)</span> is denoted as <span class="math inline">\(\rmA^{-1}\)</span> and is defined as the matrix such that: <span class="math inline">\(\rmA \rmA^{-1} = \rmI\)</span>. Besites being easy to define computing the inverse of a matrix is an expencive operations. Moreover, <span class="math inline">\(\rmA^{-1}\)</span> exists if and only if <span class="math inline">\(det(\rmA) \neq 0\)</span>.</li>
 </ol>
 <p>The most important properties are:</p>
 <ul>
-<li><span class="math inline">\((A^{-1})^{-1} = A\)</span></li>
-<li><span class="math inline">\((A \cdot B)^{-1} = B^{-1} \cdot A^{-1}\)</span></li>
-<li><span class="math inline">\((A^{-1})^{T} = (A^{T})^{-1} = A^{-T}\)</span></li>
+<li><span class="math inline">\((\rmA^{-1})^{-1} = \rmA\)</span>,</li>
+<li><span class="math inline">\((\rmA \rmB)^{-1} = \rmB^{-1} \rmA^{-1}\)</span>,</li>
+<li><span class="math inline">\((\rmA^{-1})^{T} = (\rmA^{T})^{-1} = \rmA^{-T}\)</span>.</li>
 </ul>
 </section>
 <section id="basis-vectors" class="level1">
 <h1>Basis Vectors</h1>
-<p>In linear algebra, a vector basis <span class="math inline">\(B\)</span> of a vector space <span class="math inline">\(V\)</span> is a set of vectors <span class="math inline">\(\{\mathbf{b}_1, ..., \mathbf{b}_n\}\)</span> that are linearly independent and allow to reconstruct every vector <span class="math inline">\(\mathbf{v_i} \in V\)</span> as a linear combination of <span class="math inline">\(B\)</span>:</p>
-<p><span id="eq-basis_vector"><span class="math display">\[
+<p>In linear algebra, a vector basis <span class="math inline">\(\rmB\)</span> of a vector space <span class="math inline">\(\rmV\)</span> is a set of vectors <span class="math inline">\(\{\rvb_1, ..., \rvb_n\}\)</span> that are linearly independent and allow to reconstruct every vector <span class="math inline">\(\mathbf{v_i} \in V\)</span> as a linear combination of <span class="math inline">\(\rmB\)</span>:</p>
+<p><span id="eq-basis-vector"><span class="math display">\[
 \begin{align}
     \mathbf{v_i} &amp; = a_1 \mathbf{b_1} + ... + a_n \mathbf{b_n}
 \end{align}
 \tag{1}\]</span></span></p>
-<p>For example, the vectors <span class="math inline">\(\mathbf{i} = \left[\begin{array}{c}
+<p>For example, the vectors <span class="math inline">\(\mathbf{i} = \left[
+\begin{array}{c}
   1\\
   0
 \end{array}
@@ -281,21 +327,21 @@ C = \left[\begin{array}{ccc}
   0\\
   1
 \end{array}
-\right]\)</span> are the most common base vectors for the vectors space <span class="math inline">\(\mathbb{R}^2\)</span>. Thus, it is possible to represent a vector <span class="math inline">\(\mathbf{x} = \left[\begin{array}{c}
+\right]\)</span> are the most common base vectors for the vectors space <span class="math inline">\(\real^2\)</span>. Thus, it is possible to represent a vector <span class="math inline">\(\mathbf{x} = \left[\begin{array}{c}
   3\\
   2
 \end{array}\right]\)</span> as <span class="math inline">\(3 \mathbf{i} + 2 \mathbf{j}\)</span>.</p>
 <div id="fig-base-vector" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-base-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="img/linear_algebra/basic_vectors.png" id="fig-base-vectors" class="img-fluid figure-img">
+<img src="img/linear_algebra/basic_vectors.png" id="fig-base-vector" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-base-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Vector representation by the base vector <span class="math inline">\(\mathbf{i}\)</span> and <span class="math inline">\(\mathbf{j}\)</span>.
 </figcaption>
 </figure>
 </div>
-<p>The ability to represent any vector in <span class="math inline">\(V\)</span> as a linear combination of the basis vectors is a powerful concept. However, <span class="math inline">\(\mathbf{i}\)</span> and <span class="math inline">\(\mathbf{j}\)</span> are not the only possible basis vectors of <span class="math inline">\(\mathbb{R}^2\)</span>. For example, another possible basis could be formed by <span class="math inline">\(\mathbf{v} = \left[\begin{array}{c}
+<p>The ability to represent any vector in <span class="math inline">\(V\)</span> as a linear combination of the basis vectors is a powerful concept. However, <span class="math inline">\(\mathbf{i}\)</span> and <span class="math inline">\(\mathbf{j}\)</span> are not the only possible basis vectors of <span class="math inline">\(\real^2\)</span>. For example, another possible basis could be formed by <span class="math inline">\(\mathbf{v} = \left[\begin{array}{c}
   1\\
   2
 \end{array}\right]\)</span> and <span class="math inline">\(\mathbf{w} = \left[\begin{array}{c}
@@ -311,25 +357,25 @@ Figure&nbsp;1: Vector representation by the base vector <span class="math inline
 <h1>Linear Transformations</h1>
 <p>A <strong>linear transformation</strong> is equivalent to a function over vectors. That is, a linear transformation “move” an input vector to an output vector. While general transformations have complex features, linear transformations have some well-defined properties:</p>
 <ol type="1">
-<li>they maintain the origin of the vector space invariant</li>
-<li>they map equally spaced lines to equally spaced lines (or points)</li>
+<li>they maintain the origin of the vector space invariant,</li>
+<li>they map equally spaced lines to equally spaced lines (or points).</li>
 </ol>
 <p><span id="eq-linear-transform"><span class="math display">\[
 \begin{align}
     L(a_1 \mathbf{i} + a_2 \mathbf{j}) &amp; = a_1L(\mathbf{i}) + a_2L(\mathbf{j})
 \end{align}
 \tag{2}\]</span></span></p>
-<div id="fig-base-vector" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-transformations" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-base-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="img/linear_algebra/transformations.png" id="fig-base-vectors" class="img-fluid figure-img">
+<div aria-describedby="fig-transformations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/linear_algebra/transformations.png" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-base-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Examples of the most commont linear transformations. (Image taken from <a href="https://mathigon.org/course/linear-algebra/linear-transformations"> Samuel S. Watson</a>.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-transformations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Examples of the most commont linear transformations. (Image taken from <a href="https://mathigon.org/course/linear-algebra/linear-transformations"> Samuel S. Watson</a>).
 </figcaption>
 </figure>
 </div>
-<p>Thanks to their properties, it is possible to linearly transform any vector by means to its basis. In other words, given a vector <span class="math inline">\(\mathbf{x} = \left[\begin{array}{c} -1\\ 2 \end{array}\right]\)</span> w.r.t. <span class="math inline">\(\mathbf{i}\)</span> and <span class="math inline">\(\mathbf{j}\)</span> and any lineart transformation <span class="math inline">\(L\)</span>. It is possible to represent <span class="math inline">\(L(\mathbf{x})\)</span> as a function of <span class="math inline">\(L(\mathbf{i})\)</span> and <span class="math inline">\(L(\mathbf{j})\)</span> (formally <span class="math inline">\(L(\mathbf{x}) = -1 L(\mathbf{i}) + 2 L(\mathbf{j})\)</span>).</p>
+<p>Thanks to their properties, it is possible to linearly transform any vector by means to its basis. In other words, given a vector <span class="math inline">\(\rvx = \left[\begin{array}{c} -1\\ 2 \end{array}\right]\)</span> w.r.t. <span class="math inline">\(\rvi\)</span> and <span class="math inline">\(\rvj\)</span> and any lineart transformation <span class="math inline">\(L\)</span>. It is possible to represent <span class="math inline">\(L(\rvx)\)</span> as a function of <span class="math inline">\(L(\rvi)\)</span> and <span class="math inline">\(L(\rvj)\)</span> (formally <span class="math inline">\(L(\mathbf{x}) = -1 L(\mathbf{i}) + 2 L(\mathbf{j})\)</span>).</p>
 <p>For example, assume <span class="math inline">\(L = \left[\begin{array}{cc} 1 &amp; 3\\ -2 &amp; 0 \end{array}\right]\)</span>, then:</p>
 <p><span class="math display">\[
 \begin{align*}
@@ -346,7 +392,7 @@ L(\mathbf{x}) &amp;= -1 L(\mathbf{i}) + 2 L(\mathbf{j}) \\
 <img src="img/linear_algebra/linear-transform.png" id="fig-linear-transform" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-base-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Visualization of the linear transformation appled to vector <span class="math inline">\(\mathbf{x}\)</span>.
+Figure&nbsp;3: Visualization of the linear transformation appled to vector <span class="math inline">\(\rvx\)</span>.
 </figcaption>
 </figure>
 </div>
@@ -369,18 +415,22 @@ L_2 L_1( \mathbf{x} ) &amp;= \Big ( \left[\begin{array}{cc} 0 &amp; 2\\ 1 &amp; 
 </section>
 <section id="determinant" class="level1">
 <h1>Determinant</h1>
-<p>As linear transformations alter the original vector space, it is important to evaluate by how much the original space is expanded or contracted by a given linear transformation <span class="math inline">\(L\)</span>. The <strong>determinant</strong> define how much the original unit surface is changed by <span class="math inline">\(L\)</span>.</p>
+<p>As linear transformations alter the original vector space, it is important to evaluate by how much the original space is expanded or contracted by a given linear transformation <span class="math inline">\(L\)</span>. As shown in <a href="#fig-determinant" class="quarto-xref">Figure&nbsp;4</a>, the <strong>determinant</strong> define how much the original unit surface is changed by <span class="math inline">\(L\)</span>.</p>
 <p>The determinant has some interesting properties:</p>
 <ol type="1">
-<li>A liner transantformation with 0 determinant (<span class="math inline">\(det(L) = 0\)</span>) means that squash all the vectrs on a single line/plane. Moreover, it also means that <span class="math inline">\(L\)</span> has linearly dependents columns.</li>
+<li>A liner transantformation with 0 determinant ($ det(L) = 0$) means that squash all the vectrs on a single line/plane. Moreover, it also means that <span class="math inline">\(L\)</span> has linearly dependents columns.</li>
 <li>The determinant can be negative if it change orientation of the space.</li>
 <li>Determinant is associative: <span class="math inline">\(det(L) \cdot det(M) = det(L \cdot M)\)</span>.</li>
 </ol>
-<div>
-<img src="{{site.baseurl}}/assets/img/linear_algebra/determinant.png" style="max-width: 85%">
-<p style="font-size:small;">
-Figure 4: Visualization of the determinant for a initial vector space defined by <span class="math inline">\(\mathbf{i}\)</span> and <span class="math inline">\(\mathbf{j}\)</span> and the vector space obtained after applying the transformation <span class="math inline">\(L\)</span>.)
-</p>
+<div id="fig-determinant" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-determinant-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/linear_algebra/determinant.png" id="fig-determinant" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-determinant-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Visualization of the determinant for a initial vector space defined by <span class="math inline">\(\mathbf{i}\)</span> and <span class="math inline">\(\mathbf{j}\)</span> and the vector space obtained after applying the transformation <span class="math inline">\(L\)</span>.
+</figcaption>
+</figure>
 </div>
 </section>
 <section id="system-of-linear-equations" class="level1">
@@ -389,26 +439,49 @@ Figure 4: Visualization of the determinant for a initial vector space defined by
 <table align="center">
 <tbody><tr>
 <td>
-<span class="math inline">\(\begin{cases}
+<span class="math display">\[\begin{cases}
     2x + 5y + 3z = -3 \\
     4x + 8z = 0 \\
     x + 3y = 2
-    \end{cases}\)</span>
+    \end{cases}\]</span>
 </td>
 <td>
-$ $
+<span class="math display">\[
+    \Rightarrow
+    \]</span>
 </td>
 <td style="width: 5px">
-$ $
+<span class="math display">\[
+    \left[\begin{array}{ccc}
+    2 &amp; 5 &amp; 3\\
+    4 &amp; 0 &amp; -2\\
+    1 &amp; 3 &amp; 0
+    \end{array}
+    \right]
+    \]</span>
 </td>
 <td style="width: 5px">
-$ $
+<span class="math display">\[
+    \left[\begin{array}{c}
+    x\\
+    y\\
+    z
+    \end{array}
+    \right]
+    \]</span>
 </td>
 <td style="width: 3px">
 =
 </td>
 <td style="width: 5px">
-$ $
+<span class="math display">\[
+    \left[\begin{array}{c}
+    -3\\
+    0\\
+    2
+    \end{array}
+    \right]
+    \]</span>
 </td>
 </tr>
 <tr>
@@ -417,126 +490,178 @@ $ $
 <td>
 </td>
 <td>
-<span class="math inline">\(A\)</span>
+<span class="math display">\[\rmA\]</span>
 </td>
 <td>
-<span class="math inline">\(\rvx\)</span>
+<span class="math display">\[\rvx\]</span>
 </td>
 <td>
 =
 </td>
 <td>
-<span class="math inline">\(\mathbf{b}\)</span>
+<span class="math display">\[\rvb\]</span>
 </td>
 </tr>
 </tbody></table>
 <p>Thus, any system of linear equations can be expressed as:</p>
 <p><span class="math display">\[
 \begin{equation}
-A \mathbf{x} = \mathbf{b}
+\rmA \rvx = \rvb
 \end{equation}
 \]</span></p>
-<p>where <span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span> is a known linear transformation(a matrix), <span class="math inline">\(\mathbf{b} \in \mathbb{R}^{m \times 1}\)</span> is a known vector in the space of <span class="math inline">\(A\)</span>, and <span class="math inline">\(\rvx \in \mathbb{R}^{n \times 1}\)</span> is an unkown vector that after the transformation <span class="math inline">\(A\)</span> lies over <span class="math inline">\(\mathbf{b}\)</span>.</p>
-<p>Note that the existence of such unkown vector is tightly related to the determinant of <span class="math inline">\(A\)</span>: * if <span class="math inline">\(det(A) = 0\)</span>, in general, there is no such <span class="math inline">\(\rvx\)</span> * if <span class="math inline">\(det(A) \neq 0\)</span>, in general, there is one-and-only-one <span class="math inline">\(\rvx\)</span> that satisfy $ A = $, namely <span class="math inline">\(A^{-1}\)</span>.</p>
-<p>Mathematically, the solution to <span class="math inline">\(A \rvx = \mathbf{b}\)</span> is <span class="math inline">\(\rvx = A^{-1} \mathbf{b}\)</span>. However, computing <span class="math inline">\(A^{-1}\)</span> is a complex operation and is subject to numerical instabilities (<a href="https://www.johndcook.com/blog/2010/01/19/dont-invert-that-matrix/">Don’t invert that matrix</a>). Thus, mathematicians have develop multiple solvers for that same problam that does not require to compute the matrix invers and they leverage some specific property of matrix <span class="math inline">\(A\)</span>.</p>
+<p>where <span class="math inline">\(\rmA \in \real^{m \times n}\)</span> is a known linear transformation(a matrix), <span class="math inline">\(\rvb \in \real^{m \times 1}\)</span> is a known vector in the space of <span class="math inline">\(\rmA\)</span>, and <span class="math inline">\(\rvx \in \real^{n \times 1}\)</span> is an unkown vector that after the transformation <span class="math inline">\(\rmA\)</span> lies over <span class="math inline">\(\rvb\)</span>.</p>
+<p>Note that the existence of such unkown vector is tightly related to the determinant of <span class="math inline">\(\rmA\)</span>:</p>
+<ul>
+<li>if <span class="math inline">\(det(A) = 0\)</span>, in general, there is no such <span class="math inline">\(\rvx\)</span>,</li>
+<li>if <span class="math inline">\(det(A) \neq 0\)</span>, in general, there is one-and-only-one <span class="math inline">\(\rvx\)</span> that satisfy <span class="math inline">\(\rmA \rvx = \rvb\)</span>, namely <span class="math inline">\(\rmA^{-1}\)</span>.</li>
+</ul>
+<p>Mathematically, the solution to <span class="math inline">\(\rmA \rvx = \rvb\)</span> is <span class="math inline">\(\rvx = \rmA^{-1} \rvb\)</span>. However, computing <span class="math inline">\(\rmA^{-1}\)</span> is a complex operation and is subject to numerical instabilities (<a href="https://www.johndcook.com/blog/2010/01/19/dont-invert-that-matrix/">Don’t invert that matrix</a>). Thus, mathematicians have develop multiple solvers for that same problam that does not require to compute the matrix invers and they leverage some specific property of matrix <span class="math inline">\(\rmA\)</span>.</p>
 </section>
 <section id="change-of-basis" class="level1">
 <h1>Change of Basis</h1>
 <p>Given a vector <span class="math inline">\(\rvx = \left[\begin{array}{c} 3\\ 2\end{array}\right]\)</span> imagine this vector represented in terms of the unit vectors <span class="math inline">\(\rvi = \left[\begin{array}{c} 1\\ 0\end{array}\right]\)</span> and <span class="math inline">\(\rvj = \left[\begin{array}{c} 0\\ 1\end{array}\right]\)</span>, and, scale them by 3 and 2, i.e.</p>
-<p><span class="math inline">\(\rvx = \left[\begin{array}{c} 3 \rvi\\ 2 \rvj \end{array}\right]\)</span></p>
-<p>However, as shown if Fig. 5, we can also represent <span class="math inline">\(\rvx\)</span> in terms of different basis vectors <span class="math inline">\(\rvu = \left[\begin{array}{c} 2\\ 1\end{array}\right]\)</span> and <span class="math inline">\(\rvv = \left[\begin{array}{c} -1\\ 1\end{array}\right]\)</span>. That is, <span class="math inline">\(\rvx\)</span> can be represented as the linear combination of <span class="math inline">\(\rvu\)</span> <span class="math inline">\(\rvj\)</span>:</p>
-<p><span class="math inline">\(\rvx = \left[\begin{array}{c} \frac{5}{3} \rvu\\ \frac{1}{3} \rvv \end{array}\right]\)</span></p>
-<p>In other words, it is possible to represent <span class="math inline">\(\rvx\)</span> in two different languages: one according to basis <span class="math inline">\(\rvi\)</span> <span class="math inline">\(\rvj\)</span> the other according to basis <span class="math inline">\(\rvu \rvv\)</span>.</p>
-<div>
-<img src="{{site.baseurl}}/assets/img/linear_algebra/base_change.png" style="max-width: 85%">
-<p style="font-size:small;">
-Figure 5: Visualization of the same vector <span class="math inline">\(\rvx\)</span> represented according to two different basis vectors.)
-</p>
+<p><span class="math display">\[
+\rvx = \left[\begin{array}{c} 3 \rvi\\ 2 \rvj \end{array}\right].
+\]</span></p>
+<p>However, as shown if <a href="#fig-base-change" class="quarto-xref">Figure&nbsp;5</a>, we can also represent <span class="math inline">\(\rvx\)</span> in terms of different basis vectors <span class="math inline">\(\rvu = \left[\begin{array}{c} 2\\ 1\end{array}\right]\)</span> and <span class="math inline">\(\rvv = \left[\begin{array}{c} -1\\ 1\end{array}\right]\)</span>. That is, <span class="math inline">\(\rvx\)</span> can be represented as the linear combination of <span class="math inline">\(\rvu\)</span> and <span class="math inline">\(\rvj\)</span>:</p>
+<p><span class="math display">\[
+\rvx = \left[\begin{array}{c} \frac{5}{3} \rvu\\ \frac{1}{3} \rvv \end{array}\right]
+\]</span></p>
+<p>In other words, it is possible to represent <span class="math inline">\(\rvx\)</span> in two different languages: one according to basis <span class="math inline">\(\rvi\)</span> and <span class="math inline">\(\rvj\)</span>; the other according to basis <span class="math inline">\(\rvu\)</span> and <span class="math inline">\(\rvv\)</span>.</p>
+<div id="fig-base-change" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-base-change-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/linear_algebra/base_change.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-base-change-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5
+</figcaption>
+</figure>
 </div>
 <p>As overstated, we can express <span class="math inline">\(\rvu\)</span> and <span class="math inline">\(\rvv\)</span> in terms of basis vectors <span class="math inline">\(\rvi\)</span> and <span class="math inline">\(\rvj\)</span> as:</p>
-<p><span class="math inline">\(\rvu = \left[\begin{array}{c} 2\\ 1\end{array}\right] ~~~~~~ \rvv = \left[\begin{array}{c} -1\\ 1\end{array}\right]\)</span></p>
+<p><span class="math display">\[
+\rvu = \left[\begin{array}{c} 2\\ 1\end{array}\right] ~~~~~~ \rvv = \left[\begin{array}{c} -1\\ 1\end{array}\right]
+\]</span></p>
 <p>or in terms of <span class="math inline">\(\rvu\)</span> <span class="math inline">\(\rvv\)</span> it-self:</p>
-<p><span class="math inline">\(\rvu = \left[\begin{array}{c} 1\\ 0\end{array}\right] ~~~~~~ \rvv = \left[\begin{array}{c} 0\\ 1\end{array}\right]\)</span></p>
+<p><span class="math display">\[
+\rvu = \left[\begin{array}{c} 1\\ 0\end{array}\right] ~~~~~~ \rvv = \left[\begin{array}{c} 0\\ 1\end{array}\right].
+\]</span></p>
 <p>Yet, the linear transformation <span class="math inline">\(\rmU = [\rvu, \rvv]\)</span> (composed by the collum vectors <span class="math inline">\(\rvu\)</span> and <span class="math inline">\(\rvv\)</span>) allow to convert any vector written in terms of <span class="math inline">\(\rvu\)</span> <span class="math inline">\(\rvv\)</span> to its equivalent vector w.r.t. <span class="math inline">\(\rvi\)</span> and <span class="math inline">\(\rvj\)</span>:</p>
-<p>$ = $</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc} 2 &amp; -1\\ 1 &amp; 1\end{array}\right] \cdot \left[\begin{array}{c} \frac{5}{3}\\ \frac{1}{3}\end{array}\right] = \left[\begin{array}{c} 3\\ 2 \end{array}\right]
+\]</span></p>
 <p>Similarly, we can use <span class="math inline">\(\rmU^{-1}\)</span> to convert any vector written in terms of <span class="math inline">\(\rvi\)</span> <span class="math inline">\(\rvj\)</span> to it equivalent representeation in <span class="math inline">\(\rvu\)</span> <span class="math inline">\(\rvv\)</span>:</p>
-<p>$ = $</p>
-<p>More generaly, any transformation <span class="math inline">\(A\)</span> expressed in terms of the basis <span class="math inline">\(\rvi\)</span> and <span class="math inline">\(\rvj\)</span> can be applyed to any vectror <span class="math inline">\(\rvx\)</span> defined in temrs of basis <span class="math inline">\(\rvu\)</span> and <span class="math inline">\(\rvv\)</span> applying the change-of-basis equation:</p>
-<p>$ <span class="math display">\[\begin{equation}
-\label{eq:cob}
-[\rmU^{-1} A \rmU] \rvx
-\end{equation}\]</span> $</p>
-<p>where <span class="math inline">\(\rmU^{-1} A \rmU\)</span> express a sort of mathematical empathy between different reference systems; i.e., it converts a tranformation <span class="math inline">\(A\)</span> to a different reference systems.</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc} \frac{1}{3} &amp; \frac{1}{3}\\ -\frac{1}{3} &amp; \frac{2}{3}\end{array}\right] \cdot \left[\begin{array}{c} 3\\ 2\end{array}\right] = \left[\begin{array}{c} \frac{5}{3}\\ \frac{1}{3}\end{array}\right].
+\]</span></p>
+<p>More generaly, any transformation <span class="math inline">\(\rmA\)</span> expressed in terms of the basis <span class="math inline">\(\rvi\)</span> and <span class="math inline">\(\rvj\)</span> can be applyed to any vectror <span class="math inline">\(\rvx\)</span> defined in temrs of basis <span class="math inline">\(\rvu\)</span> and <span class="math inline">\(\rvv\)</span> applying the change-of-basis equation:</p>
+<p><span id="eq-cob"><span class="math display">\[
+\begin{equation}
+[\rmU^{-1} \rmA \rmU] \rvx
+\end{equation}
+\tag{3}\]</span></span></p>
+<p>where <span class="math inline">\(\rmU^{-1} \rmA \rmU\)</span> express a sort of mathematical empathy between different reference systems; i.e., it converts a tranformation <span class="math inline">\(\rmA\)</span> to a different reference systems.</p>
 </section>
 <section id="eigenvectors-and-eigenvalues" class="level1">
 <h1>Eigenvectors and Eigenvalues</h1>
 <p>It is often convinient to study linear transformations, not on their matrix formulation, but ratehr on their base component. Among the most common decomposition methods, <strong>eigenvectors</strong> and <strong>eigenvalues</strong> are the most common matrix decomposition thecnique.</p>
 <p>Given a linear transformation <span class="math inline">\(L = \left[\begin{array}{cc} 3 &amp; 1\\ 0 &amp; 2 \end{array}\right]\)</span>, most of the vectors <span class="math inline">\(\mathbf{v}_i\)</span> are rotated by <span class="math inline">\(L\)</span> away from their original span. Instead some special vectors <span class="math inline">\(\mathbf{e}_i\)</span> are only streched or squished by <span class="math inline">\(L\)</span>, but they remain on the original span. Moreover, every vector on the span of <span class="math inline">\(\mathbf{e}_i\)</span> is also only scaled by <span class="math inline">\(L\)</span>.</p>
-<div>
-<img src="{{site.baseurl}}/assets/img/linear_algebra/eigen_values.png" style="max-width: 85%">
-<p style="font-size:small;">
-Figure 6: Visualization of one of the eigenvalue of <span class="math inline">\(L\)</span>. Note that, <span class="math inline">\(\mathbf{e}_1\)</span> remain on its own span, while a random vector <span class="math inline">\(\mathbf{v}\)</span> is moved away from its original span.)
-</p>
+<div id="fig-eigen-values" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eigen-values-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/linear_algebra/eigen_values.png" class="img-fluid figure-img">
 </div>
-<p>Base on the intuition shown in Fig. 6 and on the “move from the span” consepts, we can formally define the eigenvalues of a squared matrix <span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span> as the non-zero vector <span class="math inline">\(\mathbf{e}_i\)</span>:</p>
-<p>$ <span class="math display">\[\begin{align}
-A \cdot \mathbf{e}_i = \lambda \mathbf{e}_i
-\end{align}\]</span> $</p>
-<p>where: * <span class="math inline">\(\lambda\)</span> is known as the eigenvalue of the eigenvector <span class="math inline">\(\mathbf{e}\)</span>. * $ $. * if <span class="math inline">\(\mathbf{e}_i\)</span> is an eigenvectors of <span class="math inline">\(A\)</span>, then any rescaled vector $c ~ _i $ for $ c , c $ is also an eigenvectors of <span class="math inline">\(A\)</span>. Thus, usually only the unit eigenvectors are considered.</p>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eigen-values-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Visualization of one of the eigenvalue of <span class="math inline">\(L\)</span>. Note that, <span class="math inline">\(\mathbf{e}_1\)</span> remain on its own span, while a random vector <span class="math inline">\(\mathbf{v}\)</span> is moved away from its original span.
+</figcaption>
+</figure>
+</div>
+<p>Base on the intuition shown in <a href="#fig-eigen-values" class="quarto-xref">Figure&nbsp;6</a> and on the “move from the span” consepts, we can formally define the eigenvalues of a squared matrix <span class="math inline">\(\rmA \in \real^{n \times n}\)</span> as the non-zero vector <span class="math inline">\(\mathbf{e}_i\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+\rmA \cdot \mathbf{e}_i = \lambda \mathbf{e}_i
+\end{align}
+\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(\lambda\)</span> is known as the eigenvalue of the eigenvector <span class="math inline">\(\mathbf{e}\)</span>,</li>
+<li><span class="math inline">\(\lambda \neq 0\)</span>,</li>
+<li>if <span class="math inline">\(\mathbf{e}_i\)</span> is an eigenvectors of <span class="math inline">\(\rmA\)</span>, then any rescaled vector <span class="math inline">\(c ~ \mathbf{e}_i\)</span> for <span class="math inline">\(c \in \real, c \neq 0\)</span> is also an eigenvectors of <span class="math inline">\(\rmA\)</span> . Thus, usually only the unit eigenvectors are considered.</li>
+</ul>
 <p>There is an interesting connection between eigenvectors are determinant. According to the formal definition of eigenvectors, we are tring to map a matrix to a vector. Thus, we are tring to map a volume/surface to a single line/point; which is possible only if the determinant of the matrix is 0:</p>
-<p>$ <span class="math display">\[\begin{align}
-\label{eq:eigenvectors}
-A \cdot \mathbf{e}_i &amp;= \lambda \mathbf{e}_i \\
-A \cdot \mathbf{e}_i &amp;= (\rmI \lambda) \mathbf{e}_i \nonumber \\
-(A - \lambda \rmI) \mathbf{e}_i &amp;= 0 \nonumber \\
-&amp; \Rightarrow det(A - \lambda \rmI) = 0 \nonumber
-\end{align}\]</span> $</p>
-<p>The most important properties are: * the trance of a matrix is equal to the some of its eigenvalues: <span class="math inline">\(tr(A) = \sum_{i=0}^{n-1} \lambda_i\)</span> * the determinanto of <span class="math inline">\(A\)</span> is equal to the producto of its eigenvalues: $ det(A) = _{i=0}^{n-1} _i$</p>
+<p><span id="eq-eigenvectors"><span class="math display">\[
+\begin{align}
+\rmA \cdot \mathbf{e}_i &amp;= \lambda \mathbf{e}_i \\
+\rmA \cdot \mathbf{e}_i &amp;= (\rmI \lambda) \mathbf{e}_i \nonumber \\
+(\rmA - \lambda \rmI) \mathbf{e}_i &amp;= 0 \nonumber \\
+&amp; \Rightarrow det(\rmA - \lambda \rmI) = 0 \nonumber
+\end{align}
+\tag{4}\]</span></span></p>
+<p>The most important properties are:</p>
+<ul>
+<li>the trance of a matrix is equal to the some of its eigenvalues: <span class="math inline">\(tr(\rmA) = \sum_{i=0}^{n-1} \lambda_i\)</span>,</li>
+<li>the determinanto of <span class="math inline">\(\rmA\)</span> is equal to the producto of its eigenvalues: <span class="math inline">\(det(\rmA) = \prod_{i=0}^{n-1} \lambda_i\)</span>.</li>
+</ul>
 </section>
 <section id="matrix-decomposition" class="level1">
 <h1>Matrix Decomposition</h1>
-<p>Similarly, to how it is conveninet to express <span class="math inline">\(15\)</span> as product of its factors <span class="math inline">\(5 \cdot 3\)</span>; sometimes it is convenient to express a matrix <span class="math inline">\(A\)</span> as product of other matrixes. There are multiple method to decpompose a matrix, but they are mostly used to eficiently solve systems of linear equation.</p>
+<p>Similarly, to how it is conveninet to express <span class="math inline">\(15\)</span> as product of its factors <span class="math inline">\(5 \cdot 3\)</span>; sometimes it is convenient to express a matrix <span class="math inline">\(\rmA\)</span> as product of other matrixes. There are multiple method to decpompose a matrix, but they are mostly used to eficiently solve systems of linear equation.</p>
 <section id="eigendecomposition" class="level2">
 <h2 class="anchored" data-anchor-id="eigendecomposition">Eigendecomposition</h2>
-<p>Given a squared matrix <span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span>, it is possible to rewrite Eq. <span class="math inline">\(\ref{eq:eigenvectors}\)</span> in matrix form as:</p>
-<p>$ <span class="math display">\[\begin{equation}
-\label{eq:eigenvectors_matrix}
-A \rmU = \rmU \mathbf{\Lambda}
-\end{equation}\]</span> $</p>
-<p>Moreover, according to Eq. <span class="math inline">\(\ref{eq:cob}\)</span>, using the eigenvectors of <span class="math inline">\(A\)</span> as new basis of <span class="math inline">\(A\)</span> will generate a diagonal matrix of eigenvalues:</p>
-<p>$ <span class="math display">\[\begin{equation}
-\rmU^{-1} A \rmU = \mathbf{\Lambda}
-\end{equation}\]</span> $</p>
-<p>where <span class="math inline">\(\rmU \in \mathbb{R}^{n \times n} = \left[\begin{array}{ccc}
+<p>Given a squared matrix <span class="math inline">\(\rmA \in \real^{n \times n}\)</span>, it is possible to rewrite <a href="#eq-eigenvectors" class="quarto-xref">Equation&nbsp;4</a> in matrix form as:</p>
+<p><span id="eq-eigenvectors-matrix"><span class="math display">\[
+\begin{equation}
+\rmA \rmU = \rmU \mathbf{\Lambda}.
+\end{equation}
+\tag{5}\]</span></span></p>
+<p>Moreover, according to <a href="#eq-cob" class="quarto-xref">Equation&nbsp;3</a>, using the eigenvectors of <span class="math inline">\(\rmA\)</span> as new basis of <span class="math inline">\(\rmA\)</span> will generate a diagonal matrix of eigenvalues:</p>
+<p><span class="math display">\[
+\begin{equation}
+\rmU^{-1} \rmA \rmU = \mathbf{\Lambda}
+\end{equation}
+\]</span></p>
+<p>where <span class="math display">\[
+\rmU \in \real^{n \times n} = \left[\begin{array}{ccc}
   | &amp; | &amp; | \\
   \rve_1 &amp; \dots &amp; \rve_{n}\\
   | &amp; | &amp; | \\
-\end{array}\right]\)</span> is the matrix formed by the eigenvectors of <span class="math inline">\(A\)</span> and <span class="math inline">\(\mathbf{\Lambda} \in \mathbb{R}^{n \times n} = \left[\begin{array}{ccc}
+\end{array}\right]\]</span> is the matrix formed by the eigenvectors of <span class="math inline">\(\rmA\)</span> and</p>
+<p><span class="math display">\[\mathbf{\Lambda} \in \real^{n \times n} = \left[\begin{array}{ccc}
   \lambda_1 &amp;  &amp;  \\
    &amp; \ddots &amp; \\
    &amp; &amp; \lambda_n \\
-\end{array}\right]\)</span> is the diagonal matrix formed by the eigenvalues assogiated to the eigenvectors of <span class="math inline">\(A\)</span>.</p>
-<p>This process of expressing <span class="math inline">\(A\)</span> in terms of its eigenvalue and eigenvectors is know as <strong>diagonalization</strong>. If the eigenvalues of <span class="math inline">\(A\)</span> are linearly indipendent, then the matrix <span class="math inline">\(\rmU\)</span> is invertible, thus, it is possible to <strong>decompose</strong> <span class="math inline">\(A\)</span> as:</p>
-<p>$ <span class="math display">\[\begin{equation}
-\label{eq:eigendecomposition}
-A = \rmU \mathbf{\Lambda} \rmU^{-1} .
-\end{equation}\]</span> $</p>
-<p>Moreover, if <span class="math inline">\(A\)</span> is real valued and symmetric then it can be shown that <span class="math inline">\(\rmU\)</span> is orthonormal, i.e., <span class="math inline">\(\rvu^T_i \rvu_j = 0\)</span> if <span class="math inline">\(i \neq j\)</span> and <span class="math inline">\(\rvu^T_i \rvu_i = 1\)</span> (or <span class="math inline">\(\rmU^T\rmU = \rmU \rmU^T = \rmI\)</span>). Thus, we can futher symplify Eq. <span class="math inline">\(\ref{eq:eigendecomposition}\)</span> <span class="math inline">\(A\)</span> as:</p>
-<p>$ <span class="math display">\[\begin{equation}
-A = \rmU \mathbf{\Lambda} \rmU^T .
-\end{equation}\]</span> $</p>
-<p>As a final note, it is possible to leverage such eigendecomposition to easily compute the inverse of a matrix <span class="math inline">\(A\)</span>. Since <span class="math inline">\(\rmU^T = \rmU^{-1}\)</span>, we have:</p>
-<p>$ <span class="math display">\[\begin{equation}
-A^{-1} = \rmU \mathbf{\Lambda}^{-1} \rmU^T .
-\end{equation}\]</span> $</p>
+\end{array}\right]\]</span> is the diagonal matrix formed by the eigenvalues assogiated to the eigenvectors of <span class="math inline">\(\rmA\)</span>.</p>
+<p>This process of expressing <span class="math inline">\(\rmA\)</span> in terms of its eigenvalue and eigenvectors is know as <strong>diagonalization</strong>. If the eigenvalues of <span class="math inline">\(\rmA\)</span> are linearly indipendent, then the matrix <span class="math inline">\(\rmU\)</span> is invertible, thus, it is possible to <strong>decompose</strong> <span class="math inline">\(\rmA\)</span> as:</p>
+<p><span id="eq-eigendecomposition"><span class="math display">\[
+\begin{equation}
+\rmA = \rmU \mathbf{\Lambda} \rmU^{-1} .
+\end{equation}
+\tag{6}\]</span></span></p>
+<p>Moreover, if <span class="math inline">\(\rmA\)</span> is real valued and symmetric then it can be shown that <span class="math inline">\(\rmU\)</span> is orthonormal, i.e., <span class="math inline">\(\rvu^T_i \rvu_j = 0\)</span> if <span class="math inline">\(i \neq j\)</span> and <span class="math inline">\(\rvu^T_i \rvu_i = 1\)</span> (or <span class="math inline">\(\rmU^T\rmU = \rmU \rmU^T = \rmI\)</span>). Thus, we can futher symplify <a href="#eq-eigendecomposition" class="quarto-xref">Equation&nbsp;6</a> as:</p>
+<p><span class="math display">\[
+\begin{equation}
+\rmA = \rmU \mathbf{\Lambda} \rmU^T.
+\end{equation}
+\]</span></p>
+<p>As a final note, it is possible to leverage such eigendecomposition to easily compute the inverse of a matrix <span class="math inline">\(\rmA\)</span>. Since <span class="math inline">\(\rmU^T = \rmU^{-1}\)</span>, we have:</p>
+<p><span class="math display">\[
+\begin{equation}
+\rmA^{-1} = \rmU \mathbf{\Lambda}^{-1} \rmU^T .
+\end{equation}
+\]</span></p>
 <section id="lagrangian-methods-for-constrained-optimization" class="level3">
 <h3 class="anchored" data-anchor-id="lagrangian-methods-for-constrained-optimization">Lagrangian Methods for Constrained Optimization</h3>
 <p>While eigen decomposition is commonly applied to solve systems of liear equations. It is also a powerful method for optimization subject to linear constrains (constrained optimization). That is, it can be used to solve quadratic constrained problems of the form:</p>
-<p>$ _{} ^T + d, ~~ ~~ ^T - 1 = 0 $</p>
-<p>where <span class="math inline">\(\rmH \in \mathbb{R}^{n \times n}\)</span> is symmetric. Such problems are a specific instanche of the <strong>Lagrangian method</strong>, in which an augmented objective is created to ensure the constrain satisfability:</p>
-<p>$ L(, ) = <em>{} </em>{} ^T + d - (^T - 1) $</p>
+<p><span class="math display">\[
+\min_{\rvx} \rvx^T \rmH \rvx + d, ~~\text{subject to} ~~ \rvx^T \rvx - 1 = 0
+\]</span></p>
+<p>where <span class="math inline">\(\rmH \in \real^{n \times n}\)</span> is symmetric. Such problems are a specific instanche of the <strong>Lagrangian method</strong>, in which an augmented objective is created to ensure the constrain satisfability:</p>
+<p><span class="math display">\[
+L(\rvx, \lambda) = \max_{\lambda} \min_{\rvx} \rvx^T \rmH \rvx + d - \lambda (\rvx^T \rvx - 1).
+\]</span></p>
 <p>The optimal <span class="math inline">\(\rvx^*\)</span> that solve the problem, need to satisfy the zero-gradient condition:</p>
-<p>$ <span class="math display">\[\begin{align*}
+<p><span class="math display">\[
+\begin{align*}
 \frac{\partial L(\rvx, \lambda)} {\partial \rvx} &amp; = 0 \\
 &amp; = \frac{ \partial } {\partial \rvx} \rvx^T \rmH \rvx   +  \frac{\partial}{\partial \rvx} d - \frac{\partial}{\partial \rvx} \lambda (\rvx^T \rvx - 1)  \\
 &amp; = \rvx^T (\rmH + \rmH^T) + 0 - 2 \lambda \rvx^T  &amp;&amp; { \small \rmH = \rmH^T \text{ since is symmetric.} }\\
@@ -545,22 +670,34 @@ A^{-1} = \rmU \mathbf{\Lambda}^{-1} \rmU^T .
 &amp; =  \frac{ \partial }{ \partial \lambda } \rvx^T \rmH \rvx + \frac{ \partial }{ \partial \lambda } d - \frac{ \partial }{ \partial \lambda } \lambda (\rvx^T \rvx - 1) \\
 &amp; = 0 + 0 - \rvx^T \rvx + 1 \\
 &amp; = \rvx^T \rvx - 1
-\end{align*}\]</span> $</p>
-<p>which is equivalent to the eigenvector equation (Eq. <span class="math inline">\(\ref{eq:eigenvectors_matrix}\)</span>) $ = $.</p>
+\end{align*}
+\]</span></p>
+<p>which is equivalent to the eigenvector equation <a href="#eq-eigenvectors-matrix" class="quarto-xref">Equation&nbsp;5</a> <span class="math inline">\(\rmH \rvx = \lambda \rvx\)</span>.</p>
 </section>
 </section>
 <section id="singular-value-decomposition-svd" class="level2">
 <h2 class="anchored" data-anchor-id="singular-value-decomposition-svd">Singular Value Decomposition (SVD)</h2>
-<p>While eigendecomposition require squared matrices, <strong>SVD</strong> allow the factorization of rectangular matrices into <strong>singular vectors</strong> and <strong>singular values</strong>. Given any <span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span>, it is possible to depompose it as:</p>
-<p>$ <span class="math display">\[\begin{equation}
-A = \rmU \rmS \rmV^T
-\end{equation}\]</span> $</p>
-<p>where <span class="math inline">\(\rmU \in \mathbb{R}^{m \times m}\)</span> is composed by orthonormal columns (<span class="math inline">\(\rmU^T \rmU = \rmI\)</span>), <span class="math inline">\(\rmV \in \mathbb{R}^{n \times n}\)</span> is compesed by orthonormals rows and columns (<span class="math inline">\(\rmV^T\rmV = \rmV \rmV^T = \rmI\)</span>), and <span class="math inline">\(\rmS \in \mathbb{R}^{m \times n}\)</span> is a diagonal matrix containing the <strong>singular values</strong> <span class="math inline">\(\sigma_i \geq 0\)</span>. <span class="math inline">\(\rmU\)</span> and <span class="math inline">\(\rmV^T\)</span> are respectively known as the <strong>left singular vectors</strong> and <strong>right singular vectors</strong> of <span class="math inline">\(A\)</span> and are obtained as the eigenvectors of <span class="math inline">\(AA^T\)</span> and <span class="math inline">\(A^TA\)</span>. Similarly, <span class="math inline">\(\rmS\)</span> is composed by the squared root of the eigenvalues of <span class="math inline">\(AA^T\)</span> and <span class="math inline">\(A^TA\)</span> arranged in descending order.</p>
+<p>While eigendecomposition require squared matrices, <strong>SVD</strong> allow the factorization of rectangular matrices into <strong>singular vectors</strong> and <strong>singular values</strong>. Given any <span class="math inline">\(\rmA \in \real^{m \times n}\)</span>, it is possible to depompose it as:</p>
+<p><span class="math display">\[
+\begin{equation}
+\rmA = \rmU \rmS \rmV^T
+\end{equation}
+\]</span></p>
+<p>where <span class="math inline">\(\rmU \in \real^{m \times m}\)</span> is composed by orthonormal columns (<span class="math inline">\(\rmU^T \rmU = \rmI\)</span>), <span class="math inline">\(\rmV \in \real^{n \times n}\)</span> is compesed by orthonormals rows and columns (<span class="math inline">\(\rmV^T\rmV = \rmV \rmV^T = \rmI\)</span>), and <span class="math inline">\(\rmS \in \real^{m \times n}\)</span> is a diagonal matrix containing the <strong>singular values</strong> <span class="math inline">\(\sigma_i \geq 0\)</span>. <span class="math inline">\(\rmU\)</span> and <span class="math inline">\(\rmV^T\)</span> are respectively known as the <strong>left singular vectors</strong> and <strong>right singular vectors</strong> of <span class="math inline">\(\rmA\)</span> and are obtained as the eigenvectors of <span class="math inline">\(\rmA\rmA^T\)</span> and <span class="math inline">\(\rmA^T\rmA\)</span>. Similarly, <span class="math inline">\(\rmS\)</span> is composed by the squared root of the eigenvalues of <span class="math inline">\(\rmA\rmA^T\)</span> and <span class="math inline">\(\rmA^T\rmA\)</span> arranged in descending order.</p>
 <p>For example, consider</p>
-<p>$ A = $</p>
-<p>then we know that the columns of <span class="math inline">\(\rmU\)</span> are made by the eigenvalues of <span class="math inline">\(A A^T\)</span>:</p>
-<p>$ <span class="math display">\[\begin{align*}
-A A^T &amp;= \left[\begin{array}{cccc}
+<p><span class="math display">\[
+\rmA =
+\left[\begin{array}{cc}
+  2 &amp; 4 \\
+  1 &amp; 3 \\
+  0 &amp; 0 \\
+  0 &amp; 0 \\
+\end{array}\right]
+\]</span></p>
+<p>then we know that the columns of <span class="math inline">\(\rmU\)</span> are made by the eigenvalues of <span class="math inline">\(\rmA \rmA^T\)</span>:</p>
+<p><span class="math display">\[
+\begin{align*}
+\rmA \rmA^T &amp;= \left[\begin{array}{cccc}
   20 &amp; 14 &amp; 0 &amp; 0 \\
   14 &amp; 10 &amp; 0 &amp; 0 \\
   0 &amp; 0 &amp; 0 &amp; 0 \\
@@ -572,10 +709,12 @@ A A^T &amp;= \left[\begin{array}{cccc}
   0 &amp; 0 &amp; 1 &amp; 0 \\
   0 &amp; 0 &amp; 0 &amp; 1 \\
 \end{array}\right]
-\end{align*}\]</span> $</p>
-<p>similarly, the right singular vectors are obtained as eigenvalues of <span class="math inline">\(A^T A\)</span>:</p>
-<p>$ <span class="math display">\[\begin{align*}
-A^T A &amp;= \left[\begin{array}{cc}
+\end{align*}
+\]</span></p>
+<p>similarly, the right singular vectors are obtained as eigenvalues of <span class="math inline">\(\rmA^T \rmA\)</span>:</p>
+<p><span class="math display">\[
+\begin{align*}
+\rmA^T \rmA &amp;= \left[\begin{array}{cc}
   5 &amp; 11 \\
   11 &amp; 25\\
 \end{array}\right]\\
@@ -583,9 +722,17 @@ A^T A &amp;= \left[\begin{array}{cc}
   0.4 &amp; -0.91 \\
   0.91 &amp; 0.4
 \end{array}\right]
-\end{align*}\]</span> $</p>
+\end{align*}
+\]</span></p>
 <p>instead, <span class="math inline">\(\rmS\)</span> is formed by the squared root of the eivenvectors of <span class="math inline">\(\rmV\)</span> or <span class="math inline">\(\rmU\)</span>:</p>
-<p>$ = $</p>
+<p><span class="math display">\[
+\rmS = \left[\begin{array}{cc}
+  5.46 &amp; 0 \\
+  0 &amp; 0.37 \\
+  0 &amp; 0 \\
+  0 &amp; 0
+\end{array}\right].
+\]</span></p>
 </section>
 </section>
 <section id="references" class="level1">
@@ -990,6 +1137,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<script src="https://giscus.app/client.js" data-repo="quarto-dev/quarto-web" data-repo-id="MDEwOlJlcG9zaXRvcnkzNDc2MzMzNTg=" data-category="General" data-category-id="DIC_kwDOFLh2zs4CBQCO" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
 </div> <!-- /content -->
 
 
