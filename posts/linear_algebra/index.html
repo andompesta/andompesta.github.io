@@ -370,7 +370,12 @@ L_2 L_1( \mathbf{x} ) &amp;= \Big ( \left[\begin{array}{cc} 0 &amp; 2\\ 1 &amp; 
 <section id="determinant" class="level1">
 <h1>Determinant</h1>
 <p>As linear transformations alter the original vector space, it is important to evaluate by how much the original space is expanded or contracted by a given linear transformation <span class="math inline">\(L\)</span>. The <strong>determinant</strong> define how much the original unit surface is changed by <span class="math inline">\(L\)</span>.</p>
-<p>The determinant has some interesting properties: 1. A liner transantformation with 0 determinant ($ det(L) = 0$) means that squash all the vectrs on a single line/plane. Moreover, it also means that <span class="math inline">\(L\)</span> has linearly dependents columns. 2. The determinant can be negative if it change orientation of the space. 3. Determinant is associative: <span class="math inline">\(det(L) \cdot det(M) = det(L \cdot M)\)</span>.</p>
+<p>The determinant has some interesting properties:</p>
+<ol type="1">
+<li>A liner transantformation with 0 determinant (<span class="math inline">\(det(L) = 0\)</span>) means that squash all the vectrs on a single line/plane. Moreover, it also means that <span class="math inline">\(L\)</span> has linearly dependents columns.</li>
+<li>The determinant can be negative if it change orientation of the space.</li>
+<li>Determinant is associative: <span class="math inline">\(det(L) \cdot det(M) = det(L \cdot M)\)</span>.</li>
+</ol>
 <div>
 <img src="{{site.baseurl}}/assets/img/linear_algebra/determinant.png" style="max-width: 85%">
 <p style="font-size:small;">
@@ -426,9 +431,11 @@ $ $
 </tr>
 </tbody></table>
 <p>Thus, any system of linear equations can be expressed as:</p>
-<p>$ <span class="math display">\[\begin{equation}
-A \rvx = \mathbf{b}
-\end{equation}\]</span> $</p>
+<p><span class="math display">\[
+\begin{equation}
+A \mathbf{x} = \mathbf{b}
+\end{equation}
+\]</span></p>
 <p>where <span class="math inline">\(A \in \mathbb{R}^{m \times n}\)</span> is a known linear transformation(a matrix), <span class="math inline">\(\mathbf{b} \in \mathbb{R}^{m \times 1}\)</span> is a known vector in the space of <span class="math inline">\(A\)</span>, and <span class="math inline">\(\rvx \in \mathbb{R}^{n \times 1}\)</span> is an unkown vector that after the transformation <span class="math inline">\(A\)</span> lies over <span class="math inline">\(\mathbf{b}\)</span>.</p>
 <p>Note that the existence of such unkown vector is tightly related to the determinant of <span class="math inline">\(A\)</span>: * if <span class="math inline">\(det(A) = 0\)</span>, in general, there is no such <span class="math inline">\(\rvx\)</span> * if <span class="math inline">\(det(A) \neq 0\)</span>, in general, there is one-and-only-one <span class="math inline">\(\rvx\)</span> that satisfy $ A = $, namely <span class="math inline">\(A^{-1}\)</span>.</p>
 <p>Mathematically, the solution to <span class="math inline">\(A \rvx = \mathbf{b}\)</span> is <span class="math inline">\(\rvx = A^{-1} \mathbf{b}\)</span>. However, computing <span class="math inline">\(A^{-1}\)</span> is a complex operation and is subject to numerical instabilities (<a href="https://www.johndcook.com/blog/2010/01/19/dont-invert-that-matrix/">Don’t invert that matrix</a>). Thus, mathematicians have develop multiple solvers for that same problam that does not require to compute the matrix invers and they leverage some specific property of matrix <span class="math inline">\(A\)</span>.</p>

@@ -114,7 +114,12 @@ Figure&nbsp;3: Visualization of the linear transformation appled to vector <img 
 <section id="determinant" class="level1">
 <h1>Determinant</h1>
 <p>As linear transformations alter the original vector space, it is important to evaluate by how much the original space is expanded or contracted by a given linear transformation <img src="https://latex.codecogs.com/png.latex?L">. The <strong>determinant</strong> define how much the original unit surface is changed by <img src="https://latex.codecogs.com/png.latex?L">.</p>
-<p>The determinant has some interesting properties: 1. A liner transantformation with 0 determinant ($ det(L) = 0$) means that squash all the vectrs on a single line/plane. Moreover, it also means that <img src="https://latex.codecogs.com/png.latex?L"> has linearly dependents columns. 2. The determinant can be negative if it change orientation of the space. 3. Determinant is associative: <img src="https://latex.codecogs.com/png.latex?det(L)%20%5Ccdot%20det(M)%20=%20det(L%20%5Ccdot%20M)">.</p>
+<p>The determinant has some interesting properties:</p>
+<ol type="1">
+<li>A liner transantformation with 0 determinant (<img src="https://latex.codecogs.com/png.latex?det(L)%20=%200">) means that squash all the vectrs on a single line/plane. Moreover, it also means that <img src="https://latex.codecogs.com/png.latex?L"> has linearly dependents columns.</li>
+<li>The determinant can be negative if it change orientation of the space.</li>
+<li>Determinant is associative: <img src="https://latex.codecogs.com/png.latex?det(L)%20%5Ccdot%20det(M)%20=%20det(L%20%5Ccdot%20M)">.</li>
+</ol>
 <div>
 <img src="https://andompesta.github.io/posts/linear_algebra/{{site.baseurl}}/assets/img/linear_algebra/determinant.png" style="max-width: 85%">
 <p style="font-size:small;">
@@ -166,7 +171,7 @@ $ $
 </tr>
 </tbody></table>
 <p>Thus, any system of linear equations can be expressed as:</p>
-<p>$ <img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Bequation%7D%0AA%20%5Crvx%20=%20%5Cmathbf%7Bb%7D%0A%5Cend%7Bequation%7D"> $</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bequation%7D%0AA%20%5Cmathbf%7Bx%7D%20=%20%5Cmathbf%7Bb%7D%0A%5Cend%7Bequation%7D%0A"></p>
 <p>where <img src="https://latex.codecogs.com/png.latex?A%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bm%20%5Ctimes%20n%7D"> is a known linear transformation(a matrix), <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bb%7D%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bm%20%5Ctimes%201%7D"> is a known vector in the space of <img src="https://latex.codecogs.com/png.latex?A">, and <img src="https://latex.codecogs.com/png.latex?%5Crvx%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bn%20%5Ctimes%201%7D"> is an unkown vector that after the transformation <img src="https://latex.codecogs.com/png.latex?A"> lies over <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bb%7D">.</p>
 <p>Note that the existence of such unkown vector is tightly related to the determinant of <img src="https://latex.codecogs.com/png.latex?A">: * if <img src="https://latex.codecogs.com/png.latex?det(A)%20=%200">, in general, there is no such <img src="https://latex.codecogs.com/png.latex?%5Crvx"> * if <img src="https://latex.codecogs.com/png.latex?det(A)%20%5Cneq%200">, in general, there is one-and-only-one <img src="https://latex.codecogs.com/png.latex?%5Crvx"> that satisfy $ A = $, namely <img src="https://latex.codecogs.com/png.latex?A%5E%7B-1%7D">.</p>
 <p>Mathematically, the solution to <img src="https://latex.codecogs.com/png.latex?A%20%5Crvx%20=%20%5Cmathbf%7Bb%7D"> is <img src="https://latex.codecogs.com/png.latex?%5Crvx%20=%20A%5E%7B-1%7D%20%5Cmathbf%7Bb%7D">. However, computing <img src="https://latex.codecogs.com/png.latex?A%5E%7B-1%7D"> is a complex operation and is subject to numerical instabilities (<a href="https://www.johndcook.com/blog/2010/01/19/dont-invert-that-matrix/">Don’t invert that matrix</a>). Thus, mathematicians have develop multiple solvers for that same problam that does not require to compute the matrix invers and they leverage some specific property of matrix <img src="https://latex.codecogs.com/png.latex?A">.</p>
