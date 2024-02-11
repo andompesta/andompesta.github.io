@@ -1,11 +1,10 @@
 ---
 categories:
-- Linear Algebra
+- Statistics
 
 author: Sandro Cavallari
-date: 2020-12-23
-title: "Basic Principles of Linear Algebra"
-# number-sections: true
+date: 2022-07-15
+title: "Evaluation Metrics for Ads Ranking Systems"
 bibliography: references.bib
 csl: diabetologia.csl
 comments:
@@ -16,563 +15,206 @@ format:
     toc: true
 ---
 
-Linear algebra is the branch of math and statistics that is devoted to the study of matrices and vectors. As such, it is broadly used to model real-world problems in phisitcs and machine learning. Such post is a collections of my notes obtained from the 3Blue1Brown series on linear-algebra [@youtubeEssenceLinear] and Murphy's new book [@murphy2022probabilistic].
 
-{{< include macro.tex >}}
-
-
-# Basic Matrix Operations
-
-1. **transpose**: given a matrix $\rmA \in \real^{m \times n}$, its transpose $\rmA^T$ is obtained ''flipping'' the rows and colums
+Ads ranking systems are the barebone of many modern business and became one of the main success story of machine learning applied to real-world problems.
+Given an user/client, the main goal of such ranking systems is to order a set of candidates ads according to their click or conversion score. 
+As such it is commonly modelled as a binary classification task where the positive class ($y^+$) represents clicks or conversions, and the negative class ($y^-$) represents examples without interaction.
+In the most common case, the adopted classifier is a probabilistic classifier, which does not provide a class label, but rather the predicted probability of the positive class $\mathbf{P}( y = y^+)$.
+According to the application, it is possible to obtain a predicted label by applying a threshold $t$ to $\mathbf{P}( y = y^+)$:
 
 $$
-\rmA = \left[\begin{array}{cccc}
-  a_{11} & a_{12} & ... & a_{1n}\\
-  a_{21} & a_{22} & ... & a_{2n}\\
-  \vdots & \vdots & \vdots & \vdots \\
-  a_{m1} & a_{m2} & ... & a_{mn}\\
-\end{array}\right]
-\Rightarrow
-\rmA^T = \left[\begin{array}{cccc}
-  a_{11} & a_{21} & ... & a_{m1}\\
-  a_{12} & a_{22} & ... & a_{m2}\\
-  \vdots & \vdots & \vdots & \vdots \\
-  a_{1n} & a_{2n} & ... & a_{mn}\\
-\end{array}\right].
+\hat{y} = \begin{cases}
+1 & \text{if} ~ \mathbf{P}( y = y^+) \geq t \\
+0 & \text{o.w.}
+\end{cases}
 $$
 
-The most important properties are:
+In most classification problem a reasonable threshold is $t=0.5$.
+However, in many domains the datasets are not balanced, models are not perfectly calibrated, and different use-cases have different [sensitivity vs specificity](https://en.wikipedia.org/wiki/Sensitivity_and_specificity) tradeoffs.
+For example, many real-world applications are dominated by negative examples; thus a more conservative classifier might be prefered.
+Conservative models produce positive classifications only with strong evidence; thus they are identified by a low False Positive Rate.
+Probabbilistic classifiers can be made more or less conservative by adjusting the threshold $t$, and many experiments are required to detect the best trade-off.
+To this end, common evaliation metric that relay on the predicted labels, such as Accuracy or F1-score, are not suited in these domains as they fails to capture some important aspect of the model performance.
+To overcome this problem, it is desireable to have metric capable to identify model perforamnces based on the predicted probability rather than the predicted label and that are robust to unballanced datasets.
 
-* ${(\rmA^T)}^T = \rmA$
-* $(\rmA \rmB)^T = \rmB^T \rmA^T$
-* $(\rmA + \rmB)^T = \rmA^T \rmB^T$
-
-
-2. **matrix multiplication**: while the summation of 2 matrixes is done element-wise. Matrix multiplication is done row-by-colum and requires matrixes of specific sizes. Given $\rmA \in \real^{m \times n}$ and $\rmB \in \real^{n \times p}$ it is possible to define $\rmC = \rmA \rmB \in \real^{m \times p}$ s.t. $c_{i,j} = \sum_{k=1}^{n} a_{ik} b_{kj}$. In other words, $\rmC$ is a linear combination of the row of $\rmA$ and the colum of $\rmB$.
-
-$$
-\rmC = \left[\begin{array}{ccc}
-  - & \rva_{1:} & -\\
-  - & \rva_{2:} & -\\
-     & \vdots &   \\
-  - & \rva_{m:} & -\\
-\end{array}\right]
-\left[\begin{array}{cccc}
-  | & | & | & |\\
-  \rvb_{:1} & \rvb_{:2} & \dots & \rvb_{:p}\\
-  | & | & | & |\\
-\end{array}\right]
-= 
-\left[\begin{array}{cccc}
-  \rva_{1:}\rvb_{:1} & \rva_{1:}\rvb_{:2} & \dots & \rva_{1:}\rvb_{:p}\\
-  \rva_{2:}\rvb_{:1} & \rva_{2:}\rvb_{:2} & \dots & \rva_{2:}\rvb_{:p}\\
-     & \vdots & \vdots &   \\
-  \rva_{m:}\rvb_{:1} & \rva_{m:}\rvb_{:2} & \dots & \rva_{m:}\rvb_{:p}\\
-\end{array}\right].
-$$
-
-The most important properties are:
-
-* $(\rmA \rmB) \rmC = \rmA (\rmB \rmC)$,
-* $\rmA(\rmB + \rmC) = (\rmA \rmB) + (\rmA \rmC)$,
-* $\rmA \rmB \neq \rmB \rmA$.
-
-3. **matrix inverse**: As for real numbers,  the inverso of a matrix $\rmA$ is denoted as $\rmA^{-1}$ and is defined as the matrix such that: $\rmA \rmA^{-1} = \rmI$. Besites being easy to define computing the inverse of a matrix is an expencive operations. Moreover, $\rmA^{-1}$ exists if and only if $det(\rmA) \neq 0$.
-
-The most important properties are:
-
-* $(\rmA^{-1})^{-1} = \rmA$,
-* $(\rmA \rmB)^{-1} = \rmB^{-1} \rmA^{-1}$,
-* $(\rmA^{-1})^{T} = (\rmA^{T})^{-1} = \rmA^{-T}$.
-
-# Basis Vectors
-
-In linear algebra, a vector basis $\rmB$ of a vector space $\rmV$ is a set of vectors $\{\rvb_1, ..., \rvb_n\}$ that are linearly independent and allow to reconstruct every vector $\mathbf{v_i} \in V$ as a linear combination of $\rmB$:
-
-$$
-\begin{align}
-    \mathbf{v_i} & = a_1 \mathbf{b_1} + ... + a_n \mathbf{b_n} 
-\end{align}
-$$ {#eq-basis-vector}
-
-
-For example, the vectors $\mathbf{i} = \left[
-\begin{array}{c}
-  1\\
-  0
-\end{array}
-\right]$ and $\mathbf{j} = \left[
-\begin{array}{c}
-  0\\
-  1
-\end{array}
-\right]$ are the most common base vectors for the vectors space $\real^2$. Thus, it is possible to represent a vector $\mathbf{x} = \left[\begin{array}{c}
-  3\\
-  2
-\end{array}\right]$ as $3 \mathbf{i} + 2 \mathbf{j}$.
-
-
-::: {#fig-base-vector}
-
-![](img/linear_algebra/basic_vectors.png){#fig-base-vector}
-
-Vector representation by the base vector $\mathbf{i}$ and $\mathbf{j}$.
-:::
-
-
-
-The ability to represent any vector in $V$ as a linear combination of the basis vectors is a powerful concept.
-However, $\mathbf{i}$ and $\mathbf{j}$ are not the only possible basis vectors of $\real^2$.
-For example, another possible basis could be formed by $\mathbf{v} = \left[\begin{array}{c}
-  1\\
-  2
-\end{array}\right]$ and  $\mathbf{w} = \left[\begin{array}{c}
-  3\\
-  -1
-\end{array}\right]$. However, the representation of $\mathbf{x}$ w.r.t. $\mathbf{v}$ and $\mathbf{w}$ would be different than the one w.r.t. $\mathbf{i}$ and $\mathbf{j}$.
-
-
-# Span
-
-The **Span** is defined as the set of all possible vectors that we can create given a basis set.
-Note that the number of basis vectors defines the dimension of our vector space.
-
-# Linear Transformations
-
-A **linear transformation** is equivalent to a function over vectors. That is, a linear transformation "move" an input vector to an output vector. While general transformations have complex features, linear transformations have some well-defined properties:
-
-1. they maintain the origin of the vector space invariant,
-2. they map equally spaced lines to equally spaced lines (or points).
-
-$$
-\begin{align}
-	L(a_1 \mathbf{i} + a_2 \mathbf{j}) & = a_1L(\mathbf{i}) + a_2L(\mathbf{j})
-\end{align}
-$${#eq-linear-transform}
-
-:::{#fig-transformations}
-![](img/linear_algebra/transformations.png)
-
-Examples of the most commont linear transformations. (Image taken from <a href="https://mathigon.org/course/linear-algebra/linear-transformations"> Samuel S. Watson</a>).
-:::
-
-Thanks to their properties, it is possible to linearly transform any vector by means to its basis. In other words, given a vector $\rvx = \left[\begin{array}{c} -1\\ 2 \end{array}\right]$ w.r.t. $\rvi$ and $\rvj$ and any lineart transformation $L$.
-It is possible to represent $L(\rvx)$ as a function of $L(\rvi)$ and $L(\rvj)$ (formally $L(\mathbf{x}) = -1 L(\mathbf{i}) + 2 L(\mathbf{j})$).
-
-For example, assume $L = \left[\begin{array}{cc} 1 & 3\\ -2 & 0 \end{array}\right]$, then:
-
-$$
-\begin{align*}
-L(\mathbf{i}) &= \left[\begin{array}{cc} 1 & 3\\ -2 & 0 \end{array}\right]  \left[\begin{array}{c} 1\\ 0 \end{array}\right] = \left[\begin{array}{c} 1\\ -2 \end{array}\right]\\
-L(\mathbf{j}) &= \left[\begin{array}{cc} 1 & 3\\ -2 & 0 \end{array}\right]  \left[\begin{array}{c} 0\\ 1 \end{array}\right] = \left[\begin{array}{c} 3\\ 0 \end{array}\right] \\
-L(\mathbf{x}) &= -1 L(\mathbf{i}) + 2 L(\mathbf{j}) \\
-	&= -1 \left[\begin{array}{c} 1\\ -2 \end{array}\right] + 2 \left[\begin{array}{c} 3\\ 0 \end{array}\right] \\
-	&= \left[\begin{array}{c} 5\\ 2 \end{array}\right]
-\end{align*}
-$$
-
-
-:::{#fig-base-vector}
-![](img/linear_algebra/linear-transform.png){#fig-linear-transform}
-
-Visualization of the linear transformation appled to vector $\rvx$.
-:::
-
-
-Finally, as a linear transformation is represented by a matrix, it is possible to define the **composition of two or more linear transformations** as he left-to-right product of the transformation matrix:
-
-$$
-\begin{align}
-L_2(L_1( \mathbf{x} )) =  L_2L_1(\mathbf{x})
-\end{align}
-$$
-
-For example, if $L_1 = \left[\begin{array}{cc} 1 & -2\\ 1 & 0 \end{array}\right]$, $L_2 = \left[\begin{array}{cc} 0 & 2\\ 1 & 0 \end{array}\right]$ and $\mathbf{x} = \left[\begin{array}{c} x\\ y \end{array}\right]$. Then:
-
-
-$$
-\begin{align*}
-L_2(L_1( \mathbf{x} )) &= \left[\begin{array}{cc} 0 & 2\\ 1 & 0 \end{array}\right] \Big ( \left[\begin{array}{cc} 1 & -2\\ 1 & 0 \end{array}\right] \left[\begin{array}{c} x\\ y \end{array}\right] \Big)
-\\
-L_2 L_1( \mathbf{x} ) &= \Big ( \left[\begin{array}{cc} 0 & 2\\ 1 & 0 \end{array}\right] \left[\begin{array}{cc} 1 & -2\\ 1 & 0 \end{array}\right] \Big) \left[\begin{array}{c} x\\ y \end{array}\right] \\
-&= \left[\begin{array}{cc} 2 & 0\\ 1 & -2 \end{array}\right] \left[\begin{array}{c} x\\ y \end{array}\right] 
-\end{align*}
-$$
-
-Note that as matrix multiplication is equal to applying different linear transformations, the multiplication order does matter.
-
-# Determinant
-As linear transformations alter the original vector space, it is important to evaluate by how much the original space is expanded or contracted by a given linear transformation $L$. As shown in [@fig-determinant], the **determinant** define how much the original unit surface is changed by $L$.
-
-The determinant has some interesting properties:
-
-1. A liner transantformation with 0 determinant ($ det(L) = 0$) means that squash all the vectrs on a single line/plane. Moreover, it also means that $L$ has linearly dependents columns.
-2. The determinant can be negative if it change orientation of the space.
-3. Determinant is associative: $det(L) \cdot det(M) = det(L \cdot M)$.
-
-
-:::{#fig-determinant}
-![](img/linear_algebra/determinant.png){#fig-determinant}
-
-Visualization of the determinant for a initial vector space defined by $\mathbf{i}$ and $\mathbf{j}$ and the vector space obtained after applying the transformation $L$.
-:::
-
-# System of Linear Equations
-It is convininet to use inear algebra to represent a system of linear equations, e.g.
-
-
-<table align="center">
-<tr>
-  <td>
-    $$\begin{cases} 
-    2x + 5y + 3z = -3 \\ 
-    4x + 8z = 0 \\
-    x + 3y = 2
-    \end{cases}$$
-  </td>
-  <td>
-    $$
-    \Rightarrow
-    $$
-  </td>
-  <td style="width: 5px">
-    $$
-    \left[\begin{array}{ccc} 
-    2 & 5 & 3\\
-    4 & 0 & -2\\
-    1 & 3 & 0
-    \end{array}
-    \right]
-    $$
-  </td>
-  <td style="width: 5px">
-    $$
-    \left[\begin{array}{c} 
-    x\\
-    y\\
-    z
-    \end{array}
-    \right]
-    $$
-  </td>
-  <td style="width: 3px">
-    = 
-  </td>
-  <td style="width: 5px">
-    $$
-    \left[\begin{array}{c} 
-    -3\\
-    0\\
-    2
-    \end{array}
-    \right]
-    $$
-  </td>
-</tr>
-<tr>
-    <td></td>
-    <td></td>
-    <td>$$\rmA$$</td>
-    <td>$$\rvx$$</td>
-    <td> = </td>
-    <td>$$\rvb$$</td>
-</tr>
+<div style="text-align:center;">
+<table id="tab:confiusion-matrix" style="border:none; background:transparent; text-align:center;" align="center">
+    <tbody>
+    <tr>
+        <td style="border:none;" rowspan="2"></td>
+        <td style="border:none;"></td>
+        <td style="background:#bbeeee;" colspan="2"><b>Predicted condition</b></td>
+    </tr>
+    <tr>
+        <td style="background:#eeeeee;"><b>Total population </b> <br> P + N </td>
+        <td style="background:#ccffff;"><b> Positive</b> <br> PP</td>
+        <td style="background:#aadddd;"><b> Negative</b> <br> PN</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan="2" class="nowrap unsortable" style="line-height:99%;vertical-align:middle;padding:.4em .4em .2em;background-position:50% .4em !important;overflow:hidden;background:#eeeebb;"><b>Actual condition</b>
+        </td>
+        <td style="background:#ffffcc;"><b>Positive <br>P</b></td>
+        <td style="background:#ccffcc;"><b>True&nbsp;positive <br> <span style="font-size:85%;">hit</span></b> <br>TP</td>
+        <td style="background:#ffdddd;"><b>False&nbsp;negative <br> <span style="font-size:85%;">miss</span></b> <br>FN</td>
+        <td style="background:#eeffee;"><b>True positive rate <br> <span style="font-size:85%;"> Recall&nbsp;/&nbsp;sensitivity</span></b> <br> TPR = TP/P = 1 - FNR
+        </td>
+        <td style="background:#ffeeee;"><b>False&nbsp;negative&nbsp;rate <br> <span style="font-size:85%;">miss&nbsp;rate</span></b> <br> FNR = FN/P = 1 - TPR
+        </td>
+    </tr>
+    <tr>
+        <td style="background:#ddddaa;"><b>Negative</b> <br> N </td>
+        <td style="background:#ffcccc;"><b>False&nbsp;positive <br> <span style="font-size:85%;">type&nbsp;I&nbsp;error / false&nbsp;alarm</span> </b> <br> FP
+        </td>
+        <td style="background:#bbeebb;"><b>True&nbsp;negative <br> <span style="font-size:85%;">correct&nbsp;rejection</span></b> <br> TN
+        </td>
+        <td style="background:#eedddd;"><b>False&nbsp;positive&nbsp;rate <br> <span style="font-size:85%;">probability&nbsp;of&nbsp;false&nbsp;alarm</span> </b> <br> FPR = FP/N = 1 − TNR
+        </td>
+        <td style="background:#ddeedd;"><b>True&nbsp;negative&nbsp;rate <br> <span style="font-size:85%;"> specificity / selectivity </span></b> <br> TNR = TN/N = 1 − FPR
+        </td>
+    </tr>
+    <tr>
+        <td style="border:none;"></td>
+        <td style="border:none;"></td>
+        <td style="background:#eeffee;"><b>Precision<br> <span style="font-size:85%;">positive&nbsp;predictive&nbsp;value</span> </b> <br> PR = TP\PP
+        </td>
+        <td style="background:#ffeeee;"><b>Fale&nbsp;omission&nbsp;rate </b> <br> FOR = FN\PN
+        </td>
+    </tr>
+    </tbody>
 </table>
-
-Thus, any system of linear equations can be expressed as:
-
-$$
-\begin{equation}
-\rmA \rvx = \rvb
-\end{equation}
-$$
-
-where $\rmA \in \real^{m \times n}$ is a known linear transformation(a matrix), $\rvb \in \real^{m \times 1}$ is a known vector in the space of $\rmA$, and $\rvx \in \real^{n \times 1}$ is an unkown vector that after the transformation $\rmA$ lies over $\rvb$.
+<p style="font-size:small;">Table 1: definition of all the metric reported and build on to of a Confusion matrix, credito to <a href="https://en.wikipedia.org/wiki/Confusion_matrix" target="blank">wikipedia</a></p>
+</div>
 
 
-Note that the existence of such unkown vector is tightly related to the determinant of $\rmA$:
+## ROC-AUC
 
-* if $det(A) = 0$, in general, there is no such $\rvx$,
-* if $det(A) \neq 0$, in general, there is one-and-only-one $\rvx$ that satisfy $\rmA \rvx = \rvb$, namely $\rmA^{-1}$.
+The Receiver Operating Characteristic (ROC) is an analysis tool initially proposed by [Provost et al.](#ref:provost) to compare classifiers' performance.
+The ROC curve is built as the interpolation between the **False Positive Rate** (FPR) on the x-axe, and the **True Positive Rate** (TPR) on the y-axe, computed at different thresholds.
+Intuitively, the TPR represents how well a classifier can identify all the positive examples.
+In contrast the FPR indicate how likely an error will occur in the negative class (for a formal definition of TPR and FPR, consult the confusion matrix reported in [Tab. 1](#tab:confiusion-matrix)).
 
-Mathematically, the solution to $\rmA \rvx = \rvb$ is $\rvx = \rmA^{-1} \rvb$. However, computing $\rmA^{-1}$ is a complex operation and is subject to numerical instabilities ([Don’t invert that matrix](https://www.johndcook.com/blog/2010/01/19/dont-invert-that-matrix/)). Thus, mathematicians have develop multiple solvers for that same problam that does not require to compute the matrix invers and they leverage some specific property of matrix $\rmA$.
+:::{#fig-roc-auc}
+![](img/roc-auc.png)
 
-
-# Change of Basis
-
-Given a vector $\rvx = \left[\begin{array}{c} 3\\ 2\end{array}\right]$ imagine this vector represented in terms of the unit vectors $\rvi = \left[\begin{array}{c} 1\\ 0\end{array}\right]$ and $\rvj = \left[\begin{array}{c} 0\\ 1\end{array}\right]$, and, scale them by 3 and 2, i.e.
-
-$$
-\rvx = \left[\begin{array}{c} 3 \rvi\\ 2 \rvj \end{array}\right].
-$$
-
-However, as shown if [@fig-base-change], we can also represent $\rvx$ in terms of different basis vectors $\rvu = \left[\begin{array}{c} 2\\ 1\end{array}\right]$ and $\rvv = \left[\begin{array}{c} -1\\ 1\end{array}\right]$. That is, $\rvx$ can be represented as the linear combination of $\rvu$ and $\rvj$:
-
-$$
-\rvx = \left[\begin{array}{c} \frac{5}{3} \rvu\\ \frac{1}{3} \rvv \end{array}\right]
-$$
-
-In other words, it is possible to represent $\rvx$ in two different languages: one according to basis $\rvi$ and $\rvj$; the other according to basis $\rvu$ and $\rvv$.
-
-:::{#fig-base-change}
-![](img/linear_algebra/base_change.png)
-Visualization of the same vector $\rvx$ represented according to two different basis vectors.
+Example of an ROC-AUC curve.
 :::
 
 
-As overstated, we can express $\rvu$ and $\rvv$ in terms of basis vectors $\rvi$ and $\rvj$ as:
+As shown in [@fig-roc-auc], a model that have higher ROC cureve is deemed to have better performances.
+However, there is the need to summarise the knowledge captured by a ROC curve in a single scalar value to facilitate the comparison of different models.
+To this end, the area under the ROC curve is used as a summary statistic representative of the classifier performances.
+Thus, ROC-AUC is defined as:
 
 $$
-\rvu = \left[\begin{array}{c} 2\\ 1\end{array}\right] ~~~~~~ \rvv = \left[\begin{array}{c} -1\\ 1\end{array}\right]
+\text{ROC-AUC} = \int_0^1 TPR ~ \delta \small FPR.
 $$
 
-or in terms of $\rvu$ $\rvv$ it-self:
+Note that ROC-AUC exhibits the following properties [@flach2015precision]:
 
-$$
-\rvu = \left[\begin{array}{c} 1\\ 0\end{array}\right] ~~~~~~ \rvv = \left[\begin{array}{c} 0\\ 1\end{array}\right].
-$$
+1. It can be interpreted as "the probability that the scores given by a classifier will rank a randomly chosen positive instance higher than a randomly chosen negative one" [@fernandez2018learning] [@fawcett2006introduction]. In other words, the ROC curve shows the ability of the classifier to rank the positive instances relativeto the negative instance only.
+2. A universal baseline is always available, as a random classifier will have ROC-AUC of 0.5.
+3. It cares about the ranking obtained from the predictions but does not consider the actual predicted value.
+4. A classifier do not need to produce accurate, calibrated probability estimates; it need only to produce relative accurate scores that serve to discriminate positive and negative instances [@fawcett2004roc].
+5. The perfect model is represented by the point $(0, 1)$ and has an AUC of 1.
+6. The point $(0, 0)$ identifies a model that never issues a positive prediction.
+7. The point $(1, 1)$ implements the opposite strategy: only positive predictions are made.
+8. ROC-AUC is a linear space, thus allowing for easy interpolation and visual interpretation.
 
+### Highly Imbalanced Dataset
 
-Yet, the linear transformation $\rmU = [\rvu, \rvv]$ (composed by the collum vectors $\rvu$ and $\rvv$) allow to convert any vector written in terms of $\rvu$ $\rvv$ to its equivalent vector w.r.t. $\rvi$ and $\rvj$:
-
-$$
-\left[\begin{array}{cc} 2 & -1\\ 1 & 1\end{array}\right] \cdot \left[\begin{array}{c} \frac{5}{3}\\ \frac{1}{3}\end{array}\right] = \left[\begin{array}{c} 3\\ 2 \end{array}\right]
-$$
-
-Similarly, we can use $\rmU^{-1}$ to convert any vector written in terms of $\rvi$ $\rvj$ to it equivalent representeation in $\rvu$ $\rvv$:
-
-$$
-\left[\begin{array}{cc} \frac{1}{3} & \frac{1}{3}\\ -\frac{1}{3} & \frac{2}{3}\end{array}\right] \cdot \left[\begin{array}{c} 3\\ 2\end{array}\right] = \left[\begin{array}{c} \frac{5}{3}\\ \frac{1}{3}\end{array}\right].
-$$
-
-
-More generaly, any transformation $\rmA$ expressed in terms of the basis $\rvi$ and $\rvj$ can be applyed to any vectror $\rvx$ defined in temrs of basis $\rvu$ and $\rvv$ applying the change-of-basis equation:
-
-$$
-\begin{equation}
-[\rmU^{-1} \rmA \rmU] \rvx
-\end{equation}
-$$ {#eq-cob}
-
-where $\rmU^{-1} \rmA \rmU$ express a sort of mathematical empathy between different reference systems; i.e., it converts a tranformation $\rmA$ to a different reference systems.
-
-# Eigenvectors and Eigenvalues
-
-It is often convinient to study linear transformations, not on their matrix formulation, but ratehr on their base component.
-Among the most common decomposition methods, **eigenvectors** and **eigenvalues** are the most common matrix decomposition thecnique.
+In the general case, one of the most attractive properties of the ROC curve is its robustness to changes in the class distribution.
+This propertly derives from the fact that, ROC curves are defined as a ratios of quantities computed w.r.t. only the positive or only the negative class rather than a mix of the two.
+Thus, we expect a model to generate similar ROC curves regardless of the number of positive and negative examples present in the dataset.
+In so doing, ROC curves are a great tools to compare model across different datasets; for example dataset generated across different day.
 
 
-Given a linear transformation $L = \left[\begin{array}{cc} 3 & 1\\ 0 & 2 \end{array}\right]$, most of the vectors $\mathbf{v}_i$ are rotated by $L$ away from their original span.
-Instead some special vectors $\mathbf{e}_i$ are only streched or squished by $L$, but they remain on the original span. Moreover, every vector on the span of $\mathbf{e}_i$ is also only scaled by $L$.
+However, ROC curves are known to be "over-optimistic" at scoring model performances when the datasets are highly skewed, and there is a high interest in evaluating the model w.r.t. the positive class.
+For example, consider the case where you have two datasets; the former is composed of 100 negative points and 50 positive samples, while the latter is composed of 100 negative examples and 25 positive examples.
+As shown in [@fig-dataset] , let's assume that the negative examples overlap with the positive ones according to a uniform distribution.
 
-:::{#fig-eigen-values}
-![](img/linear_algebra/eigen_values.png)
 
-Visualization of one of the eigenvalue of $L$. Note that, $\mathbf{e}_1$ remain on its own span, while a random vector $\mathbf{v}$ is moved away from its original span.
+::: {#fig-elephants layout-nrow=2}
+
+![Two datasets with same label distribution but different amount of positive examples. Dataset 1 contains 50 positive examples while Dataset 2 contains only 25 positive examples. In both cases there are 100 negative lables.](img/datasets.png){#fig-dataset width=80%}
+
+![ROC-AUC computed on D1 and D2.](img/datasets-auc.png){#fig-datasets-auc width=80%}
 :::
 
 
-Base on the intuition shown in [@fig-eigen-values] and on the "move from the span" consepts, we can formally define the eigenvalues of a squared matrix $\rmA \in \real^{n \times n}$ as the non-zero vector $\mathbf{e}_i$:
+Let's try to compute the AUC for both of the datasets:
 
+  - then for D1, as the threshold ($t$) moves from $0$ to $0.5$ the True Positive Rate remains constant at 1; instead for $t > 0.5$, both TPR and FPR decrease linearly since positive and negative examples start to be homogeneously mixed.
+  - similarly, for D2, when $0 \leq t \leq 0.75$ then $TPR = 1$; while for $t>0.75$ TRP and FPR decreases linearnly.
 
-$$
-\begin{align}
-\rmA \cdot \mathbf{e}_i = \lambda \mathbf{e}_i
-\end{align}
-$$
+A graphical representation is provided in [@fig-datasets-auc] showing how the ROC-AUC of the second dataset is more significant than the first dataset even if the models have the same maximum F1-score (maximum F1-score on D1 is achieved with $t=0.5$ while on D2 the best threshold is $t=0.5$).
+A deeper analysis suggests that this over-estimation problem arises when a significant change in the false positive leads only to a slight shift in the false positive rate since the dataset is dominated by the negative class [@davis2006relationship].
 
-where:
+## Precision-Recall curve
 
-* $\lambda$ is known as the eigenvalue of the eigenvector $\mathbf{e}$,
-* $\lambda \neq 0$,
-* if $\mathbf{e}_i$ is an eigenvectors of $\rmA$, then any rescaled vector $c ~ \mathbf{e}_i$ for $c \in \real, c \neq 0$ is also an eigenvectors of $\rmA$ . Thus, usually only the unit eigenvectors are considered.
+When the main objective is to evaluate a model on the positive class, PR-curves are more informative.
+[@fig-pr-curve] shows how PR-curves are built by plotting the **Precision** as a function of the True Positive Rate (or Recall).
+By inspecting [Tab. 1](#tab:confiusion-matrix), it is visible how PR-curves effectively consider only statistics related to the positive class; thus, they are inherently robust to highly skewed datasets [@paula2016survey].
+Perhaps motivated by the similarity with ROC-curves, PR-curves became a popular alternative to analysis models on highly skewed datasets.
 
-There is an interesting connection between eigenvectors are determinant. According to the formal definition of eigenvectors, we are tring to map a matrix to a vector. Thus, we are tring to map a volume/surface to a single line/point; which is possible only if the determinant of the matrix is 0:
+:::{#fig-pr-curve width=80%}
+![](img/pr-curve.png)
 
-$$
-\begin{align}
-\rmA \cdot \mathbf{e}_i &= \lambda \mathbf{e}_i \\
-\rmA \cdot \mathbf{e}_i &= (\rmI \lambda) \mathbf{e}_i \nonumber \\
-(\rmA - \lambda \rmI) \mathbf{e}_i &= 0 \nonumber \\
-& \Rightarrow det(\rmA - \lambda \rmI) = 0 \nonumber
-\end{align}
-$${#eq-eigenvectors}
+Precision-Recall curve and PR-AUC.
+:::
 
-
-The most important properties are:
-
-* the trance of a matrix is equal to the some of its eigenvalues: $tr(\rmA) = \sum_{i=0}^{n-1} \lambda_i$,
-* the determinanto of $\rmA$ is equal to the producto of its eigenvalues: $det(\rmA) = \prod_{i=0}^{n-1} \lambda_i$.
-
-
-
-# Matrix Decomposition
-
-Similarly, to how it is conveninet to express $15$ as product of its factors $5 \cdot 3$; sometimes it is convenient to express a matrix $\rmA$ as product of other matrixes.
-There are multiple method to decpompose a matrix, but they are mostly used to eficiently solve systems of linear equation.
-
-## Eigendecomposition 
-
-Given a squared matrix $\rmA \in \real^{n \times n}$, it is possible to rewrite [@eq-eigenvectors] in matrix form as:
+As for ROC curves, the PR-AUC is defined as:
 
 $$
-\begin{equation}
-\rmA \rmU = \rmU \mathbf{\Lambda}.
-\end{equation}
-$$ {#eq-eigenvectors-matrix}
-
-Moreover, according to [@eq-cob], using the eigenvectors of $\rmA$ as new basis of $\rmA$ will generate a diagonal matrix of eigenvalues:
-
-$$
-\begin{equation}
-\rmU^{-1} \rmA \rmU = \mathbf{\Lambda}
-\end{equation}
+\text{PR-AUC} = \int_0^1 PR ~ \delta \small TPR.
 $$
 
-where 
-$$
-\rmU \in \real^{n \times n} = \left[\begin{array}{ccc}
-  | & | & | \\
-  \rve_1 & \dots & \rve_{n}\\
-  | & | & | \\
-\end{array}\right]$$
-is the matrix formed by the eigenvectors of $\rmA$ and 
+Overall, we can distinguish the following properties for the PR-AUC:
 
-$$\mathbf{\Lambda} \in \real^{n \times n} = \left[\begin{array}{ccc}
-  \lambda_1 &  &  \\
-   & \ddots & \\
-   & & \lambda_n \\
-\end{array}\right]$$
-is the diagonal matrix formed by the eigenvalues assogiated to the eigenvectors of $\rmA$.
+  1. PR-AUC has no intrinsic meaning except the geometric one.
+  2. While ROC-AUC has a baseline value of $0.5$, in PR-AUC there is no universal baseline to compare with.
+  3. PR-AUC is not directly connected with the F1-score; thus is unrelated to the calibration score of the model.
+  4. The perfect model is represented by the point $(1, 1)$ and has an area of 1.
+  5. PR space is an hyperbolic space; thus more difficult to inspect visually and find similar performing models.
 
+## LogLoss
 
-This process of expressing $\rmA$ in terms of its eigenvalue and eigenvectors is know as **diagonalization**.
-If the eigenvalues of $\rmA$ are linearly indipendent, then the matrix $\rmU$ is invertible, thus, it is possible to **decompose** $\rmA$ as:
+One of the limitations of the previous metrics is their focus on the ranking obtained from the model output, but they ignore the predicted value itself.
+This is not an issue in most recommendation systems, but most real-time ad allocation systems require well-calibrated and accurate prediction values to implement an optimal bidding strategy.
+In this problem instance, choosing a threshold t is not important.
+Rather there is high interest in having predictions that, on average, *reliability* resemble the ground-true.
+That is: “the probability associated with the predicted class label should reflect its ground truth correctness likelihood” [@guo2017calibration].
+For example, consider a dataset composed of 10 samples and assume that the model assigns a probability of 0.6 to every instance.
+Then, if the model is **calibrated**, we expect 6 examples to belong to the positive class.
 
-$$
-\begin{equation}
-\rmA = \rmU \mathbf{\Lambda} \rmU^{-1} .
-\end{equation}
-$${#eq-eigendecomposition}
+Note that:
 
-Moreover, if $\rmA$ is real valued and symmetric then it can be shown that $\rmU$ is orthonormal, i.e., $\rvu^T_i \rvu_j = 0$ if $i \neq j$ and $\rvu^T_i \rvu_i = 1$ (or $\rmU^T\rmU = \rmU \rmU^T = \rmI$). Thus, we can futher symplify [@eq-eigendecomposition] as:
+  1. Calibration is a measure of **uncertainty**, not accuracy.
+  2. A calibrated model allows for higher interpretability as the output probabilities have an intrinsic meaning.
+
+A standard metric used to monitor the model's calibration is the negative **LogLoss**:
 
 $$
-\begin{equation}
-\rmA = \rmU \mathbf{\Lambda} \rmU^T.
-\end{equation}
+\mathcal{L} = - \frac{1}{N} \sum_{i=1}^N \Big( y \log(\hat{p}) + (1 - y) \log(1 - \hat{p}) \Big);
 $$
 
-As a final note, it is possible to leverage such eigendecomposition to easily compute the inverse of a matrix $\rmA$. Since $\rmU^T = \rmU^{-1}$, we have:
+where $y$ represents the ground-true label, $\hat{p}$ is the predicted probability, and $N$ is the size of the dataset.
+The LogLoss has an extended application history as training loss for (deep) logistic regressions, yet here a claim is made to adopt it as a validation and test metric.
+Modern deep neural networks are highly accurate but overconfident, showing poor uncertainty estimation [@sensoy2018evidential].
+Thus, it is handy to have a scalar metric to summarise a model's calbration characteristics and compare it to the prediction error.
+
+
+## Brier Score
+
+Another popular method to capture the model calibration in a scalar value is by computing the Brier Score[@hernandez2011brier]:
 
 $$
-\begin{equation}
-\rmA^{-1} = \rmU \mathbf{\Lambda}^{-1} \rmU^T .
-\end{equation}
+\mathcal{BS} = \frac{1}{N} \sum_{i=1}^N \Big( y_i - \hat{p}_i \Big)^2.
 $$
 
+The Brier Score is the mean-squared-error between the ground ture and the predicted probabilities; thus the lower the value the better.
 
-### Lagrangian Methods for Constrained Optimization
-While eigen decomposition is commonly applied to solve systems of liear equations.
-It is also a powerful method for optimization subject to linear constrains (constrained optimization).
-That is, it can be used to solve quadratic constrained problems of the form:
-
-$$
-\min_{\rvx} \rvx^T \rmH \rvx + d, ~~\text{subject to} ~~ \rvx^T \rvx - 1 = 0
-$$
-
-where $\rmH \in \real^{n \times n}$ is symmetric. Such problems are a specific instanche of the **Lagrangian method**, in which an augmented objective is created to ensure the constrain satisfability:
-
-$$
-L(\rvx, \lambda) = \max_{\lambda} \min_{\rvx} \rvx^T \rmH \rvx + d - \lambda (\rvx^T \rvx - 1).
-$$
-
-The optimal $\rvx^*$ that solve the problem, need to satisfy the zero-gradient condition:
-
-$$
-\begin{align*}
-\frac{\partial L(\rvx, \lambda)} {\partial \rvx} & = 0 \\
- & = \frac{ \partial } {\partial \rvx} \rvx^T \rmH \rvx   +  \frac{\partial}{\partial \rvx} d - \frac{\partial}{\partial \rvx} \lambda (\rvx^T \rvx - 1)  \\
- & = \rvx^T (\rmH + \rmH^T) + 0 - 2 \lambda \rvx^T  && { \small \rmH = \rmH^T \text{ since is symmetric.} }\\
- & = 2 \rvx^T \rmH - 2 \lambda \rvx^T \\ 
-\frac{\partial L(\rvx, \lambda)} {\partial \lambda} & = 0  \\
- & =  \frac{ \partial }{ \partial \lambda } \rvx^T \rmH \rvx + \frac{ \partial }{ \partial \lambda } d - \frac{ \partial }{ \partial \lambda } \lambda (\rvx^T \rvx - 1) \\
- & = 0 + 0 - \rvx^T \rvx + 1 \\
- & = \rvx^T \rvx - 1
-\end{align*}
-$$
-
-which is equivalent to the eigenvector equation [@eq-eigenvectors-matrix] $\rmH \rvx = \lambda \rvx$.
-
-## Singular Value Decomposition (SVD)
-
-While eigendecomposition require squared matrices, **SVD** allow the factorization of rectangular matrices into **singular vectors** and **singular values**. Given any $\rmA \in \real^{m \times n}$, it is possible to depompose it as:
-
-$$
-\begin{equation}
-\rmA = \rmU \rmS \rmV^T
-\end{equation}
-$$
-
-where $\rmU \in \real^{m \times m}$ is composed by orthonormal columns ($\rmU^T \rmU = \rmI$), $\rmV \in \real^{n \times n}$ is compesed by orthonormals rows and columns ($\rmV^T\rmV = \rmV \rmV^T = \rmI$), and $\rmS \in \real^{m \times n}$ is a diagonal matrix containing the **singular values** $\sigma_i \geq 0$.
-$\rmU$ and $\rmV^T$ are respectively known as the **left singular vectors** and **right singular vectors** of $\rmA$ and are obtained as the eigenvectors of $\rmA\rmA^T$ and $\rmA^T\rmA$. Similarly, $\rmS$ is composed by the squared root of the eigenvalues of $\rmA\rmA^T$ and $\rmA^T\rmA$ arranged in descending order.
-
-For example, consider
-
-$$
-\rmA = 
-\left[\begin{array}{cc}
-  2 & 4 \\
-  1 & 3 \\
-  0 & 0 \\
-  0 & 0 \\
-\end{array}\right]
-$$
-
-then we know that the columns of $\rmU$ are made by the eigenvalues of $\rmA \rmA^T$:
-
-$$
-\begin{align*}
-\rmA \rmA^T &= \left[\begin{array}{cccc}
-  20 & 14 & 0 & 0 \\
-  14 & 10 & 0 & 0 \\
-  0 & 0 & 0 & 0 \\
-  0 & 0 & 0 & 0 \\
-\end{array}\right]\\
-\rmU &= \left[\begin{array}{cccc}
-  0.82 & -0.58 & 0 & 0 \\
-  0.58 & 0.82 & 0 & 0 \\
-  0 & 0 & 1 & 0 \\
-  0 & 0 & 0 & 1 \\
-\end{array}\right]
-\end{align*}
-$$
-
-similarly, the right singular vectors are obtained as eigenvalues of $\rmA^T \rmA$:
-
-$$
-\begin{align*}
-\rmA^T \rmA &= \left[\begin{array}{cc}
-  5 & 11 \\
-  11 & 25\\
-\end{array}\right]\\
-\rmV &= \left[\begin{array}{cc}
-  0.4 & -0.91 \\
-  0.91 & 0.4
-\end{array}\right]
-\end{align*}
-$$
-
-instead, $\rmS$ is formed by the squared root of the eivenvectors of $\rmV$ or $\rmU$:
-
-$$
-\rmS = \left[\begin{array}{cc}
-  5.46 & 0 \\
-  0 & 0.37 \\
-  0 & 0 \\
-  0 & 0 
-\end{array}\right].
-$$
 
 # References
 
