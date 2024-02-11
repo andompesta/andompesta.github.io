@@ -21,18 +21,11 @@ website:
         text: Posts
       # - href: talks
       #   text: Talks
-      - href: about.qmd
-        text: About
 
 format:
   html:
     theme:
       - cosmo
       - custom.scss
-    # toc: false
-    # toc_depth: 3
-    # toc_float: true
-    # toc_smooth_scroll: true
-    # toc_highlight: true
-    # fig-align: center
+    fig-align: center
 
