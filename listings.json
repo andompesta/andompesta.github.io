@@ -2,6 +2,7 @@
   {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/linear_algebra/index.html",
       "/posts/gradient_descent_and_backprop/index.html"
     ]
   }
