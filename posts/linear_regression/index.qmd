@@ -141,12 +141,13 @@ ax.scatter(
 
 ax.annotate(
     "residual",
-    xy=(7.4, 13),
+    xy=(1, -10),
     xycoords="data",
-    xytext=(0.8, 0.5),
+    xytext=(0.2, 0.1),
     textcoords="axes fraction",
     va="top",
     ha="left",
+    fontsize=16,
     arrowprops=dict(
         arrowstyle="->",
         facecolor="black",
@@ -203,11 +204,11 @@ ax.set_ylabel("residual")
 ax.legend()
 ```
 
-## Total Least Squares
+<!-- ## Total Least Squares
 
 
 
-Total Least Squares [@markovsky2007overview] (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of $y$, but also in the dependent variable $x$.
+Total Least Squares [@markovsky2007overview] (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of $y$, but also in the dependent variable $x$. -->
 
 
 ## Robust Linear Model
