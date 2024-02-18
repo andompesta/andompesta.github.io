@@ -5,8 +5,8 @@ categories:
 author: Sandro Cavallari
 date: 2024-01-15
 title: "Linear Regression"
-# bibliography: references.bib
-# csl: diabetologia.csl
+bibliography: references.bib
+csl: diabetologia.csl
 comments:
   giscus:
     repo: quarto-dev/quarto-web
@@ -20,7 +20,7 @@ execute:
 
 # Linear Regression
 
-Linear regression is a widely utilized and straightforward machine learning model. 
+Linear regression [@montgomery2021introduction] is a widely utilized and straightforward machine learning model. 
 It establishes a linear relationship between a dependent variable (represented on the y-axis) and one or more independent variables (represented on the x-axis). 
 The fundamental formulation of linear regression is as follows:
 
@@ -28,7 +28,7 @@ The fundamental formulation of linear regression is as follows:
 
 $$
 \begin{align}
-\hat{y} & = \epsilon + w_1 x_1 + ... + w_n x_n \\
+\hat{y} & = \epsilon + w_0 + w_1 x_1 + ... + w_n x_n \\
  & = \epsilon + \rmW \rmX
 \end{align}
 $${#eq-linear-model}
@@ -38,7 +38,7 @@ where:
 - $\hat{y}$ is the dependent variable, also referred to as the response, target, or outcome variable.
 - $x_i$ represents the independent variables, also known as predictors or features.
 - $w_i$ are the coefficients corresponding to the independent variables. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.
-- $\epsilon$ is the bias term, which account for the viariability in $y$ that can not be explained by linear model.
+- $\epsilon$ is the error term, which account for the viariability in $y$ that can not be explained by linear model.
 
 The learning process involves adjusting the model's coefficients to minimize the sum of the squared differences between the observed and predicted values:
 
@@ -165,7 +165,7 @@ Linear regression relies on several key assumptions:
 
 ## Residual Plot
 
-[Residuals plots](https://sefidian.com/2020/04/27/understanding-and-interpreting-residuals-plot-for-linear-regression/) are one of the most common methods to validate the presence of Homoscedasticity.
+Residuals plots [@sefidianUnderstandingInterpreting] [@tsai1998examination] are one of the most common methods to validate the presence of Homoscedasticity.
 As shonw in [@fig-residual-plot], residuals plots disply the residual values of a regression as a function of the predicted values and helps in understanding if the model is a good fit for the given data.
 Namelly residuals plot can be used for:
 
@@ -197,6 +197,13 @@ ax.set_xlabel("prediction")
 ax.set_ylabel("residual")
 ax.legend()
 ```
+
+<!-- ## Total Least Squares
+
+When we introduced the linear regresion
+Total Least Squares [@markovsky2007overview] (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of $y$, but also in the dependent variable $x$. -->
+
+
 ## Robust Linear Model
 
 In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through [**Ridge Regression**](https://www.youtube.com/watch?v=Q81RR3yKn30&ab_channel=StatQuestwithJoshStarmer), described by the formula:
@@ -276,3 +283,9 @@ $$
 6. Residual Plots: Use residual plots to check for non-linearity, unequal error variances, and outliers.
 7. Influence Measures: Identify and investigate influential observations that might disproportionately affect the model's performance.
 8. Homoscedasticity Testing: Ensure that residuals have constant variance across different levels of predictors.
+
+
+# References
+
+::: {#refs}
+:::
