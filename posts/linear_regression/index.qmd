@@ -46,35 +46,69 @@ $$
 \mathcal{L}(y, \hat{y}) = (y - \hat{y})^2
 $$ {#eq-least-square}
 
-Here, $\hat{y}$ is the predicted value and ${y}$ is the actual value for a given training example. Note that, @eq-least-square is the main reason why linear models are often referred to as least squares estimators, as their objective is to fine the parameters that minimise a square difference between two value. As shown in @fig-least-square, the training process adjusts the model's parameters $\{\rmW, \epsilon\}$ to minimize this loss:
+Here, $\hat{y}$ is the predicted value and ${y}$ is the actual value for a given training example. Note that, [@eq-least-square] is the main reason why linear models are often referred to as least squares estimators, as their objective is to fine the parameters that minimise a square difference between two value. As shown in @fig-least-square, the training process adjusts the model's parameters $\{\rmW, \epsilon\}$ to minimize this loss:
 
 $$
-\frac{\partial \mathcal{L}(y, \hat{y}; \{\rmW, \epsilon\})}{\partial \{\rmW, \epsilon\}}.
+\frac{\partial \mathcal{L}(y, \hat{y}; \{\rmW, \epsilon\})}{\partial \{\rmW, \epsilon\}}
 $$
 
+which is equivalent to minimise the residual distance between the predicted value and the actual value.
 
 ```{python}
 # | label: fig-least-square
 # | fig-cap: "Linear model fitted to a given data distribution by means of least-square. Note that the differece between the predicted value and the given datapoint is known as residual."
 
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-np.random.seed(42)
-x = 10 * np.random.rand(5)
-y = 2 * x + 1 + (10 * np.random.randn(5))
+n_datapoints = 10
+np.random.seed(1)
+x = 10 * np.random.rand(n_datapoints)
+y = 2 * x + 1 + (10 * np.random.randn(n_datapoints))
 model = LinearRegression(fit_intercept=True)
 model.fit(x[:, np.newaxis], y)
 # get prediction
 y_pred = model.predict(x[:, np.newaxis])
 
-# get prediction for best line fit
-xfit = np.linspace(0, 10, 50)
-y_hat = model.predict(xfit[:, np.newaxis])
+residual = y - y_pred
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+# get prediction for best line fit
+xfit = np.linspace(0, 8, 50)
+y_ = model.predict(xfit[:, np.newaxis])
+
+fig, axs = plt.subplots(1, 2, figsize=(10.5, 4))
+
+ax = axs[0]
+ax.scatter(
+    x,
+    y,
+    label="Data points",
+    edgecolors="k",
+)
+
 # plot data
+ax.plot(
+    [0, 8],
+    [y.mean(), y.mean()],
+    color="#ff7f0e",
+    label="Initial fit",
+)
+for i in range(len(x)):
+    ax.plot(
+        [x[i], x[i]],
+        [y[i], y.mean()],
+        color="gray",
+        linestyle="--",
+    )
+ax.grid(True)
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.legend()
+ax.set_title("Initial model")
+
+ax = axs[1]
 ax.scatter(
     x,
     y,
@@ -84,19 +118,19 @@ ax.scatter(
 # plot best line fit
 ax.plot(
     xfit,
-    y_hat,
-    color="#ff7f0e",
+    y_,
+    color="#2ca02c",
     label="Best fit",
 )
 # Optionally, plot residuals (errors)
 for i in range(len(x)):
-    plt.plot(
+    ax.plot(
         [x[i], x[i]],
         [y[i], y_pred[i]],
         color="gray",
         linestyle="--",
     )
-plt.scatter(
+ax.scatter(
     x, y_pred, color="green", label="Predicted value"
 )  # If you want to show where the predicted points lie on the line
 
@@ -108,26 +142,61 @@ ax.annotate(
     textcoords="axes fraction",
     va="top",
     ha="left",
-    arrowprops=dict(arrowstyle="->", facecolor="black",),
+    arrowprops=dict(
+        arrowstyle="->",
+        facecolor="black",
+    ),
 )
 
 ax.grid(True)
 ax.set_xlabel("x")
 ax.set_ylabel("y")
+ax.set_title("Fited model")
 ax.legend()
 plt.show()
 ```
-
-
 
 Linear regression relies on several key assumptions:
 
 1. Linearity: There must be a linear relationship between the independent and dependent variables.
 2. Independence: The predictors should be independent of each other. This is vital for the model's stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.
-3. Homoscedasticity: The residuals should be normally distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.
+3. Homoscedasticity: The residuals should be uniformly distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.
 
-Verifying these assumptions is crucial for ensuring the reliability and validity of the regression analysis.
 
+## Residual Plot
+
+[Residuals plots](https://sefidian.com/2020/04/27/understanding-and-interpreting-residuals-plot-for-linear-regression/) are one of the most common methods to validate the presence of Homoscedasticity.
+As shonw in [@fig-residual-plot], residuals plots disply the residual values of a regression as a function of the predicted values and helps in understanding if the model is a good fit for the given data.
+Namelly residuals plot can be used for:
+
+1. Checking Homoscedasticity: A key assumption in linear regression is that the residuals have constant variance at every level of the independent variable(s) (homoscedasticity). If the residuals fan out or form a pattern as the predicted values increase, this indicates heteroscedasticity, which can lead to inefficient estimates and affect hypothesis testing.
+2. Identifying Non-Linearity: If the relationship between the variables is not linear, the residuals will often display a systematic pattern. A residuals plot can help identify such non-linear relationships, suggesting that a different model or a transformation of variables might be more appropriate.
+3. Detecting Outliers: Residuals plots can reveal outliers – points that have a much larger error than the other observations. These outliers can disproportionately influence the model fit and can be indicative of data entry errors, or that the outlier is from a different population.
+4. Evaluating Model Fit: If a model is a good fit for the data, the residuals should be randomly scattered around zero. Patterns or trends in the residuals suggest that the model is not capturing some aspect of the data, which could lead to biased or inaccurate predictions.
+5. Checking Independence of Residuals: For a good model, the residuals should be independent of each other. If there's a pattern over time (in time series data) or a pattern associated with another variable, this is a sign that the model is missing a key piece of information.
+6. Verifying Normal Distribution of Residuals: In many forms of regression analysis (like linear regression), it's assumed that residuals are normally distributed. By plotting the residuals and visually checking their distribution (or using statistical tests), we can validate this assumption. A common method is to use a Q-Q plot (quantile-quantile plot) to compare the distribution of the residuals to a normal distribution.
+
+
+```{python}
+# | label: fig-residual-plot
+# | fig-cap: "Residual plot. As you can see, the residual are simmetrically randomly distributed and in general, there aren’t any clear patterns. Moreover, the best-fit line to the residual is almost identical to the x-axis (y=0) indicating independence bewteen residuals and predicted values."
+
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(1, 1, figsize=(7, 4))
+
+ax.scatter(y_pred, residual, label="residual", color="gray", edgecolors="k")
+ax.hlines(0, 0, 15, colors="k", linestyles="dashed")
+
+z = np.polyfit(y_pred, residual, 1)
+residual_pred = (z[0] * y_pred) + z[1]
+ax.plot(y_pred, residual_pred, color="red", label="residual fit")
+
+ax.grid(True)
+ax.set_xlabel("prediction")
+ax.set_ylabel("residual")
+ax.legend()
+```
 ## Robust Linear Model
 
 In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through [**Ridge Regression**](https://www.youtube.com/watch?v=Q81RR3yKn30&ab_channel=StatQuestwithJoshStarmer), described by the formula:
@@ -207,16 +276,3 @@ $$
 6. Residual Plots: Use residual plots to check for non-linearity, unequal error variances, and outliers.
 7. Influence Measures: Identify and investigate influential observations that might disproportionately affect the model's performance.
 8. Homoscedasticity Testing: Ensure that residuals have constant variance across different levels of predictors.
-
-
-# Residual Plots
-
-[Residuals plots](https://sefidian.com/2020/04/27/understanding-and-interpreting-residuals-plot-for-linear-regression/) are a type of diagrams that has the residuals on the y-axes and the predicted value on x-axes. The residuals should have a uniform distribution.
-These types of plots are usefull to assess the performance of the model as well as assess how clean the dataset is. Namelly residuals plot can be used for:
-
-1. Checking Homoscedasticity: A key assumption in linear regression is that the residuals have constant variance at every level of the independent variable(s) (homoscedasticity). If the residuals fan out or form a pattern as the predicted values increase, this indicates heteroscedasticity, which can lead to inefficient estimates and affect hypothesis testing.
-2. Identifying Non-Linearity: If the relationship between the variables is not linear, the residuals will often display a systematic pattern. A residuals plot can help identify such non-linear relationships, suggesting that a different model or a transformation of variables might be more appropriate.
-3. Detecting Outliers: Residuals plots can reveal outliers – points that have a much larger error than the other observations. These outliers can disproportionately influence the model fit and can be indicative of data entry errors, or that the outlier is from a different population.
-4. Evaluating Model Fit: If a model is a good fit for the data, the residuals should be randomly scattered around zero. Patterns or trends in the residuals suggest that the model is not capturing some aspect of the data, which could lead to biased or inaccurate predictions.
-5. Checking Independence of Residuals: For a good model, the residuals should be independent of each other. If there's a pattern over time (in time series data) or a pattern associated with another variable, this is a sign that the model is missing a key piece of information.
-6. Verifying Normal Distribution of Residuals: In many forms of regression analysis (like linear regression), it's assumed that residuals are normally distributed. By plotting the residuals and visually checking their distribution (or using statistical tests), we can validate this assumption. A common method is to use a Q-Q plot (quantile-quantile plot) to compare the distribution of the residuals to a normal distribution.
