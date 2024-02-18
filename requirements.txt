@@ -7,3 +7,4 @@ scikit-learn
 bibtexparser
 beautifulsoup4
 requests
+jupyter
