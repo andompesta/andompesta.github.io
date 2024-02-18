@@ -22,20 +22,21 @@
 
 <section id="linear-regression" class="level1">
 <h1>Linear Regression</h1>
-<p>Linear regression is a widely utilized and straightforward machine learning model. It establishes a linear relationship between a dependent variable (represented on the y-axis) and one or more independent variables (represented on the x-axis). The fundamental formulation of linear regression is as follows:</p>
+<p>Linear regression <span class="citation" data-cites="montgomery2021introduction">[1]</span> is a widely utilized and straightforward machine learning model. It establishes a linear relationship between a dependent variable (represented on the y-axis) and one or more independent variables (represented on the x-axis). The fundamental formulation of linear regression is as follows:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Cnewcommand%7B%5Crvepsilon%7D%7B%5Cmathbf%7B%5Cepsilon%7D%7D%0A%5Cnewcommand%7B%5Crvtheta%7D%7B%5Cmathbf%7B%5Ctheta%7D%7D%0A%5Cnewcommand%7B%5Crva%7D%7B%5Cmathbf%7Ba%7D%7D%0A%5Cnewcommand%7B%5Crvb%7D%7B%5Cmathbf%7Bb%7D%7D%0A%5Cnewcommand%7B%5Crvc%7D%7B%5Cmathbf%7Bc%7D%7D%0A%5Cnewcommand%7B%5Crve%7D%7B%5Cmathbf%7Be%7D%7D%0A%5Cnewcommand%7B%5Crvi%7D%7B%5Cmathbf%7Bi%7D%7D%0A%5Cnewcommand%7B%5Crvj%7D%7B%5Cmathbf%7Bj%7D%7D%0A%5Cnewcommand%7B%5Crvu%7D%7B%5Cmathbf%7Bu%7D%7D%0A%5Cnewcommand%7B%5Crvv%7D%7B%5Cmathbf%7Bv%7D%7D%0A%5Cnewcommand%7B%5Crvx%7D%7B%5Cmathbf%7Bx%7D%7D%0A%5Cnewcommand%7B%5CrmA%7D%7B%5Cmathbf%7BA%7D%7D%0A%5Cnewcommand%7B%5CrmB%7D%7B%5Cmathbf%7BB%7D%7D%0A%5Cnewcommand%7B%5CrmC%7D%7B%5Cmathbf%7BC%7D%7D%0A%5Cnewcommand%7B%5CrmH%7D%7B%5Cmathbf%7BH%7D%7D%0A%5Cnewcommand%7B%5CrmI%7D%7B%5Cmathbf%7BI%7D%7D%0A%5Cnewcommand%7B%5CrmM%7D%7B%5Cmathbf%7BM%7D%7D%0A%5Cnewcommand%7B%5CrmS%7D%7B%5Cmathbf%7BS%7D%7D%0A%5Cnewcommand%7B%5CrmU%7D%7B%5Cmathbf%7BU%7D%7D%0A%5Cnewcommand%7B%5CrmV%7D%7B%5Cmathbf%7BV%7D%7D%0A%5Cnewcommand%7B%5CrmW%7D%7B%5Cmathbf%7BW%7D%7D%0A%5Cnewcommand%7B%5CrmX%7D%7B%5Cmathbf%7BX%7D%7D%0A%5Cnewcommand%7B%5CrmY%7D%7B%5Cmathbf%7BY%7D%7D%0A%5Cnewcommand%7B%5Creal%7D%7B%5Cmathbb%7BR%7D%7D%0A"></p>
-<p><span id="eq-linear-model"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%5Chat%7By%7D%20&amp;%20=%20%5Cepsilon%20+%20w_1%20x_1%20+%20...%20+%20w_n%20x_n%20%5C%5C%0A&amp;%20=%20%5Cepsilon%20+%20%5CrmW%20%5CrmX%0A%5Cend%7Balign%7D%0A%5Ctag%7B1%7D"></span></p>
+<p><span id="eq-linear-model"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0Ay%20&amp;%20=%20w_0%20+%20w_1%20x_1%20+%20...%20+%20w_n%20x_n%20+%20%5Cepsilon%20%5C%5C%0A&amp;%20=%20%5CrmW%20%5CrmX%20+%20%5Cepsilon%0A%5Cend%7Balign%7D%0A%5Ctag%7B1%7D"></span></p>
 <p>where:</p>
 <ul>
-<li><img src="https://latex.codecogs.com/png.latex?%5Chat%7By%7D"> is the dependent variable, also referred to as the response, target, or outcome variable.</li>
+<li><img src="https://latex.codecogs.com/png.latex?y"> is the dependent variable, also referred to as the response, target, or outcome variable.</li>
 <li><img src="https://latex.codecogs.com/png.latex?x_i"> represents the independent variables, also known as predictors or features.</li>
-<li><img src="https://latex.codecogs.com/png.latex?w_i"> are the coefficients corresponding to the independent variables. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.</li>
-<li><img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> is the bias term, which account for the viariability in <img src="https://latex.codecogs.com/png.latex?y"> that can not be explained by linear model.</li>
+<li><img src="https://latex.codecogs.com/png.latex?w_i"> are the model parameters establishing a linear relationship between the independent variables and the target. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.</li>
+<li><img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> is the error term, which account for the viariability in <img src="https://latex.codecogs.com/png.latex?y"> that can not be explained by linear model.</li>
 </ul>
-<p>The learning process involves adjusting the model’s coefficients to minimize the sum of the squared differences between the observed and predicted values:</p>
-<p><span id="eq-least-square"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathcal%7BL%7D(y,%20%5Chat%7By%7D)%20=%20(y%20-%20%5Chat%7By%7D)%5E2%0A%5Ctag%7B2%7D"></span></p>
-<p>Here, <img src="https://latex.codecogs.com/png.latex?%5Chat%7By%7D"> is the predicted value and <img src="https://latex.codecogs.com/png.latex?%7By%7D"> is the actual value for a given training example. Note that, Equation&nbsp;2 is the main reason why linear models are often referred to as least squares estimators, as their objective is to fine the parameters that minimise a square difference between two value. As shown in Figure&nbsp;1, the training process adjusts the model’s parameters <img src="https://latex.codecogs.com/png.latex?%5C%7B%5CrmW,%20%5Cepsilon%5C%7D"> to minimize this loss:</p>
-<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cfrac%7B%5Cpartial%20%5Cmathcal%7BL%7D(y,%20%5Chat%7By%7D;%20%5C%7B%5CrmW,%20%5Cepsilon%5C%7D)%7D%7B%5Cpartial%20%5C%7B%5CrmW,%20%5Cepsilon%5C%7D%7D.%0A"></p>
+<p>If we assume that the only source of error in our model would the difference between the predicted outcome (<img src="https://latex.codecogs.com/png.latex?%5Chat%7By%7D">) and the actual value (<img src="https://latex.codecogs.com/png.latex?y">) of the dependent variable; then learning process would adjust the parameteris to minimise the error terms:</p>
+<p><span id="eq-least-square"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%5Chat%7By%7D%20&amp;%20=%20w_0%20+%20w_1%20x_1%20+%20...%20+%20w_n%20x_n%20%5C%5C%0A%5Cepsilon%20&amp;=%20y%20-%20%5Chat%7By%7D.%0A%5Cend%7Balign%7D%0A%5Ctag%7B2%7D"></span></p>
+<p>While directly minimising <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> is impractical, a common alternative is to optimise the following loss function:</p>
+<p><span id="eq-sum-of-squared-residuals"><img src="https://latex.codecogs.com/png.latex?%0A%5Carg%20%5Cmin%20%5Cmathcal%7BL%7D(y,%20%5Chat%7By%7D;%20%5CrmW)%20=%20(y%20-%20%5Chat%7By%7D)%5E2.%0A%5Ctag%7B3%7D"></span></p>
+<p>Note that Equation&nbsp;2 and Equation&nbsp;3 entail minimisation of <strong>the vertical distance</strong> between <img src="https://latex.codecogs.com/png.latex?%5Chat%7By%7D"> and <img src="https://latex.codecogs.com/png.latex?y">, also knonw as residuals. Thus, there is an implicit assumtion that the only possible error would be related to the model not being accurate enough in predicting the actual value, while the measurments of the independent variable are <strong>error-free</strong>. Finally, this sort of model formulation is usually known as the <em>least-square model</em> as Equation&nbsp;2 is called least-square method and Equation&nbsp;3 is the sum-of-sqaured-residual loss.</p>
 <div id="cell-fig-least-square" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
@@ -46,28 +47,36 @@ background-color: null;
 font-style: inherit;">as</span> np</span>
 <span id="cb1-2"><span class="im" style="color: #00769E;
 background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
 font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> plt</span>
-<span id="cb1-3"><span class="im" style="color: #00769E;
+<span id="cb1-4"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.linear_model <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> LinearRegression</span>
-<span id="cb1-4"></span>
-<span id="cb1-5">np.random.seed(<span class="dv" style="color: #AD0000;
+<span id="cb1-5"></span>
+<span id="cb1-6">n_datapoints <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">42</span>)</span>
-<span id="cb1-6">x <span class="op" style="color: #5E5E5E;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span></span>
+<span id="cb1-7">np.random.seed(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-8">x <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">*</span> np.random.rand(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>)</span>
-<span id="cb1-7">y <span class="op" style="color: #5E5E5E;
+font-style: inherit;">*</span> np.random.rand(n_datapoints)</span>
+<span id="cb1-9">y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -83,41 +92,323 @@ font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">*</span> np.random.randn(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>))</span>
-<span id="cb1-8">model <span class="op" style="color: #5E5E5E;
+font-style: inherit;">*</span> np.random.randn(n_datapoints))</span>
+<span id="cb1-10">model <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> LinearRegression(fit_intercept<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span>
-<span id="cb1-9">model.fit(x[:, np.newaxis], y)</span>
-<span id="cb1-10"><span class="co" style="color: #5E5E5E;
+<span id="cb1-11">model.fit(x[:, np.newaxis], y)</span>
+<span id="cb1-12"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># get prediction</span></span>
-<span id="cb1-11">y_pred <span class="op" style="color: #5E5E5E;
+<span id="cb1-13">y_pred <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> model.predict(x[:, np.newaxis])</span>
-<span id="cb1-12"></span>
-<span id="cb1-13"><span class="co" style="color: #5E5E5E;
+<span id="cb1-14"></span>
+<span id="cb1-15">residual <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y_pred</span>
+<span id="cb1-16"></span>
+<span id="cb1-17"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># get prediction for best line fit</span></span>
-<span id="cb1-14">xfit <span class="op" style="color: #5E5E5E;
+<span id="cb1-18">xfit <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.linspace(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">50</span>)</span>
-<span id="cb1-15">y_hat <span class="op" style="color: #5E5E5E;
+<span id="cb1-19">y_ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> model.predict(xfit[:, np.newaxis])</span>
-<span id="cb1-16"></span>
-<span id="cb1-17">fig, ax <span class="op" style="color: #5E5E5E;
+<span id="cb1-20"></span>
+<span id="cb1-21">fig, axs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> plt.subplots(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10.5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>))</span>
+<span id="cb1-22"></span>
+<span id="cb1-23">ax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> axs[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb1-24">ax.scatter(</span>
+<span id="cb1-25">    x,</span>
+<span id="cb1-26">    y,</span>
+<span id="cb1-27">    label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Data points"</span>,</span>
+<span id="cb1-28">    edgecolors<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"k"</span>,</span>
+<span id="cb1-29">)</span>
+<span id="cb1-30"></span>
+<span id="cb1-31"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># plot data</span></span>
+<span id="cb1-32">ax.plot(</span>
+<span id="cb1-33">    [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>],</span>
+<span id="cb1-34">    [y.mean(), y.mean()],</span>
+<span id="cb1-35">    color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#ff7f0e"</span>,</span>
+<span id="cb1-36">    label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Initial fit"</span>,</span>
+<span id="cb1-37">)</span>
+<span id="cb1-38"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(x)):</span>
+<span id="cb1-39">    ax.plot(</span>
+<span id="cb1-40">        [x[i], x[i]],</span>
+<span id="cb1-41">        [y[i], y.mean()],</span>
+<span id="cb1-42">        color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gray"</span>,</span>
+<span id="cb1-43">        linestyle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--"</span>,</span>
+<span id="cb1-44">    )</span>
+<span id="cb1-45">ax.grid(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb1-46">ax.set_xlabel(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>)</span>
+<span id="cb1-47">ax.set_ylabel(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>)</span>
+<span id="cb1-48">ax.legend()</span>
+<span id="cb1-49">ax.set_title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Initial model"</span>)</span>
+<span id="cb1-50"></span>
+<span id="cb1-51">ax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> axs[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]</span>
+<span id="cb1-52">ax.scatter(</span>
+<span id="cb1-53">    x,</span>
+<span id="cb1-54">    y,</span>
+<span id="cb1-55">    label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Data points"</span>,</span>
+<span id="cb1-56">    edgecolors<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"k"</span>,</span>
+<span id="cb1-57">)</span>
+<span id="cb1-58"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># plot best line fit</span></span>
+<span id="cb1-59">ax.plot(</span>
+<span id="cb1-60">    xfit,</span>
+<span id="cb1-61">    y_,</span>
+<span id="cb1-62">    color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#2ca02c"</span>,</span>
+<span id="cb1-63">    label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Best fit"</span>,</span>
+<span id="cb1-64">)</span>
+<span id="cb1-65"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Optionally, plot residuals (errors)</span></span>
+<span id="cb1-66"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(x)):</span>
+<span id="cb1-67">    ax.plot(</span>
+<span id="cb1-68">        [x[i], x[i]],</span>
+<span id="cb1-69">        [y[i], y_pred[i]],</span>
+<span id="cb1-70">        color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gray"</span>,</span>
+<span id="cb1-71">        linestyle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--"</span>,</span>
+<span id="cb1-72">    )</span>
+<span id="cb1-73">ax.scatter(</span>
+<span id="cb1-74">    x, y_pred, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"green"</span>, label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Predicted value"</span></span>
+<span id="cb1-75">)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># If you want to show where the predicted points lie on the line</span></span>
+<span id="cb1-76"></span>
+<span id="cb1-77">ax.annotate(</span>
+<span id="cb1-78">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"residual"</span>,</span>
+<span id="cb1-79">    xy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7.4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>),</span>
+<span id="cb1-80">    xycoords<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data"</span>,</span>
+<span id="cb1-81">    xytext<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>),</span>
+<span id="cb1-82">    textcoords<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"axes fraction"</span>,</span>
+<span id="cb1-83">    va<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"top"</span>,</span>
+<span id="cb1-84">    ha<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span>,</span>
+<span id="cb1-85">    arrowprops<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(</span>
+<span id="cb1-86">        arrowstyle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-&gt;"</span>,</span>
+<span id="cb1-87">        facecolor<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>,</span>
+<span id="cb1-88">    ),</span>
+<span id="cb1-89">)</span>
+<span id="cb1-90"></span>
+<span id="cb1-91">ax.grid(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb1-92">ax.set_xlabel(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>)</span>
+<span id="cb1-93">ax.set_ylabel(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>)</span>
+<span id="cb1-94">ax.set_title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fited model"</span>)</span>
+<span id="cb1-95">ax.legend()</span>
+<span id="cb1-96">plt.show()</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-least-square" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-least-square-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://andompesta.github.io/posts/linear_regression/index_files/figure-html/fig-least-square-output-1.png" width="856" height="376" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-least-square-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Linear model fitted to a given data distribution by means of least-square. Note that the differece between the predicted value and the given datapoint is known as residual.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A least square model relies on several key assumptions:</p>
+<ol type="1">
+<li>Linearity: There must be a linear relationship between the independent and dependent variables.</li>
+<li>Independence: The predictors should be independent of each other. This is vital for the model’s stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.</li>
+<li>Homoscedasticity: The residuals should be uniformly distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.</li>
+</ol>
+<section id="residual-plot" class="level2">
+<h2 class="anchored" data-anchor-id="residual-plot">Residual Plot</h2>
+<p>Residuals plots <span class="citation" data-cites="sefidianUnderstandingInterpreting">[2]</span> <span class="citation" data-cites="tsai1998examination">[3]</span> are one of the most common methods to validate the presence of Homoscedasticity. As shonw in Figure&nbsp;2, residuals plots disply the residual values of a regression as a function of the predicted values and helps in understanding if the model is a good fit for the given data. Namelly residuals plot can be used for:</p>
+<ol type="1">
+<li>Checking Homoscedasticity: A key assumption in linear regression is that the residuals have constant variance at every level of the independent variable(s) (homoscedasticity). If the residuals fan out or form a pattern as the predicted values increase, this indicates heteroscedasticity, which can lead to inefficient estimates and affect hypothesis testing.</li>
+<li>Identifying Non-Linearity: If the relationship between the variables is not linear, the residuals will often display a systematic pattern. A residuals plot can help identify such non-linear relationships, suggesting that a different model or a transformation of variables might be more appropriate.</li>
+<li>Detecting Outliers: Residuals plots can reveal outliers – points that have a much larger error than the other observations. These outliers can disproportionately influence the model fit and can be indicative of data entry errors, or that the outlier is from a different population.</li>
+<li>Evaluating Model Fit: If a model is a good fit for the data, the residuals should be randomly scattered around zero. Patterns or trends in the residuals suggest that the model is not capturing some aspect of the data, which could lead to biased or inaccurate predictions.</li>
+<li>Checking Independence of Residuals: For a good model, the residuals should be independent of each other. If there’s a pattern over time (in time series data) or a pattern associated with another variable, this is a sign that the model is missing a key piece of information.</li>
+<li>Verifying Normal Distribution of Residuals: In many forms of regression analysis (like linear regression), it’s assumed that residuals are normally distributed. By plotting the residuals and visually checking their distribution (or using statistical tests), we can validate this assumption. A common method is to use a Q-Q plot (quantile-quantile plot) to compare the distribution of the residuals to a normal distribution.</li>
+</ol>
+<div id="cell-fig-residual-plot" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">fig, ax <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> plt.subplots(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -127,168 +418,94 @@ font-style: inherit;">1</span>, figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+font-style: inherit;">7</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">6</span>))</span>
-<span id="cb1-18"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># plot data</span></span>
-<span id="cb1-19">ax.scatter(</span>
-<span id="cb1-20">    x,</span>
-<span id="cb1-21">    y,</span>
-<span id="cb1-22">    label<span class="op" style="color: #5E5E5E;
+font-style: inherit;">4</span>))</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">ax.scatter(y_pred, residual, label<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Data points"</span>,</span>
-<span id="cb1-23">    edgecolors<span class="op" style="color: #5E5E5E;
+font-style: inherit;">"residual"</span>, color<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"k"</span>,</span>
-<span id="cb1-24">)</span>
-<span id="cb1-25"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># plot best line fit</span></span>
-<span id="cb1-26">ax.plot(</span>
-<span id="cb1-27">    xfit,</span>
-<span id="cb1-28">    y_hat,</span>
-<span id="cb1-29">    color<span class="op" style="color: #5E5E5E;
+font-style: inherit;">"gray"</span>, edgecolors<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"#ff7f0e"</span>,</span>
-<span id="cb1-30">    label<span class="op" style="color: #5E5E5E;
+font-style: inherit;">"k"</span>)</span>
+<span id="cb2-6">ax.hlines(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, colors<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Best fit"</span>,</span>
-<span id="cb1-31">)</span>
-<span id="cb1-32"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Optionally, plot residuals (errors)</span></span>
-<span id="cb1-33"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(x)):</span>
-<span id="cb1-34">    plt.plot(</span>
-<span id="cb1-35">        [x[i], x[i]],</span>
-<span id="cb1-36">        [y[i], y_pred[i]],</span>
-<span id="cb1-37">        color<span class="op" style="color: #5E5E5E;
+font-style: inherit;">"k"</span>, linestyles<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"gray"</span>,</span>
-<span id="cb1-38">        linestyle<span class="op" style="color: #5E5E5E;
+font-style: inherit;">"dashed"</span>)</span>
+<span id="cb2-7"></span>
+<span id="cb2-8">z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.polyfit(y_pred, residual, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb2-9">residual_pred <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (z[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> y_pred) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> z[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]</span>
+<span id="cb2-10">ax.plot(y_pred, residual_pred, color<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"--"</span>,</span>
-<span id="cb1-39">    )</span>
-<span id="cb1-40">plt.scatter(</span>
-<span id="cb1-41">    x, y_pred, color<span class="op" style="color: #5E5E5E;
+font-style: inherit;">"red"</span>, label<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"green"</span>, label<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Predicted value"</span></span>
-<span id="cb1-42">)  <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># If you want to show where the predicted points lie on the line</span></span>
-<span id="cb1-43"></span>
-<span id="cb1-44">ax.annotate(</span>
-<span id="cb1-45">    <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"residual"</span>,</span>
-<span id="cb1-46">    xy<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">7.4</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">13</span>),</span>
-<span id="cb1-47">    xycoords<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"data"</span>,</span>
-<span id="cb1-48">    xytext<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.8</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.5</span>),</span>
-<span id="cb1-49">    textcoords<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"axes fraction"</span>,</span>
-<span id="cb1-50">    va<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"top"</span>,</span>
-<span id="cb1-51">    ha<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"left"</span>,</span>
-<span id="cb1-52">    arrowprops<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">dict</span>(arrowstyle<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"-&gt;"</span>, facecolor<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"black"</span>,),</span>
-<span id="cb1-53">)</span>
-<span id="cb1-54"></span>
-<span id="cb1-55">ax.grid(<span class="va" style="color: #111111;
+font-style: inherit;">"residual fit"</span>)</span>
+<span id="cb2-11"></span>
+<span id="cb2-12">ax.grid(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span>
-<span id="cb1-56">ax.set_xlabel(<span class="st" style="color: #20794D;
+<span id="cb2-13">ax.set_xlabel(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"x"</span>)</span>
-<span id="cb1-57">ax.set_ylabel(<span class="st" style="color: #20794D;
+font-style: inherit;">"prediction"</span>)</span>
+<span id="cb2-14">ax.set_ylabel(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"y"</span>)</span>
-<span id="cb1-58">ax.legend()</span>
-<span id="cb1-59">plt.show()</span></code></pre></div>
+font-style: inherit;">"residual"</span>)</span>
+<span id="cb2-15">ax.legend()</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-least-square" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-residual-plot" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-least-square-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://andompesta.github.io/posts/linear_regression/index_files/figure-html/fig-least-square-output-1.png" width="662" height="503" class="figure-img">
+<div aria-describedby="fig-residual-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://andompesta.github.io/posts/linear_regression/index_files/figure-html/fig-residual-plot-output-1.png" width="596" height="356" class="figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-least-square-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Linear model fitted to a given data distribution by means of least-square. Note that the differece between the predicted value and the given datapoint is known as residual.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-residual-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Residual plot. As you can see, the residual are simmetrically randomly distributed and in general, there aren’t any clear patterns. Moreover, the best-fit line to the residual is almost identical to the x-axis (y=0) indicating independence bewteen residuals and predicted values.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Linear regression relies on several key assumptions:</p>
-<ol type="1">
-<li>Linearity: There must be a linear relationship between the independent and dependent variables.</li>
-<li>Independence: The predictors should be independent of each other. This is vital for the model’s stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.</li>
-<li>Homoscedasticity: The residuals should be normally distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.</li>
-</ol>
-<p>Verifying these assumptions is crucial for ensuring the reliability and validity of the regression analysis.</p>
+</section>
+<section id="total-least-squares" class="level2">
+<h2 class="anchored" data-anchor-id="total-least-squares">Total Least Squares</h2>
+<p>Total Least Squares <span class="citation" data-cites="markovsky2007overview">[4]</span> (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of <img src="https://latex.codecogs.com/png.latex?y">, but also in the dependent variable <img src="https://latex.codecogs.com/png.latex?x">.</p>
+</section>
 <section id="robust-linear-model" class="level2">
 <h2 class="anchored" data-anchor-id="robust-linear-model">Robust Linear Model</h2>
 <p>In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through <a href="https://www.youtube.com/watch?v=Q81RR3yKn30&amp;ab_channel=StatQuestwithJoshStarmer"><strong>Ridge Regression</strong></a>, described by the formula:</p>
@@ -335,17 +552,22 @@ Figure&nbsp;1: Linear model fitted to a given data distribution by means of leas
 </ol>
 </section>
 </section>
-<section id="residual-plots" class="level1">
-<h1>Residual Plots</h1>
-<p><a href="https://sefidian.com/2020/04/27/understanding-and-interpreting-residuals-plot-for-linear-regression/">Residuals plots</a> are a type of diagrams that has the residuals on the y-axes and the predicted value on x-axes. The residuals should have a uniform distribution. These types of plots are usefull to assess the performance of the model as well as assess how clean the dataset is. Namelly residuals plot can be used for:</p>
-<ol type="1">
-<li>Checking Homoscedasticity: A key assumption in linear regression is that the residuals have constant variance at every level of the independent variable(s) (homoscedasticity). If the residuals fan out or form a pattern as the predicted values increase, this indicates heteroscedasticity, which can lead to inefficient estimates and affect hypothesis testing.</li>
-<li>Identifying Non-Linearity: If the relationship between the variables is not linear, the residuals will often display a systematic pattern. A residuals plot can help identify such non-linear relationships, suggesting that a different model or a transformation of variables might be more appropriate.</li>
-<li>Detecting Outliers: Residuals plots can reveal outliers – points that have a much larger error than the other observations. These outliers can disproportionately influence the model fit and can be indicative of data entry errors, or that the outlier is from a different population.</li>
-<li>Evaluating Model Fit: If a model is a good fit for the data, the residuals should be randomly scattered around zero. Patterns or trends in the residuals suggest that the model is not capturing some aspect of the data, which could lead to biased or inaccurate predictions.</li>
-<li>Checking Independence of Residuals: For a good model, the residuals should be independent of each other. If there’s a pattern over time (in time series data) or a pattern associated with another variable, this is a sign that the model is missing a key piece of information.</li>
-<li>Verifying Normal Distribution of Residuals: In many forms of regression analysis (like linear regression), it’s assumed that residuals are normally distributed. By plotting the residuals and visually checking their distribution (or using statistical tests), we can validate this assumption. A common method is to use a Q-Q plot (quantile-quantile plot) to compare the distribution of the residuals to a normal distribution.</li>
-</ol>
+<section id="references" class="level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-montgomery2021introduction" class="csl-entry">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Montgomery DC, Peck EA, Vining GG (2021) Introduction to linear regression analysis. John Wiley &amp; Sons</div>
+</div>
+<div id="ref-sefidianUnderstandingInterpreting" class="csl-entry">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline"><span>U</span>nderstanding and interpreting <span>R</span>esiduals <span>P</span>lot for linear regression - <span>A</span>mir <span>M</span>asoud <span>S</span>efidian - <span>S</span>efidian <span>A</span>cademy — sefidian.com</div>
+</div>
+<div id="ref-tsai1998examination" class="csl-entry">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Tsai C-L, Cai Z, Wu X (1998) The examination of residual plots. Statistica Sinica 445–465</div>
+</div>
+<div id="ref-markovsky2007overview" class="csl-entry">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Markovsky I, Van Huffel S (2007) Overview of total least-squares methods. Signal processing 87(10):2283–2302</div>
+</div>
+</div>
 
 
 </section>
