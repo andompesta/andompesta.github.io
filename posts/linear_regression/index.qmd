@@ -28,31 +28,36 @@ The fundamental formulation of linear regression is as follows:
 
 $$
 \begin{align}
-\hat{y} & = \epsilon + w_0 + w_1 x_1 + ... + w_n x_n \\
- & = \epsilon + \rmW \rmX
+y & = w_0 + w_1 x_1 + ... + w_n x_n + \epsilon \\
+ & = \rmW \rmX + \epsilon
 \end{align}
 $${#eq-linear-model}
 
 where:
 
-- $\hat{y}$ is the dependent variable, also referred to as the response, target, or outcome variable.
+- $y$ is the dependent variable, also referred to as the response, target, or outcome variable.
 - $x_i$ represents the independent variables, also known as predictors or features.
-- $w_i$ are the coefficients corresponding to the independent variables. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.
+- $w_i$ are the model parameters establishing a linear relationship between the independent variables and the target. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.
 - $\epsilon$ is the error term, which account for the viariability in $y$ that can not be explained by linear model.
 
-The learning process involves adjusting the model's coefficients to minimize the sum of the squared differences between the observed and predicted values:
+If we assume that the only source of error in our model would the difference between the predicted outcome ($\hat{y}$) and the actual value ($y$) of the dependent variable; then learning process would adjust the parameteris to minimise the error terms:
 
 $$
-\mathcal{L}(y, \hat{y}) = (y - \hat{y})^2
+\begin{align}
+\hat{y} & = w_0 + w_1 x_1 + ... + w_n x_n \\
+\epsilon &= y - \hat{y}.
+\end{align}
 $$ {#eq-least-square}
 
-Here, $\hat{y}$ is the predicted value and ${y}$ is the actual value for a given training example. Note that, [@eq-least-square] is the main reason why linear models are often referred to as least squares estimators, as their objective is to fine the parameters that minimise a square difference between two value. As shown in @fig-least-square, the training process adjusts the model's parameters $\{\rmW, \epsilon\}$ to minimize this loss:
+While directly minimising $\epsilon$ is impractical, a common alternative is to optimise the following loss function:
 
 $$
-\frac{\partial \mathcal{L}(y, \hat{y}; \{\rmW, \epsilon\})}{\partial \{\rmW, \epsilon\}}
-$$
+\arg \min \mathcal{L}(y, \hat{y}; \rmW) = (y - \hat{y})^2.
+$$ {#eq-sum-of-squared-residuals}
 
-which is equivalent to minimise the residual distance between the predicted value and the actual value.
+Note that [@eq-least-square] and [@eq-sum-of-squared-residuals] entail minimisation of **the vertical distance** between $\hat{y}$ and $y$, also knonw as residuals.
+Thus, there is an implicit assumtion that the only possible error would be related to the model not being accurate enough in predicting the actual value, while the measurments of the independent variable are **error-free**.
+Finally, this sort of model formulation is usually known as the *least-square model* as [@eq-least-square] is called least-square method and [@eq-sum-of-squared-residuals] is the sum-of-sqaured-residual loss.
 
 ```{python}
 # | label: fig-least-square
@@ -156,7 +161,7 @@ ax.legend()
 plt.show()
 ```
 
-Linear regression relies on several key assumptions:
+A least square model relies on several key assumptions:
 
 1. Linearity: There must be a linear relationship between the independent and dependent variables.
 2. Independence: The predictors should be independent of each other. This is vital for the model's stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.
@@ -198,10 +203,11 @@ ax.set_ylabel("residual")
 ax.legend()
 ```
 
-<!-- ## Total Least Squares
+## Total Least Squares
 
-When we introduced the linear regresion
-Total Least Squares [@markovsky2007overview] (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of $y$, but also in the dependent variable $x$. -->
+
+
+Total Least Squares [@markovsky2007overview] (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of $y$, but also in the dependent variable $x$.
 
 
 ## Robust Linear Model
