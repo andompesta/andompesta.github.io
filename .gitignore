@@ -11,3 +11,4 @@ svgo.config.js
 /.quarto/
 /_site/
 /docs/
+/_freeze/
