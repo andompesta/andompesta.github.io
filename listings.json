@@ -2,6 +2,7 @@
   {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/linear_regression/index.html",
       "/posts/normalization_flow/index.html",
       "/posts/finetune/index.html",
       "/posts/data_preprocessing/index.html",
