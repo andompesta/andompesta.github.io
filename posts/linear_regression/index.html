@@ -198,7 +198,6 @@ window.Quarto = {
   <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link active" data-scroll-target="#linear-regression">Linear Regression</a>
   <ul class="collapse">
   <li><a href="#residual-plot" id="toc-residual-plot" class="nav-link" data-scroll-target="#residual-plot">Residual Plot</a></li>
-  <li><a href="#total-least-squares" id="toc-total-least-squares" class="nav-link" data-scroll-target="#total-least-squares">Total Least Squares</a></li>
   <li><a href="#robust-linear-model" id="toc-robust-linear-model" class="nav-link" data-scroll-target="#robust-linear-model">Robust Linear Model</a></li>
   <li><a href="#parameters-analysis" id="toc-parameters-analysis" class="nav-link" data-scroll-target="#parameters-analysis">Parameter’s Analysis</a></li>
   <li><a href="#r-squared" id="toc-r-squared" class="nav-link" data-scroll-target="#r-squared">R-squared</a></li>
@@ -380,24 +379,25 @@ y &amp; = w_0 + w_1 x_1 + ... + w_n x_n + \epsilon \\
 <span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>ax.annotate(</span>
 <span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>    <span class="st">"residual"</span>,</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>    xy<span class="op">=</span>(<span class="fl">7.4</span>, <span class="dv">13</span>),</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>    xy<span class="op">=</span>(<span class="dv">1</span>, <span class="op">-</span><span class="dv">10</span>),</span>
 <span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>    xycoords<span class="op">=</span><span class="st">"data"</span>,</span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>    xytext<span class="op">=</span>(<span class="fl">0.8</span>, <span class="fl">0.5</span>),</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>    xytext<span class="op">=</span>(<span class="fl">0.2</span>, <span class="fl">0.1</span>),</span>
 <span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>    textcoords<span class="op">=</span><span class="st">"axes fraction"</span>,</span>
 <span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    va<span class="op">=</span><span class="st">"top"</span>,</span>
 <span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"left"</span>,</span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>    arrowprops<span class="op">=</span><span class="bu">dict</span>(</span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>        arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>,</span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>        facecolor<span class="op">=</span><span class="st">"black"</span>,</span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"x"</span>)</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"y"</span>)</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Fited model"</span>)</span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>    arrowprops<span class="op">=</span><span class="bu">dict</span>(</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>        arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>,</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>        facecolor<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"x"</span>)</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"y"</span>)</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Fited model"</span>)</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-least-square" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -461,10 +461,11 @@ Figure&nbsp;2: Residual plot. As you can see, the residual are simmetrically ran
 </div>
 </div>
 </div>
-</section>
-<section id="total-least-squares" class="level2">
-<h2 class="anchored" data-anchor-id="total-least-squares">Total Least Squares</h2>
-<p>Total Least Squares <span class="citation" data-cites="markovsky2007overview">[<a href="#ref-markovsky2007overview" role="doc-biblioref">4</a>]</span> (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of <span class="math inline">\(y\)</span>, but also in the dependent variable <span class="math inline">\(x\)</span>.</p>
+<!-- ## Total Least Squares
+
+
+
+Total Least Squares [@markovsky2007overview] (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of $y$, but also in the dependent variable $x$. -->
 </section>
 <section id="robust-linear-model" class="level2">
 <h2 class="anchored" data-anchor-id="robust-linear-model">Robust Linear Model</h2>
@@ -536,9 +537,6 @@ Y = \epsilon + w_1 X_1 + ... + w_n X_n + w_{n+1} (X_i \cdot X_j)
 </div>
 <div id="ref-tsai1998examination" class="csl-entry" role="listitem">
 <div class="csl-left-margin">3. </div><div class="csl-right-inline">Tsai C-L, Cai Z, Wu X (1998) The examination of residual plots. Statistica Sinica 445–465</div>
-</div>
-<div id="ref-markovsky2007overview" class="csl-entry" role="listitem">
-<div class="csl-left-margin">4. </div><div class="csl-right-inline">Markovsky I, Van Huffel S (2007) Overview of total least-squares methods. Signal processing 87(10):2283–2302</div>
 </div>
 </div>
 

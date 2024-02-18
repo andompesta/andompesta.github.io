@@ -304,11 +304,13 @@ background-color: null;
 font-style: inherit;">"residual"</span>,</span>
 <span id="cb1-79">    xy<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">7.4</span>, <span class="dv" style="color: #AD0000;
+font-style: inherit;">1</span>, <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">13</span>),</span>
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>),</span>
 <span id="cb1-80">    xycoords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
@@ -318,9 +320,9 @@ font-style: inherit;">"data"</span>,</span>
 background-color: null;
 font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0.8</span>, <span class="fl" style="color: #AD0000;
+font-style: inherit;">0.2</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0.5</span>),</span>
+font-style: inherit;">0.1</span>),</span>
 <span id="cb1-82">    textcoords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
@@ -336,38 +338,43 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"left"</span>,</span>
-<span id="cb1-85">    arrowprops<span class="op" style="color: #5E5E5E;
+<span id="cb1-85">    fontsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>,</span>
+<span id="cb1-86">    arrowprops<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">dict</span>(</span>
-<span id="cb1-86">        arrowstyle<span class="op" style="color: #5E5E5E;
+<span id="cb1-87">        arrowstyle<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"-&gt;"</span>,</span>
-<span id="cb1-87">        facecolor<span class="op" style="color: #5E5E5E;
+<span id="cb1-88">        facecolor<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"black"</span>,</span>
-<span id="cb1-88">    ),</span>
-<span id="cb1-89">)</span>
-<span id="cb1-90"></span>
-<span id="cb1-91">ax.grid(<span class="va" style="color: #111111;
+<span id="cb1-89">    ),</span>
+<span id="cb1-90">)</span>
+<span id="cb1-91"></span>
+<span id="cb1-92">ax.grid(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span>
-<span id="cb1-92">ax.set_xlabel(<span class="st" style="color: #20794D;
+<span id="cb1-93">ax.set_xlabel(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"x"</span>)</span>
-<span id="cb1-93">ax.set_ylabel(<span class="st" style="color: #20794D;
+<span id="cb1-94">ax.set_ylabel(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"y"</span>)</span>
-<span id="cb1-94">ax.set_title(<span class="st" style="color: #20794D;
+<span id="cb1-95">ax.set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Fited model"</span>)</span>
-<span id="cb1-95">ax.legend()</span>
-<span id="cb1-96">plt.show()</span></code></pre></div>
+<span id="cb1-96">ax.legend()</span>
+<span id="cb1-97">plt.show()</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-least-square" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -501,10 +508,11 @@ Figure&nbsp;2: Residual plot. As you can see, the residual are simmetrically ran
 </div>
 </div>
 </div>
-</section>
-<section id="total-least-squares" class="level2">
-<h2 class="anchored" data-anchor-id="total-least-squares">Total Least Squares</h2>
-<p>Total Least Squares <span class="citation" data-cites="markovsky2007overview">[4]</span> (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of <img src="https://latex.codecogs.com/png.latex?y">, but also in the dependent variable <img src="https://latex.codecogs.com/png.latex?x">.</p>
+<!-- ## Total Least Squares
+
+
+
+Total Least Squares [@markovsky2007overview] (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of $y$, but also in the dependent variable $x$. -->
 </section>
 <section id="robust-linear-model" class="level2">
 <h2 class="anchored" data-anchor-id="robust-linear-model">Robust Linear Model</h2>
@@ -563,9 +571,6 @@ Figure&nbsp;2: Residual plot. As you can see, the residual are simmetrically ran
 </div>
 <div id="ref-tsai1998examination" class="csl-entry">
 <div class="csl-left-margin">3. </div><div class="csl-right-inline">Tsai C-L, Cai Z, Wu X (1998) The examination of residual plots. Statistica Sinica 445–465</div>
-</div>
-<div id="ref-markovsky2007overview" class="csl-entry">
-<div class="csl-left-margin">4. </div><div class="csl-right-inline">Markovsky I, Van Huffel S (2007) Overview of total least-squares methods. Signal processing 87(10):2283–2302</div>
 </div>
 </div>
 
