@@ -8,3 +8,4 @@ bibtexparser
 beautifulsoup4
 requests
 jupyter
+ipywidgets
