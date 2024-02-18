@@ -13,6 +13,9 @@ comments:
 format:
   html:
     toc: true
+    code-fold: true
+execute:
+  freeze: auto  # re-render only when source changes
 ---
 
 # Linear Regression
@@ -21,27 +24,101 @@ Linear regression is a widely utilized and straightforward machine learning mode
 It establishes a linear relationship between a dependent variable (represented on the y-axis) and one or more independent variables (represented on the x-axis). 
 The fundamental formulation of linear regression is as follows:
 
+{{< include macro.tex >}}
+
 $$
-Y = \epsilon + w_1 X_1 + ... + w_n X_n
-$$
+\begin{align}
+\hat{y} & = \epsilon + w_1 x_1 + ... + w_n x_n \\
+ & = \epsilon + \rmW \rmX
+\end{align}
+$${#eq-linear-model}
 
 where:
-- $Y$ is the dependent variable, also referred to as the response, target, or outcome variable.
-- $X_i$ represents the independent variables, also known as predictors or features.
+
+- $\hat{y}$ is the dependent variable, also referred to as the response, target, or outcome variable.
+- $x_i$ represents the independent variables, also known as predictors or features.
 - $w_i$ are the coefficients corresponding to the independent variables. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.
-- $\epsilon$ is the bias term, which account for the viariability in $Y$ that can not be explained by linear model.
+- $\epsilon$ is the bias term, which account for the viariability in $y$ that can not be explained by linear model.
 
 The learning process involves adjusting the model's coefficients to minimize the sum of the squared differences between the observed and predicted values:
 
 $$
-\mathcal{L}(Y, \hat{Y}) = (Y - \hat{Y})^2
+\mathcal{L}(y, \hat{y}) = (y - \hat{y})^2
+$$ {#eq-least-square}
+
+Here, $\hat{y}$ is the predicted value and ${y}$ is the actual value for a given training example. Note that, @eq-least-square is the main reason why linear models are often referred to as least squares estimators, as their objective is to fine the parameters that minimise a square difference between two value. As shown in @fig-least-square, the training process adjusts the model's parameters $\{\rmW, \epsilon\}$ to minimize this loss:
+
+$$
+\frac{\partial \mathcal{L}(y, \hat{y}; \{\rmW, \epsilon\})}{\partial \{\rmW, \epsilon\}}.
 $$
 
-Here, $\mathbf{Y}$ is the predicted value and $\hat{\mathbf{Y}}$ is the actual value for a given training example. This loss formulation is why linear models are often referred to as least squares estimators. The training process adjusts the model's parameters $\theta$ to minimize this loss:
 
-$$
-\frac{\partial \mathcal{L}(Y, \hat{Y}; \theta)}{\partial \theta}.
-$$
+```{python}
+# | label: fig-least-square
+# | fig-cap: "Linear model fitted to a given data distribution by means of least-square. Note that the differece between the predicted value and the given datapoint is known as residual."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+np.random.seed(42)
+x = 10 * np.random.rand(5)
+y = 2 * x + 1 + (10 * np.random.randn(5))
+model = LinearRegression(fit_intercept=True)
+model.fit(x[:, np.newaxis], y)
+# get prediction
+y_pred = model.predict(x[:, np.newaxis])
+
+# get prediction for best line fit
+xfit = np.linspace(0, 10, 50)
+y_hat = model.predict(xfit[:, np.newaxis])
+
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+# plot data
+ax.scatter(
+    x,
+    y,
+    label="Data points",
+    edgecolors="k",
+)
+# plot best line fit
+ax.plot(
+    xfit,
+    y_hat,
+    color="#ff7f0e",
+    label="Best fit",
+)
+# Optionally, plot residuals (errors)
+for i in range(len(x)):
+    plt.plot(
+        [x[i], x[i]],
+        [y[i], y_pred[i]],
+        color="gray",
+        linestyle="--",
+    )
+plt.scatter(
+    x, y_pred, color="green", label="Predicted value"
+)  # If you want to show where the predicted points lie on the line
+
+ax.annotate(
+    "residual",
+    xy=(7.4, 13),
+    xycoords="data",
+    xytext=(0.8, 0.5),
+    textcoords="axes fraction",
+    va="top",
+    ha="left",
+    arrowprops=dict(arrowstyle="->", facecolor="black",),
+)
+
+ax.grid(True)
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.legend()
+plt.show()
+```
+
+
 
 Linear regression relies on several key assumptions:
 
