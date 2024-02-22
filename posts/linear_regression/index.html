@@ -197,6 +197,7 @@ window.Quarto = {
   <ul>
   <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link active" data-scroll-target="#linear-regression">Linear Regression</a>
   <ul class="collapse">
+  <li><a href="#least-square-estimation" id="toc-least-square-estimation" class="nav-link" data-scroll-target="#least-square-estimation">Least square estimation</a></li>
   <li><a href="#residual-plot" id="toc-residual-plot" class="nav-link" data-scroll-target="#residual-plot">Residual Plot</a></li>
   <li><a href="#robust-linear-model" id="toc-robust-linear-model" class="nav-link" data-scroll-target="#robust-linear-model">Robust Linear Model</a></li>
   <li><a href="#parameters-analysis" id="toc-parameters-analysis" class="nav-link" data-scroll-target="#parameters-analysis">Parameter’s Analysis</a></li>
@@ -253,12 +254,16 @@ window.Quarto = {
 \newcommand{\rva}{\mathbf{a}}
 \newcommand{\rvb}{\mathbf{b}}
 \newcommand{\rvc}{\mathbf{c}}
+\newcommand{\rvd}{\mathbf{d}}
 \newcommand{\rve}{\mathbf{e}}
 \newcommand{\rvi}{\mathbf{i}}
 \newcommand{\rvj}{\mathbf{j}}
+\newcommand{\rvq}{\mathbf{q}}
 \newcommand{\rvu}{\mathbf{u}}
 \newcommand{\rvv}{\mathbf{v}}
+\newcommand{\rvw}{\mathbf{w}}
 \newcommand{\rvx}{\mathbf{x}}
+\newcommand{\rvy}{\mathbf{y}}
 \newcommand{\rmA}{\mathbf{A}}
 \newcommand{\rmB}{\mathbf{B}}
 \newcommand{\rmC}{\mathbf{C}}
@@ -274,10 +279,7 @@ window.Quarto = {
 \newcommand{\real}{\mathbb{R}}
 \]</span></p>
 <p><span id="eq-linear-model"><span class="math display">\[
-\begin{align}
-y &amp; = w_0 + w_1 x_1 + ... + w_n x_n + \epsilon \\
-&amp; = \rmW \rmX + \epsilon
-\end{align}
+y = w_0 + w_1 x_1 + ... + w_n x_n + \epsilon
 \tag{1}\]</span></span></p>
 <p>where:</p>
 <ul>
@@ -295,7 +297,7 @@ y &amp; = w_0 + w_1 x_1 + ... + w_n x_n + \epsilon \\
 \tag{2}\]</span></span></p>
 <p>While directly minimising <span class="math inline">\(\epsilon\)</span> is impractical, a common alternative is to optimise the following loss function:</p>
 <p><span id="eq-sum-of-squared-residuals"><span class="math display">\[
-\arg \min \mathcal{L}(y, \hat{y}; \rmW) = (y - \hat{y})^2.
+\arg \min \mathcal{L}(y, \hat{y}; \rvw) = (y - \hat{y})^2.
 \tag{3}\]</span></span></p>
 <p>Note that <a href="#eq-least-square" class="quarto-xref">Equation&nbsp;2</a> and <a href="#eq-sum-of-squared-residuals" class="quarto-xref">Equation&nbsp;3</a> entail minimisation of <strong>the vertical distance</strong> between <span class="math inline">\(\hat{y}\)</span> and <span class="math inline">\(y\)</span>, also knonw as residuals. Thus, there is an implicit assumtion that the only possible error would be related to the model not being accurate enough in predicting the actual value, while the measurments of the independent variable are <strong>error-free</strong>. Finally, this sort of model formulation is usually known as the <em>least-square model</em> as <a href="#eq-least-square" class="quarto-xref">Equation&nbsp;2</a> is called least-square method and <a href="#eq-sum-of-squared-residuals" class="quarto-xref">Equation&nbsp;3</a> is the sum-of-sqaured-residual loss.</p>
 <div id="cell-fig-least-square" class="cell" data-execution_count="1">
@@ -412,12 +414,40 @@ Figure&nbsp;1: Linear model fitted to a given data distribution by means of leas
 </div>
 </div>
 </div>
-<p>A least square model relies on several key assumptions:</p>
+<section id="least-square-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="least-square-estimation">Least square estimation</h3>
+<p>As shown in <a href="#fig-least-square" class="quarto-xref">Figure&nbsp;1</a> a linear model find the line that minimises the distnace between the fitted line and the data points. While it is possible to use SGD to find a solution, a better solution to <a href="#eq-sum-of-squared-residuals" class="quarto-xref">Equation&nbsp;3</a> can be obtained by linear algebra. Assuming a dataset with composed of m elements, we can rewrite the loss function as:</p>
+<p><span id="eq-derivation"><span class="math display">\[
+\begin{align}
+\arg \min \mathcal{L}(y, \hat{y}) &amp;= \sum_{i=1}^m(y_i - \hat{y}_i)^2 \\
+&amp; = (\rvy^T - (\rmX \rvw^T))^2 \\
+&amp; = \rvd^2 \\
+&amp; = \rvd \rvd^T \\
+&amp; = || \rvd ||^2
+\end{align}
+\tag{4}\]</span></span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(\rvy^T\)</span> is the collumn vector <span class="math inline">\(\left[\begin{align} y_1 \\ \vdots \\ y_m \end{align}\right]\)</span>;</li>
+<li><span class="math inline">\(\rmX\)</span> is the <span class="math inline">\(m \times n\)</span> matrix <span class="math inline">\(\left[\begin{array}{ccc} 1 &amp; x_{1,1} &amp; \cdots &amp; x_{n,1} \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\ 1 &amp; x_{1,m} &amp; \cdots &amp; x_{n,m}\end{array}\right]\)</span>;</li>
+<li><span class="math inline">\(\rvw^T\)</span> is the is the column vector <span class="math inline">\(\left[\begin{align} w_0 \\ w_1 \\ \vdots \\ w_n \end{align}\right]\)</span>;</li>
+<li><span class="math inline">\(\rvd\)</span> is the row vector <span class="math inline">\(\left[y_1 - \hat{y}_1, ...,  y_m - \hat{y}_m\right]\)</span>.</li>
+</ul>
+<p>It is then possible to compute the optimal paramters by differenciating w.r.t. <span class="math inline">\(\rvw\)</span>: <span class="math display">\[
+\begin{align}
+\frac{\partial \mathcal{L}(y, \hat{y})}{\partial \rvw^T} = &amp; || \rvy^T - \rmX \rvw^T ||^2  = 0 \\
+&amp; 2\rmX^T (\rvy^T - \rmX \rvw^T) = 0 \\
+&amp; \rmX^T\rvy^T - \rmX^T \rmX \rvw^T = 0 \\
+&amp; \rvw^T = \frac{\rmX^T\rvy^T}{\rmX^T \rmX}
+\end{align}
+\]</span></p>
+<p>Note that <span class="math inline">\(\rmX^T \rmX\)</span> is an <span class="math inline">\(n \times n\)</span> matrix; thus could be invertible, <span class="math inline">\(\rmX^T\rvy^T\)</span> is an <span class="math inline">\(n \times 1\)</span> column vector and <span class="math inline">\(\rvw^T\)</span> is the <span class="math inline">\(n \times 1\)</span> column vector of unknown parameters. Finally, it is important to list some of the key assumptions of this type of model:</p>
 <ol type="1">
 <li>Linearity: There must be a linear relationship between the independent and dependent variables.</li>
 <li>Independence: The predictors should be independent of each other. This is vital for the model’s stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.</li>
 <li>Homoscedasticity: The residuals should be uniformly distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.</li>
 </ol>
+</section>
 <section id="residual-plot" class="level2">
 <h2 class="anchored" data-anchor-id="residual-plot">Residual Plot</h2>
 <p>Residuals plots <span class="citation" data-cites="sefidianUnderstandingInterpreting">[<a href="#ref-sefidianUnderstandingInterpreting" role="doc-biblioref">2</a>]</span> <span class="citation" data-cites="tsai1998examination">[<a href="#ref-tsai1998examination" role="doc-biblioref">3</a>]</span> are one of the most common methods to validate the presence of Homoscedasticity. As shonw in <a href="#fig-residual-plot" class="quarto-xref">Figure&nbsp;2</a>, residuals plots disply the residual values of a regression as a function of the predicted values and helps in understanding if the model is a good fit for the given data. Namelly residuals plot can be used for:</p>
