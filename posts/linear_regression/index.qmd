@@ -27,21 +27,21 @@ The fundamental formulation of linear regression is as follows:
 {{< include macro.tex >}}
 
 $$
-y = w_0 + w_1 x_1 + ... + w_n x_n + \epsilon
+y = w_0 + w_1 x_1 + ... + w_k x_k + \epsilon
 $${#eq-linear-model}
 
 where:
 
 - $y$ is the dependent variable, also referred to as the response, target, or outcome variable.
-- $x_i$ represents the independent variables, also known as predictors or features.
-- $w_i$ are the model parameters establishing a linear relationship between the independent variables and the target. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.
+- $x_k$ represents the independent variables, also known as predictors or features.
+- $w_k$ are the model parameters establishing a linear relationship between the independent variables and the target. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.
 - $\epsilon$ is the error term, which account for the viariability in $y$ that can not be explained by linear model.
 
-If we assume that the only source of error in our model would the difference between the predicted outcome ($\hat{y}$) and the actual value ($y$) of the dependent variable; then learning process would adjust the parameteris to minimise the error terms:
+If we assume that the only source of error in our model would the difference between the predicted outcome ($\hat{y}$) and the actual value ($y$) of the dependent variable; then learning process would adjust the parameters $w_i$ to minimise the error terms:
 
 $$
 \begin{align}
-\hat{y} & = w_0 + w_1 x_1 + ... + w_n x_n \\
+\hat{y} & = w_0 + w_1 x_1 + ... + w_k x_k \\
 \epsilon &= y - \hat{y}.
 \end{align}
 $$ {#eq-least-square}
@@ -54,7 +54,7 @@ $$ {#eq-sum-of-squared-residuals}
 
 Note that [@eq-least-square] and [@eq-sum-of-squared-residuals] entail minimisation of **the vertical distance** between $\hat{y}$ and $y$, also knonw as residuals.
 Thus, there is an implicit assumtion that the only possible error would be related to the model not being accurate enough in predicting the actual value, while the measurments of the independent variable are **error-free**.
-Finally, this sort of model formulation is usually known as the *least-square model* as [@eq-least-square] is called least-square method and [@eq-sum-of-squared-residuals] is the sum-of-sqaured-residual loss.
+This sort of model formulation is usually known as the *least-square model* as [@eq-least-square] is called least-square method and [@eq-sum-of-squared-residuals] is the sum-of-sqaured-residual loss.
 
 ```{python}
 # | label: fig-least-square
@@ -159,44 +159,50 @@ ax.legend()
 plt.show()
 ```
 
-### Least square estimation
+
+Finally, it is important to list some of the key assumptions of this type of model:
+
+1. Linearity: There must be a linear relationship between the independent and dependent variables.
+2. Independence: The predictors should be independent of each other. This is vital for the model's stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.
+3. Homoscedasticity: The residuals should be uniformly distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.
+
+### Least Square Estimation
 As shown in [@fig-least-square] a linear model find the line that minimises the distnace between the fitted line and the data points.
-While it is possible to use SGD to find a solution, a better solution to [@eq-sum-of-squared-residuals] can be obtained by linear algebra.
- Assuming a dataset with composed of m elements, we can rewrite the loss function as:
+While it is possible to use stochastic gradient descent, a more compact solution to [@eq-sum-of-squared-residuals] can be obtained by linear algebra.
+Linear algebra allows for a general formulation that generalize well w.r.t. the number of indipendent variable.
+Thus, the same solution can be applied to the bivariante as well as the multivariate case.
+Assuming a dataset with composed of $N$ elements, we can rewrite the loss function as:
 
 $$
 \begin{align}
-\arg \min \mathcal{L}(y, \hat{y}) &= \sum_{i=1}^m(y_i - \hat{y}_i)^2 \\
-& = (\rvy^T - (\rmX \rvw^T))^2 \\
-& = \rvd^2 \\
-& = \rvd \rvd^T \\
+\arg \min \mathcal{L}(y, \hat{y}) &= \sum_{i=1}^N(y_i - \hat{y}_i)^2 \\
+& = \sum_{i=1}^N \big[ (\rvy^T - (\rmX \rvw^T))^2 \big]_i & \substack{\text{With an abuse of notation} \\ \text{we reduce over the row of this matrix}}\\
+& = \sum_{i=1}^N \big[ \rvd^2 \big] \\
+& = \rvd \rvd^T & \substack{\text{Note that row vector multiplied by} \\ \text{a column vector return a scalar}}\\
 & = || \rvd ||^2
 \end{align}
 $$ {#eq-derivation}
 
 where:
 
-- $\rvy^T$ is the collumn vector $\left[\begin{align} y_1 \\ \vdots \\ y_m \end{align}\right]$;
-- $\rmX$ is the $m \times n$ matrix $\left[\begin{array}{ccc} 1 & x_{1,1} & \cdots & x_{n,1} \\ \vdots & \vdots & \vdots & \vdots \\ 1 & x_{1,m} & \cdots & x_{n,m}\end{array}\right]$;
-- $\rvw^T$ is the is the column vector $\left[\begin{align} w_0 \\ w_1 \\ \vdots \\ w_n \end{align}\right]$;
-- $\rvd$ is the row vector $\left[y_1 - \hat{y}_1, ...,  y_m - \hat{y}_m\right]$.
+- $\rvy^T$ is the collumn vector $\left[\begin{align} y_1 \\ \vdots \\ y_N \end{align}\right]$;
+- $\rmX$ is the $N \times k+1$ matrix $\left[\begin{array}{ccc} 1 & x_{1,1} & \cdots & x_{k,1} \\ \vdots & \vdots & \vdots & \vdots \\ 1 & x_{1,N} & \cdots & x_{k,N}\end{array}\right]$;
+- $\rvw^T$ is the is the $k+1$ column vector $\left[\begin{align} w_0 \\ w_1 \\ \vdots \\ w_k \end{align}\right]$;
+- $\rvd$ is the row vector $\left[y_1 - \hat{y}_1, ...,  y_N - \hat{y}_N\right]$.
 
 It is then possible to compute the optimal paramters by differenciating w.r.t. $\rvw$:
 $$
 \begin{align}
-\frac{\partial \mathcal{L}(y, \hat{y})}{\partial \rvw^T} = & || \rvy^T - \rmX \rvw^T ||^2  = 0 \\
-& 2\rmX^T (\rvy^T - \rmX \rvw^T) = 0 \\
-& \rmX^T\rvy^T - \rmX^T \rmX \rvw^T = 0 \\
+\frac{\partial \mathcal{L}(y, \hat{y})}{\partial \rvw^T} = & \frac{\partial || \rvy^T - \rmX \rvw^T ||^2}{\partial \rvw^T} \\
+& = 2\rmX^T (\rvy^T - \rmX \rvw^T) \\
+& = 2 \rmX^T\rvy^T - 2 \rmX^T \rmX \rvw^T \\
+& 2 \rmX^T \rmX \rvw^T = 2 \rmX^T\rvy^T & \substack{\text{The minumum of } \mathcal{L} \text{is given by} \\ \partial \mathcal{L} = 0 \text{ and solving by } \rvw^T}\\
 & \rvw^T = \frac{\rmX^T\rvy^T}{\rmX^T \rmX}
 \end{align}
 $$
 
-Note that $\rmX^T \rmX$ is an $n \times n$ matrix; thus could be invertible, $\rmX^T\rvy^T$ is an $n \times 1$ column vector and $\rvw^T$ is the $n \times 1$ column vector of unknown parameters.
-Finally, it is important to list some of the key assumptions of this type of model:
-
-1. Linearity: There must be a linear relationship between the independent and dependent variables.
-2. Independence: The predictors should be independent of each other. This is vital for the model's stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.
-3. Homoscedasticity: The residuals should be uniformly distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.
+Note that $\rmX^T \rmX$ is an $k+1 \times k+1$ matrix; thus could be invertible, $\rmX^T\rvy^T$ is an $k+1 \times 1$ column vector and $\rvw^T$ is the $k+1 \times 1$ column vector of unknown parameters.
+Finally, it is worth mentioning that this solution is known with the term ordinarly least square and can be applied to any model that have a linear formulation w.r.t. the model's parameters (however, we can have any polinomial for the independent variables).
 
 
 ## Residual Plot
