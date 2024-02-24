@@ -18,11 +18,9 @@ execute:
   freeze: auto  # re-render only when source changes
 ---
 
-# Linear Regression
-
-Linear regression [@montgomery2021introduction] is a widely utilized and straightforward machine learning model. 
-It establishes a linear relationship between a dependent variable (represented on the y-axis) and one or more independent variables (represented on the x-axis). 
-The fundamental formulation of linear regression is as follows:
+Linear regression, as discussed by Montgomery and Runger [@montgomery2021introduction], stands out as a widely employed and intuitive machine learning model.
+Its primary objective is to establish a linear connection between a dependent variable (plotted on the y-axis) and one or more independent variables (plotted on the x-axis).
+The foundational formula for linear regression is represented as:
 
 {{< include macro.tex >}}
 
@@ -32,12 +30,12 @@ $${#eq-linear-model}
 
 where:
 
-- $y$ is the dependent variable, also referred to as the response, target, or outcome variable.
-- $x_k$ represents the independent variables, also known as predictors or features.
-- $w_k$ are the model parameters establishing a linear relationship between the independent variables and the target. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.
-- $\epsilon$ is the error term, which account for the viariability in $y$ that can not be explained by linear model.
+- $y$ is the dependent variable, often referred to as the response, target, or outcome variable.
+- $x_k$ denotes the independent variables, also recognized as predictors or features.
+- $w_k$ are the model parameters that define the linear relationship between the independent variables and the target. These coefficients signify the anticipated change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.
+- $\epsilon$  represents the error term, accounting for the variability in  $y$ that can not be explained by linear model.
 
-If we assume that the only source of error in our model would the difference between the predicted outcome ($\hat{y}$) and the actual value ($y$) of the dependent variable; then learning process would adjust the parameters $w_i$ to minimise the error terms:
+Assuming that the sole source of error in the model is the difference between the predicted outcome ($\hat{y}$) and the actual value ($y$) of the dependent variable, the learning process adjusts the parameters to minimize the error terms:
 
 $$
 \begin{align}
@@ -46,15 +44,15 @@ $$
 \end{align}
 $$ {#eq-least-square}
 
-While directly minimising $\epsilon$ is impractical, a common alternative is to optimise the following loss function:
+While direct minimization of $\epsilon$ is impractical, a common alternative is to optimize the following loss function:
 
 $$
 \arg \min \mathcal{L}(y, \hat{y}; \rvw) = (y - \hat{y})^2.
 $$ {#eq-sum-of-squared-residuals}
 
-Note that [@eq-least-square] and [@eq-sum-of-squared-residuals] entail minimisation of **the vertical distance** between $\hat{y}$ and $y$, also knonw as residuals.
-Thus, there is an implicit assumtion that the only possible error would be related to the model not being accurate enough in predicting the actual value, while the measurments of the independent variable are **error-free**.
-This sort of model formulation is usually known as the *least-square model* as [@eq-least-square] is called least-square method and [@eq-sum-of-squared-residuals] is the sum-of-sqaured-residual loss.
+It's important to note that the minimization described in [@eq-sum-of-squared-residuals] entails minimizing **the vertical distance** between $\hat{y}$ and $y$, also knonw as residuals.
+This implies an implicit assumption that the only possible error is related to the model not accurately predicting the actual value, while the measurements of the independent variable are assumed to be **error-free**.
+This model formulation is commonly known as the least-square model, where [@eq-sum-of-squared-residuals] is the sum-of-squared-residual loss.
 
 ```{python}
 # | label: fig-least-square
@@ -160,18 +158,18 @@ plt.show()
 ```
 
 
-Finally, it is important to list some of the key assumptions of this type of model:
+Finally, it is crucial to highlight some key assumptions of this model type:
 
 1. Linearity: There must be a linear relationship between the independent and dependent variables.
 2. Independence: The predictors should be independent of each other. This is vital for the model's stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.
 3. Homoscedasticity: The residuals should be uniformly distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.
 
 ### Least Square Estimation
-As shown in [@fig-least-square] a linear model find the line that minimises the distnace between the fitted line and the data points.
-While it is possible to use stochastic gradient descent, a more compact solution to [@eq-sum-of-squared-residuals] can be obtained by linear algebra.
-Linear algebra allows for a general formulation that generalize well w.r.t. the number of indipendent variable.
-Thus, the same solution can be applied to the bivariante as well as the multivariate case.
-Assuming a dataset with composed of $N$ elements, we can rewrite the loss function as:
+As illustrated in [@fig-least-square],a linear model seeks to find the line that minimizes the distance between the fitted line and the data points.
+While stochastic gradient descent is a viable optimization approach, a more concise solution based on linear algebra can be derived from [@eq-sum-of-squared-residuals].
+Linear algebra provides a more general formulation that is robust with respect to the number of independent variables.
+This allows for a unified solution applicable to both the bivariate and multivariate cases.
+Considering a dataset composed of $N$ elements, we can reformulate the loss function as follows:
 
 $$
 \begin{align}
@@ -202,7 +200,7 @@ $$
 $$
 
 Note that $\rmX^T \rmX$ is an $k+1 \times k+1$ matrix; thus could be invertible, $\rmX^T\rvy^T$ is an $k+1 \times 1$ column vector and $\rvw^T$ is the $k+1 \times 1$ column vector of unknown parameters.
-Finally, it is worth mentioning that this solution is known with the term ordinarly least square and can be applied to any model that have a linear formulation w.r.t. the model's parameters (however, we can have any polinomial for the independent variables).
+Finally, this solution, known as ordinary least squares, is applicable to any model with a linear formulation concerning the model's parameters, allowing for polynomial independent variables.
 
 
 ## Residual Plot
