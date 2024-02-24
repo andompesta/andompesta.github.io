@@ -195,15 +195,12 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link active" data-scroll-target="#linear-regression">Linear Regression</a>
-  <ul class="collapse">
-  <li><a href="#least-square-estimation" id="toc-least-square-estimation" class="nav-link" data-scroll-target="#least-square-estimation">Least square estimation</a></li>
+  <li><a href="#least-square-estimation" id="toc-least-square-estimation" class="nav-link active" data-scroll-target="#least-square-estimation">Least Square Estimation</a></li>
   <li><a href="#residual-plot" id="toc-residual-plot" class="nav-link" data-scroll-target="#residual-plot">Residual Plot</a></li>
   <li><a href="#robust-linear-model" id="toc-robust-linear-model" class="nav-link" data-scroll-target="#robust-linear-model">Robust Linear Model</a></li>
   <li><a href="#parameters-analysis" id="toc-parameters-analysis" class="nav-link" data-scroll-target="#parameters-analysis">Parameter’s Analysis</a></li>
   <li><a href="#r-squared" id="toc-r-squared" class="nav-link" data-scroll-target="#r-squared">R-squared</a></li>
   <li><a href="#improvements" id="toc-improvements" class="nav-link" data-scroll-target="#improvements">Improvements</a></li>
-  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -245,9 +242,7 @@ window.Quarto = {
 </header>
 
 
-<section id="linear-regression" class="level1">
-<h1>Linear Regression</h1>
-<p>Linear regression <span class="citation" data-cites="montgomery2021introduction">[<a href="#ref-montgomery2021introduction" role="doc-biblioref">1</a>]</span> is a widely utilized and straightforward machine learning model. It establishes a linear relationship between a dependent variable (represented on the y-axis) and one or more independent variables (represented on the x-axis). The fundamental formulation of linear regression is as follows:</p>
+<p>Linear regression, as discussed by Montgomery and Runger <span class="citation" data-cites="montgomery2021introduction">[<a href="#ref-montgomery2021introduction" role="doc-biblioref">1</a>]</span>, stands out as a widely employed and intuitive machine learning model. Its primary objective is to establish a linear connection between a dependent variable (plotted on the y-axis) and one or more independent variables (plotted on the x-axis). The foundational formula for linear regression is represented as:</p>
 <p><span class="math display">\[
 \newcommand{\rvepsilon}{\mathbf{\epsilon}}
 \newcommand{\rvtheta}{\mathbf{\theta}}
@@ -279,27 +274,27 @@ window.Quarto = {
 \newcommand{\real}{\mathbb{R}}
 \]</span></p>
 <p><span id="eq-linear-model"><span class="math display">\[
-y = w_0 + w_1 x_1 + ... + w_n x_n + \epsilon
+y = w_0 + w_1 x_1 + ... + w_k x_k + \epsilon
 \tag{1}\]</span></span></p>
 <p>where:</p>
 <ul>
-<li><span class="math inline">\(y\)</span> is the dependent variable, also referred to as the response, target, or outcome variable.</li>
-<li><span class="math inline">\(x_i\)</span> represents the independent variables, also known as predictors or features.</li>
-<li><span class="math inline">\(w_i\)</span> are the model parameters establishing a linear relationship between the independent variables and the target. These coefficients indicate the expected change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.</li>
-<li><span class="math inline">\(\epsilon\)</span> is the error term, which account for the viariability in <span class="math inline">\(y\)</span> that can not be explained by linear model.</li>
+<li><span class="math inline">\(y\)</span> is the dependent variable, often referred to as the response, target, or outcome variable.</li>
+<li><span class="math inline">\(x_k\)</span> denotes the independent variables, also recognized as predictors or features.</li>
+<li><span class="math inline">\(w_k\)</span> are the model parameters that define the linear relationship between the independent variables and the target. These coefficients signify the anticipated change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.</li>
+<li><span class="math inline">\(\epsilon\)</span> represents the error term, accounting for the variability in <span class="math inline">\(y\)</span> that can not be explained by linear model.</li>
 </ul>
-<p>If we assume that the only source of error in our model would the difference between the predicted outcome (<span class="math inline">\(\hat{y}\)</span>) and the actual value (<span class="math inline">\(y\)</span>) of the dependent variable; then learning process would adjust the parameteris to minimise the error terms:</p>
+<p>Assuming that the sole source of error in the model is the difference between the predicted outcome (<span class="math inline">\(\hat{y}\)</span>) and the actual value (<span class="math inline">\(y\)</span>) of the dependent variable, the learning process adjusts the parameters to minimize the error terms:</p>
 <p><span id="eq-least-square"><span class="math display">\[
 \begin{align}
-\hat{y} &amp; = w_0 + w_1 x_1 + ... + w_n x_n \\
+\hat{y} &amp; = w_0 + w_1 x_1 + ... + w_k x_k \\
 \epsilon &amp;= y - \hat{y}.
 \end{align}
 \tag{2}\]</span></span></p>
-<p>While directly minimising <span class="math inline">\(\epsilon\)</span> is impractical, a common alternative is to optimise the following loss function:</p>
+<p>While direct minimization of <span class="math inline">\(\epsilon\)</span> is impractical, a common alternative is to optimize the following loss function:</p>
 <p><span id="eq-sum-of-squared-residuals"><span class="math display">\[
 \arg \min \mathcal{L}(y, \hat{y}; \rvw) = (y - \hat{y})^2.
 \tag{3}\]</span></span></p>
-<p>Note that <a href="#eq-least-square" class="quarto-xref">Equation&nbsp;2</a> and <a href="#eq-sum-of-squared-residuals" class="quarto-xref">Equation&nbsp;3</a> entail minimisation of <strong>the vertical distance</strong> between <span class="math inline">\(\hat{y}\)</span> and <span class="math inline">\(y\)</span>, also knonw as residuals. Thus, there is an implicit assumtion that the only possible error would be related to the model not being accurate enough in predicting the actual value, while the measurments of the independent variable are <strong>error-free</strong>. Finally, this sort of model formulation is usually known as the <em>least-square model</em> as <a href="#eq-least-square" class="quarto-xref">Equation&nbsp;2</a> is called least-square method and <a href="#eq-sum-of-squared-residuals" class="quarto-xref">Equation&nbsp;3</a> is the sum-of-sqaured-residual loss.</p>
+<p>It’s important to note that the minimization described in <a href="#eq-sum-of-squared-residuals" class="quarto-xref">Equation&nbsp;3</a> entails minimizing <strong>the vertical distance</strong> between <span class="math inline">\(\hat{y}\)</span> and <span class="math inline">\(y\)</span>, also knonw as residuals. This implies an implicit assumption that the only possible error is related to the model not accurately predicting the actual value, while the measurements of the independent variable are assumed to be <strong>error-free</strong>. This model formulation is commonly known as the least-square model, where <a href="#eq-sum-of-squared-residuals" class="quarto-xref">Equation&nbsp;3</a> is the sum-of-squared-residual loss.</p>
 <div id="cell-fig-least-square" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
@@ -414,39 +409,41 @@ Figure&nbsp;1: Linear model fitted to a given data distribution by means of leas
 </div>
 </div>
 </div>
-<section id="least-square-estimation" class="level3">
-<h3 class="anchored" data-anchor-id="least-square-estimation">Least square estimation</h3>
-<p>As shown in <a href="#fig-least-square" class="quarto-xref">Figure&nbsp;1</a> a linear model find the line that minimises the distnace between the fitted line and the data points. While it is possible to use SGD to find a solution, a better solution to <a href="#eq-sum-of-squared-residuals" class="quarto-xref">Equation&nbsp;3</a> can be obtained by linear algebra. Assuming a dataset with composed of m elements, we can rewrite the loss function as:</p>
-<p><span id="eq-derivation"><span class="math display">\[
-\begin{align}
-\arg \min \mathcal{L}(y, \hat{y}) &amp;= \sum_{i=1}^m(y_i - \hat{y}_i)^2 \\
-&amp; = (\rvy^T - (\rmX \rvw^T))^2 \\
-&amp; = \rvd^2 \\
-&amp; = \rvd \rvd^T \\
-&amp; = || \rvd ||^2
-\end{align}
-\tag{4}\]</span></span></p>
-<p>where:</p>
-<ul>
-<li><span class="math inline">\(\rvy^T\)</span> is the collumn vector <span class="math inline">\(\left[\begin{align} y_1 \\ \vdots \\ y_m \end{align}\right]\)</span>;</li>
-<li><span class="math inline">\(\rmX\)</span> is the <span class="math inline">\(m \times n\)</span> matrix <span class="math inline">\(\left[\begin{array}{ccc} 1 &amp; x_{1,1} &amp; \cdots &amp; x_{n,1} \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\ 1 &amp; x_{1,m} &amp; \cdots &amp; x_{n,m}\end{array}\right]\)</span>;</li>
-<li><span class="math inline">\(\rvw^T\)</span> is the is the column vector <span class="math inline">\(\left[\begin{align} w_0 \\ w_1 \\ \vdots \\ w_n \end{align}\right]\)</span>;</li>
-<li><span class="math inline">\(\rvd\)</span> is the row vector <span class="math inline">\(\left[y_1 - \hat{y}_1, ...,  y_m - \hat{y}_m\right]\)</span>.</li>
-</ul>
-<p>It is then possible to compute the optimal paramters by differenciating w.r.t. <span class="math inline">\(\rvw\)</span>: <span class="math display">\[
-\begin{align}
-\frac{\partial \mathcal{L}(y, \hat{y})}{\partial \rvw^T} = &amp; || \rvy^T - \rmX \rvw^T ||^2  = 0 \\
-&amp; 2\rmX^T (\rvy^T - \rmX \rvw^T) = 0 \\
-&amp; \rmX^T\rvy^T - \rmX^T \rmX \rvw^T = 0 \\
-&amp; \rvw^T = \frac{\rmX^T\rvy^T}{\rmX^T \rmX}
-\end{align}
-\]</span></p>
-<p>Note that <span class="math inline">\(\rmX^T \rmX\)</span> is an <span class="math inline">\(n \times n\)</span> matrix; thus could be invertible, <span class="math inline">\(\rmX^T\rvy^T\)</span> is an <span class="math inline">\(n \times 1\)</span> column vector and <span class="math inline">\(\rvw^T\)</span> is the <span class="math inline">\(n \times 1\)</span> column vector of unknown parameters. Finally, it is important to list some of the key assumptions of this type of model:</p>
+<p>Finally, it is crucial to highlight some key assumptions of this model type:</p>
 <ol type="1">
 <li>Linearity: There must be a linear relationship between the independent and dependent variables.</li>
 <li>Independence: The predictors should be independent of each other. This is vital for the model’s stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.</li>
 <li>Homoscedasticity: The residuals should be uniformly distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.</li>
 </ol>
+<section id="least-square-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="least-square-estimation">Least Square Estimation</h3>
+<p>As illustrated in <a href="#fig-least-square" class="quarto-xref">Figure&nbsp;1</a>,a linear model seeks to find the line that minimizes the distance between the fitted line and the data points. While stochastic gradient descent is a viable optimization approach, a more concise solution based on linear algebra can be derived from <a href="#eq-sum-of-squared-residuals" class="quarto-xref">Equation&nbsp;3</a>. Linear algebra provides a more general formulation that is robust with respect to the number of independent variables. This allows for a unified solution applicable to both the bivariate and multivariate cases. Considering a dataset composed of <span class="math inline">\(N\)</span> elements, we can reformulate the loss function as follows:</p>
+<p><span id="eq-derivation"><span class="math display">\[
+\begin{align}
+\arg \min \mathcal{L}(y, \hat{y}) &amp;= \sum_{i=1}^N(y_i - \hat{y}_i)^2 \\
+&amp; = \sum_{i=1}^N \big[ (\rvy^T - (\rmX \rvw^T))^2 \big]_i &amp; \substack{\text{With an abuse of notation} \\ \text{we reduce over the row of this matrix}}\\
+&amp; = \sum_{i=1}^N \big[ \rvd^2 \big] \\
+&amp; = \rvd \rvd^T &amp; \substack{\text{Note that row vector multiplied by} \\ \text{a column vector return a scalar}}\\
+&amp; = || \rvd ||^2
+\end{align}
+\tag{4}\]</span></span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(\rvy^T\)</span> is the collumn vector <span class="math inline">\(\left[\begin{align} y_1 \\ \vdots \\ y_N \end{align}\right]\)</span>;</li>
+<li><span class="math inline">\(\rmX\)</span> is the <span class="math inline">\(N \times k+1\)</span> matrix <span class="math inline">\(\left[\begin{array}{ccc} 1 &amp; x_{1,1} &amp; \cdots &amp; x_{k,1} \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\ 1 &amp; x_{1,N} &amp; \cdots &amp; x_{k,N}\end{array}\right]\)</span>;</li>
+<li><span class="math inline">\(\rvw^T\)</span> is the is the <span class="math inline">\(k+1\)</span> column vector <span class="math inline">\(\left[\begin{align} w_0 \\ w_1 \\ \vdots \\ w_k \end{align}\right]\)</span>;</li>
+<li><span class="math inline">\(\rvd\)</span> is the row vector <span class="math inline">\(\left[y_1 - \hat{y}_1, ...,  y_N - \hat{y}_N\right]\)</span>.</li>
+</ul>
+<p>It is then possible to compute the optimal paramters by differenciating w.r.t. <span class="math inline">\(\rvw\)</span>: <span class="math display">\[
+\begin{align}
+\frac{\partial \mathcal{L}(y, \hat{y})}{\partial \rvw^T} = &amp; \frac{\partial || \rvy^T - \rmX \rvw^T ||^2}{\partial \rvw^T} \\
+&amp; = 2\rmX^T (\rvy^T - \rmX \rvw^T) \\
+&amp; = 2 \rmX^T\rvy^T - 2 \rmX^T \rmX \rvw^T \\
+&amp; 2 \rmX^T \rmX \rvw^T = 2 \rmX^T\rvy^T &amp; \substack{\text{The minumum of } \mathcal{L} \text{is given by} \\ \partial \mathcal{L} = 0 \text{ and solving by } \rvw^T}\\
+&amp; \rvw^T = \frac{\rmX^T\rvy^T}{\rmX^T \rmX}
+\end{align}
+\]</span></p>
+<p>Note that <span class="math inline">\(\rmX^T \rmX\)</span> is an <span class="math inline">\(k+1 \times k+1\)</span> matrix; thus could be invertible, <span class="math inline">\(\rmX^T\rvy^T\)</span> is an <span class="math inline">\(k+1 \times 1\)</span> column vector and <span class="math inline">\(\rvw^T\)</span> is the <span class="math inline">\(k+1 \times 1\)</span> column vector of unknown parameters. Finally, this solution, known as ordinary least squares, is applicable to any model with a linear formulation concerning the model’s parameters, allowing for polynomial independent variables.</p>
 </section>
 <section id="residual-plot" class="level2">
 <h2 class="anchored" data-anchor-id="residual-plot">Residual Plot</h2>
@@ -501,39 +498,40 @@ Total Least Squares [@markovsky2007overview] (a.k.a Orthogonal Distance Regressi
 <h2 class="anchored" data-anchor-id="robust-linear-model">Robust Linear Model</h2>
 <p>In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through <a href="https://www.youtube.com/watch?v=Q81RR3yKn30&amp;ab_channel=StatQuestwithJoshStarmer"><strong>Ridge Regression</strong></a>, described by the formula:</p>
 <p><span class="math display">\[
-Y = \epsilon + w_1 X_1 + ... + w_n X_n + \lambda \sum_{1 \leq i \leq n} w_i^2.
+y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k+1} w_i^2.
 \]</span></p>
 <p>Ridge Regression is essentially linear regression augmented with a penalty term. This term comprises the squared coefficients of the model, effectively minimizing their magnitude. This added penalty increases the model’s bias but decreases prediction variance by imposing a normal distribution prior on the model parameters.</p>
 <hr>
 <p>On the other hand, <a href="https://www.youtube.com/watch?v=NGf0voTMlcs&amp;ab_channel=StatQuestwithJoshStarmer"><strong>Lasso Regression</strong></a> is another widely-used variation of linear regression. Similar to Ridge, Lasso adds a penalty to the loss function of the linear model. However, Lasso minimizes the absolute value of the coefficients rather than their square:</p>
 <p><span class="math display">\[
-Y = \epsilon + w_1 X_1 + ... + w_n X_n + \lambda \sum_{1 \leq i \leq n} |w_i|.
+y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k+1} |w_i|.
 \]</span></p>
 <p>The key distinction is that Lasso regression can reduce some coefficients to zero, producing a sparse model, whereas Ridge regression only reduces them to near zero.</p>
 <p>In conclusion, both these regularization approaches generate a model that has a bigger bias, but better generalization capability.</p>
 </section>
 <section id="parameters-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="parameters-analysis">Parameter’s Analysis</h2>
-<p>There are instances when we seek to comprehend how one of our predictors influences the dependent variable. Specifically, our interest lies in determining whether the parameter <span class="math inline">\(w_i\)</span> significantly affects the response variable <span class="math inline">\(Y\)</span> - that is, whether including the predictor <span class="math inline">\(X_i\)</span> leads to a notable reduction in the model’s loss.</p>
+<p>There are instances when we seek to comprehend how one of our predictors influences the dependent variable. Specifically, our interest lies in determining whether the parameter <span class="math inline">\(w_i\)</span> significantly affects the response variable <span class="math inline">\(y\)</span> - that is, whether including the predictor <span class="math inline">\(x_i\)</span> leads to a notable reduction in the model’s loss.</p>
 <p>Formally, this involves testing the following hypotheses:</p>
 <p><span class="math display">\[
+\begin{align*}
 H_0 : w_i = 0 \\
 H_1 : w_i \neq 0.
+\end{align*}
 \]</span></p>
-<p>For clarity, let’s denote <span class="math inline">\(L(Y, \hat{Y}: \theta_{\not i})\)</span> and <span class="math inline">\(L(Y, \hat{Y}: \theta_{i})\)</span> as the sum of squared residuals for models excluding and including the <span class="math inline">\(i\)</span>-th predictor, respectively. Assuming independence and homoscedasticity of the model’s parameters, the significance of the <span class="math inline">\(i\)</span>-th predictor can be assessed using the F-test:</p>
+<p>For clarity, let’s denote <span class="math inline">\(\mathcal{L}(y, \hat{y}: \rvw^T_{\not i})\)</span> and <span class="math inline">\(\mathcal{L}(y, \hat{y}: \rvw^T)\)</span> as the sum of squared residuals for models excluding and including the <span class="math inline">\(i\)</span>-th predictor, respectively. Assuming independence and homoscedasticity of the model’s parameters, the significance of the <span class="math inline">\(i\)</span>-th predictor can be assessed using the F-test:</p>
 <p><span class="math display">\[
-F = \frac{ \frac{L(Y, \hat{Y}: \theta_{\not i}) - L(Y, \hat{Y}: \theta_{i})}{p_2} }{ \frac{L(Y, \hat{Y}: \theta_{i})}{n - p} } .
+F = \frac{ \frac{\mathcal{L}(y, \hat{y}: \rvw^T_{\not i}) - \mathcal{L}(y, \hat{y}: \rvw^T)}{p_2} }{ \frac{\mathcal{L}(y, \hat{y}: \rvw^T)}{N - p} } .
 \]</span></p>
-<p>Here, represent the degrees of freedom for the overall model and the model containing only the <span class="math inline">\(i\)</span>-th predictor; while <span class="math inline">\(n\)</span> is the number of training examples.</p>
-<p>The numerator of <span class="math inline">\(F\)</span>-test represents the reduction in the residual sum of squares per additional degree of freedom utilized. The denominator is an estimate of the residual variance, serving as a measure of the model’s inherent noise. An <span class="math inline">\(F\)</span>-ratio of one suggests that the predictors merely contribute noise. A ratio greater than one implies meaningful contribution, or signal, from the predictors. Typically, we reject <span class="math inline">\(H_0\)</span> and conclude that the <span class="math inline">\(i\)</span>-th variable significantly impacts the response if the <span class="math inline">\(F\)</span>-statistic exceeds the 95th percentile of the <span class="math inline">\(F\)</span>-distribution with <span class="math inline">\(p_2\)</span> and <span class="math inline">\((n-p)\)</span> degrees of freedom. A full derivation of this result is available <a href="https://grodri.github.io/glms/notes/c2s3">here</a>.</p>
+<p>Here, <span class="math inline">\(p\)</span> and <span class="math inline">\(p_2\)</span> represent the degrees of freedom for the overall model and the model containing only the <span class="math inline">\(i\)</span>-th predictor; while <span class="math inline">\(N\)</span> is the number of training examples. The numerator of <span class="math inline">\(F\)</span>-test represents the reduction in the residual sum of squares per additional degree of freedom utilized. The denominator is an estimate of the residual variance, serving as a measure of the model’s inherent noise. An <span class="math inline">\(F\)</span>-ratio of one suggests that the predictors merely contribute noise. A ratio greater than one implies meaningful contribution, or signal, from the predictors. Typically, we reject <span class="math inline">\(H_0\)</span> and conclude that the <span class="math inline">\(i\)</span>-th variable significantly impacts the response if the <span class="math inline">\(F\)</span>-statistic exceeds the 95th percentile of the <span class="math inline">\(F\)</span>-distribution. A full derivation of this result is available <a href="https://grodri.github.io/glms/notes/c2s3">here</a>.</p>
 </section>
 <section id="r-squared" class="level2">
 <h2 class="anchored" data-anchor-id="r-squared">R-squared</h2>
 <p>The <span class="math inline">\(R^2\)</span> metric, also known as the coefficient of determination, is a statistical measure used to assess the goodness of fit of a regression model. It represents the proportion of the variance in the dependent variable that is predictable from the independent variables. In simpler terms, <span class="math inline">\(R^2\)</span> indicates how well the data fit the regression model (the closer the value of <span class="math inline">\(R^2\)</span> is to 1, the better the fit) and can be computed as:</p>
 <p><span class="math display">\[
-R^2 = \frac{\mathcal(Y, \hat{Y}; \varnothing) - \mathcal(Y, \hat{Y}; \theta)}{\mathcal(Y, \hat{Y}; \varnothing)}
+R^2 = \frac{\mathcal{L}(y, \hat{y}: \varnothing) - \mathcal{L}(y, \hat{y}: \rvw^T)}{\mathcal{L}(y, \hat{y}: \varnothing)}
 \]</span></p>
-<p>here <span class="math inline">\(\mathcal(Y, \hat{Y}; \varnothing)\)</span> represent the sum of squared residuals of a model wihtout parameters, a.k.a a model that alwasy predict the mean of the response variable. Similarly, <span class="math inline">\(\mathcal(Y, \hat{Y}; \theta)\)</span> is the linear regression developed.</p>
+<p>here <span class="math inline">\(\mathcal{L}(y, \hat{y}: \varnothing)\)</span> represent the sum of squared residuals of a model wihtout parameters, a.k.a a model that alwasy predict the mean of the response variable. Similarly, <span class="math inline">\(\mathcal{L}(y, \hat{y}: \rvw^T)\)</span> is the linear regression developed.</p>
 <p>The <span class="math inline">\(R^2\)</span> value ranges from 0 to 1. A vale of 0 means that the model does not explain any of the variability of the response data around its mean. On the other hand, an <span class="math inline">\(R^2\)</span> of 1 indicates that the model explains all the variability of the response data around its mean. In conclusion <span class="math inline">\(R^2\)</span> is a simple to compute, yet informative metric to determin how much our variance our model is able to predict correctly.</p>
 </section>
 <section id="improvements" class="level2">
@@ -546,7 +544,7 @@ R^2 = \frac{\mathcal(Y, \hat{Y}; \varnothing) - \mathcal(Y, \hat{Y}; \theta)}{\m
 <li>Interaction Terms: Include interaction terms if the effect of one variable depends on another. An interaction variable in a linear model represents the combined effect of two or more variables on the dependent variable, where the effect of one variable depends on the level of another variable. In other words, it’s used to capture situations where the relationship between a predictor and the outcome changes based on the value of another predictor. Formally, an interaction variable in alinear model is defined as:</li>
 </ol>
 <p><span class="math display">\[
-Y = \epsilon + w_1 X_1 + ... + w_n X_n + w_{n+1} (X_i \cdot X_j)
+y = \epsilon + w_0 + w_1 x_1 + ... + w_n x_n (x_i \cdot x_j)
 \]</span></p>
 <ol start="5" type="1">
 <li>Regularization Techniques: Methods like Ridge, Lasso, or Elastic Net can help in reducing overfitting and improving prediction.</li>
@@ -554,7 +552,6 @@ Y = \epsilon + w_1 X_1 + ... + w_n X_n + w_{n+1} (X_i \cdot X_j)
 <li>Influence Measures: Identify and investigate influential observations that might disproportionately affect the model’s performance.</li>
 <li>Homoscedasticity Testing: Ensure that residuals have constant variance across different levels of predictors.</li>
 </ol>
-</section>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
