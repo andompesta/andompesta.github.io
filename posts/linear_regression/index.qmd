@@ -250,7 +250,7 @@ Total Least Squares [@markovsky2007overview] (a.k.a Orthogonal Distance Regressi
 In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through [**Ridge Regression**](https://www.youtube.com/watch?v=Q81RR3yKn30&ab_channel=StatQuestwithJoshStarmer), described by the formula:
 
 $$
-Y = \epsilon + w_1 X_1 + ... + w_n X_n + \lambda \sum_{1 \leq i \leq n} w_i^2.
+y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k+1} w_i^2.
 $$
 
 Ridge Regression is essentially linear regression augmented with a penalty term. This term comprises the squared coefficients of the model, effectively minimizing their magnitude. This added penalty increases the model's bias but decreases prediction variance by imposing a normal distribution prior on the model parameters.
@@ -261,7 +261,7 @@ Ridge Regression is essentially linear regression augmented with a penalty term.
 On the other hand, [**Lasso Regression**](https://www.youtube.com/watch?v=NGf0voTMlcs&ab_channel=StatQuestwithJoshStarmer) is another widely-used variation of linear regression. Similar to Ridge, Lasso adds a penalty to the loss function of the linear model. However, Lasso minimizes the absolute value of the coefficients rather than their square:
 
 $$
-Y = \epsilon + w_1 X_1 + ... + w_n X_n + \lambda \sum_{1 \leq i \leq n} |w_i|.
+y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k+1} |w_i|.
 $$
 
 The key distinction is that Lasso regression can reduce some coefficients to zero, producing a sparse model, whereas Ridge regression only reduces them to near zero.
@@ -270,25 +270,25 @@ In conclusion, both these regularization approaches generate a model that has a 
 
 ## Parameter's Analysis
 
-There are instances when we seek to comprehend how one of our predictors influences the dependent variable. Specifically, our interest lies in determining whether the parameter $w_i$ significantly affects the response variable $Y$ - that is, whether including the predictor $X_i$ leads to a notable reduction in the model's loss.
+There are instances when we seek to comprehend how one of our predictors influences the dependent variable. Specifically, our interest lies in determining whether the parameter $w_i$ significantly affects the response variable $y$ - that is, whether including the predictor $x_i$ leads to a notable reduction in the model's loss.
 
 Formally, this involves testing the following hypotheses:
 
 $$
+\begin{align*}
 H_0 : w_i = 0 \\
 H_1 : w_i \neq 0.
+\end{align*}
 $$
 
-For clarity, let's denote $L(Y, \hat{Y}: \theta_{\not i})$ and $L(Y, \hat{Y}: \theta_{i})$ as the sum of squared residuals for models excluding and including the $i$-th predictor, respectively. Assuming independence and homoscedasticity of the model's parameters, the significance of the $i$-th predictor can be assessed using the F-test:
+For clarity, let's denote $\mathcal{L}(y, \hat{y}: \rvw^T_{\not i})$ and $\mathcal{L}(y, \hat{y}: \rvw^T)$ as the sum of squared residuals for models excluding and including the $i$-th predictor, respectively. Assuming independence and homoscedasticity of the model's parameters, the significance of the $i$-th predictor can be assessed using the F-test:
 
 $$
-F = \frac{ \frac{L(Y, \hat{Y}: \theta_{\not i}) - L(Y, \hat{Y}: \theta_{i})}{p_2} }{ \frac{L(Y, \hat{Y}: \theta_{i})}{n - p} } .
+F = \frac{ \frac{\mathcal{L}(y, \hat{y}: \rvw^T_{\not i}) - \mathcal{L}(y, \hat{y}: \rvw^T)}{p_2} }{ \frac{\mathcal{L}(y, \hat{y}: \rvw^T)}{N - p} } .
 $$
 
-Here, represent the degrees of freedom for the overall model and the model containing only the $i$-th predictor; while $n$ is the number of training examples.
-
-
-The numerator of $F$-test represents the reduction in the residual sum of squares per additional degree of freedom utilized. The denominator is an estimate of the residual variance, serving as a measure of the model's inherent noise. An $F$-ratio of one suggests that the predictors merely contribute noise. A ratio greater than one implies meaningful contribution, or signal, from the predictors. Typically, we reject $H_0$ and conclude that the $i$-th variable significantly impacts the response if the $F$-statistic exceeds the 95th percentile of the $F$-distribution with $p_2$ and $(n-p)$ degrees of freedom. A full derivation of this result is available [here](https://grodri.github.io/glms/notes/c2s3).
+Here, $p$ and $p_2$ represent the degrees of freedom for the overall model and the model containing only the $i$-th predictor; while $N$ is the number of training examples.
+The numerator of $F$-test represents the reduction in the residual sum of squares per additional degree of freedom utilized. The denominator is an estimate of the residual variance, serving as a measure of the model's inherent noise. An $F$-ratio of one suggests that the predictors merely contribute noise. A ratio greater than one implies meaningful contribution, or signal, from the predictors. Typically, we reject $H_0$ and conclude that the $i$-th variable significantly impacts the response if the $F$-statistic exceeds the 95th percentile of the $F$-distribution. A full derivation of this result is available [here](https://grodri.github.io/glms/notes/c2s3).
  
 ## R-squared
 The $R^2$ metric, also known as the coefficient of determination, is a statistical measure used to assess the goodness of fit of a regression model. 
