@@ -197,10 +197,16 @@ window.Quarto = {
   <ul>
   <li><a href="#least-square-estimation" id="toc-least-square-estimation" class="nav-link active" data-scroll-target="#least-square-estimation">Least Square Estimation</a></li>
   <li><a href="#residual-plot" id="toc-residual-plot" class="nav-link" data-scroll-target="#residual-plot">Residual Plot</a></li>
-  <li><a href="#robust-linear-model" id="toc-robust-linear-model" class="nav-link" data-scroll-target="#robust-linear-model">Robust Linear Model</a></li>
+  <li><a href="#total-least-squares" id="toc-total-least-squares" class="nav-link" data-scroll-target="#total-least-squares">Total Least Squares</a>
+  <ul class="collapse">
+  <li><a href="#total-least-square-estimation" id="toc-total-least-square-estimation" class="nav-link" data-scroll-target="#total-least-square-estimation">Total Least Square Estimation</a></li>
+  </ul></li>
+  <li><a href="#robust-linear-model" id="toc-robust-linear-model" class="nav-link" data-scroll-target="#robust-linear-model">Robust Linear Model</a>
+  <ul class="collapse">
   <li><a href="#parameters-analysis" id="toc-parameters-analysis" class="nav-link" data-scroll-target="#parameters-analysis">Parameter’s Analysis</a></li>
   <li><a href="#r-squared" id="toc-r-squared" class="nav-link" data-scroll-target="#r-squared">R-squared</a></li>
   <li><a href="#improvements" id="toc-improvements" class="nav-link" data-scroll-target="#improvements">Improvements</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -259,18 +265,21 @@ window.Quarto = {
 \newcommand{\rvw}{\mathbf{w}}
 \newcommand{\rvx}{\mathbf{x}}
 \newcommand{\rvy}{\mathbf{y}}
+\newcommand{\rvz}{\mathbf{z}}
 \newcommand{\rmA}{\mathbf{A}}
 \newcommand{\rmB}{\mathbf{B}}
 \newcommand{\rmC}{\mathbf{C}}
 \newcommand{\rmH}{\mathbf{H}}
 \newcommand{\rmI}{\mathbf{I}}
 \newcommand{\rmM}{\mathbf{M}}
+\newcommand{\rmN}{\mathbf{N}}
 \newcommand{\rmS}{\mathbf{S}}
 \newcommand{\rmU}{\mathbf{U}}
 \newcommand{\rmV}{\mathbf{V}}
 \newcommand{\rmW}{\mathbf{W}}
 \newcommand{\rmX}{\mathbf{X}}
 \newcommand{\rmY}{\mathbf{Y}}
+\newcommand{\rmZ}{\mathbf{Z}}
 \newcommand{\real}{\mathbb{R}}
 \]</span></p>
 <p><span id="eq-linear-model"><span class="math display">\[
@@ -415,8 +424,8 @@ Figure&nbsp;1: Linear model fitted to a given data distribution by means of leas
 <li>Independence: The predictors should be independent of each other. This is vital for the model’s stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.</li>
 <li>Homoscedasticity: The residuals should be uniformly distributed with constant variance. Without this, it becomes challenging to ensure that the model is unbiased and to conduct accurate error analysis.</li>
 </ol>
-<section id="least-square-estimation" class="level3">
-<h3 class="anchored" data-anchor-id="least-square-estimation">Least Square Estimation</h3>
+<section id="least-square-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="least-square-estimation">Least Square Estimation</h2>
 <p>As illustrated in <a href="#fig-least-square" class="quarto-xref">Figure&nbsp;1</a>,a linear model seeks to find the line that minimizes the distance between the fitted line and the data points. While stochastic gradient descent is a viable optimization approach, a more concise solution based on linear algebra can be derived from <a href="#eq-sum-of-squared-residuals" class="quarto-xref">Equation&nbsp;3</a>. Linear algebra provides a more general formulation that is robust with respect to the number of independent variables. This allows for a unified solution applicable to both the bivariate and multivariate cases. Considering a dataset composed of <span class="math inline">\(N\)</span> elements, we can reformulate the loss function as follows:</p>
 <p><span id="eq-derivation"><span class="math display">\[
 \begin{align}
@@ -445,8 +454,8 @@ Figure&nbsp;1: Linear model fitted to a given data distribution by means of leas
 \]</span></p>
 <p>Note that <span class="math inline">\(\rmX^T \rmX\)</span> is an <span class="math inline">\(k+1 \times k+1\)</span> matrix; thus could be invertible, <span class="math inline">\(\rmX^T\rvy^T\)</span> is an <span class="math inline">\(k+1 \times 1\)</span> column vector and <span class="math inline">\(\rvw^T\)</span> is the <span class="math inline">\(k+1 \times 1\)</span> column vector of unknown parameters. Finally, this solution, known as ordinary least squares, is applicable to any model with a linear formulation concerning the model’s parameters, allowing for polynomial independent variables.</p>
 </section>
-<section id="residual-plot" class="level2">
-<h2 class="anchored" data-anchor-id="residual-plot">Residual Plot</h2>
+<section id="residual-plot" class="level1">
+<h1>Residual Plot</h1>
 <p>Residuals plots <span class="citation" data-cites="sefidianUnderstandingInterpreting">[<a href="#ref-sefidianUnderstandingInterpreting" role="doc-biblioref">2</a>]</span> <span class="citation" data-cites="tsai1998examination">[<a href="#ref-tsai1998examination" role="doc-biblioref">3</a>]</span> are one of the most common methods to validate the presence of Homoscedasticity. As shonw in <a href="#fig-residual-plot" class="quarto-xref">Figure&nbsp;2</a>, residuals plots disply the residual values of a regression as a function of the predicted values and helps in understanding if the model is a good fit for the given data. Namelly residuals plot can be used for:</p>
 <ol type="1">
 <li>Checking Homoscedasticity: A key assumption in linear regression is that the residuals have constant variance at every level of the independent variable(s) (homoscedasticity). If the residuals fan out or form a pattern as the predicted values increase, this indicates heteroscedasticity, which can lead to inefficient estimates and affect hypothesis testing.</li>
@@ -488,14 +497,179 @@ Figure&nbsp;2: Residual plot. As you can see, the residual are simmetrically ran
 </div>
 </div>
 </div>
-<!-- ## Total Least Squares
-
-
-
-Total Least Squares [@markovsky2007overview] (a.k.a Orthogonal Distance Regression) are a variant of the linear regression model specifically designed to handle situations in which we have errors not only on the mesurment of $y$, but also in the dependent variable $x$. -->
 </section>
-<section id="robust-linear-model" class="level2">
-<h2 class="anchored" data-anchor-id="robust-linear-model">Robust Linear Model</h2>
+<section id="total-least-squares" class="level1">
+<h1>Total Least Squares</h1>
+<p>Total Least Square <span class="citation" data-cites="markovsky2007overview">[<a href="#ref-markovsky2007overview" role="doc-biblioref">4</a>]</span> is a variation of the linear regression model specifically designed to handle situations in which the error affects not only on the mesurment of <span class="math inline">\(y\)</span>, but also in the independent variable <span class="math inline">\(x\)</span>. Thus, total least square is particularly usefull in situation where it is assumed that also the measurment of <span class="math inline">\(x\)</span> is noise.</p>
+<p>Instead of minimising the error between <span class="math inline">\(y\)</span> and <span class="math inline">\(\hat{y}\)</span>; as shown in <a href="#fig-total-least-square" class="quarto-xref">Figure&nbsp;3</a> total least square objective minimise the orthogonal distance between the given datapoints and the fitted line. Intuitively, total least square find the minimum perturbation to <strong>the dependent and independent</strong> variables such that the ortogonal distnace between the fitted line and the datapoint is minimised.</p>
+<p>Given any line $ a~x ~~ + ~~ b~y = 0$ we can formalize the ortoghonal distance between this line and any given point <span class="math inline">\((x_i, y_i)\)</span> as:</p>
+<p><span id="eq-orthogonal-distance"><span class="math display">\[
+\bar{\epsilon}_i = \frac{|ax_i + by_i|}{\sqrt{a^2 + b^2}}.
+\tag{5}\]</span></span></p>
+<p>Note that the vector parametrized by <span class="math inline">\(\left[a , b \right]\)</span> has to be perperndicular to the line <span class="math inline">\(ax ~ + ~ by\)</span> to satsify the equality constraint. Thus, we can easily assume <span class="math inline">\(\sqrt{a^2 + b^2} = 1\)</span> as the lenght of this vector will not impact the ortoghonality. Such assumption enable to rewrite <a href="#eq-orthogonal-distance" class="quarto-xref">Equation&nbsp;5</a> in a more convinient formulation:</p>
+<p><span id="eq-orthogonal-distance-prime"><span class="math display">\[
+\bar{\epsilon}_i^2 = \left[ \left[ x_i ~~ y_i \right] \cdot \left[\begin{align} a \\ b\end{align}\right] \right]^2
+\tag{6}\]</span></span></p>
+<p>where the absolute value has been replaced by the square value and matrix formulation has been introduced.</p>
+<div id="cell-fig-total-least-square" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">7</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot data</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    x,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    y,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"Data points"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">"k"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># plot least square model</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>ax.plot(x, y_pred, color<span class="op">=</span><span class="st">"#2ca02c"</span>, label<span class="op">=</span><span class="st">"least square fit"</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>ax.scatter(x, y_pred, color<span class="op">=</span><span class="st">"#2ca02c"</span>, edgecolor<span class="op">=</span><span class="st">"k"</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot least square residuals (errors)</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(x)):</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    ax.plot(</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        [x[i], x[i]],</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        [y[i], y_pred[i]],</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">"#2ca02c"</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        linestyle<span class="op">=</span><span class="st">"--"</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co"># TOTAL LEAST SQUARE</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co"># center data</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> centering(Z: np.ndarray) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    Z_min <span class="op">=</span> Z.<span class="bu">min</span>(<span class="dv">0</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    Z_max <span class="op">=</span> Z.<span class="bu">max</span>(<span class="dv">0</span>)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    Z_norm <span class="op">=</span> (Z <span class="op">-</span> Z_min) <span class="op">/</span> (Z_max <span class="op">-</span> Z_min)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    Z_means <span class="op">=</span> Z_norm.mean(axis<span class="op">=</span><span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> reverse_centering(Z_centered: np.ndarray) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        Z_norm <span class="op">=</span> Z_centered <span class="op">+</span> Z_means</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>        Z <span class="op">=</span> Z_norm <span class="op">*</span> (Z_max <span class="op">-</span> Z_min) <span class="op">+</span> Z_min</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Z</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Z_norm <span class="op">-</span> Z_means, reverse_centering</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="co"># center the data, as we use a simplified model</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> np.column_stack((x, y))</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>Z_centered, reverse_centering <span class="op">=</span> centering(Z)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co"># total least square decomposition</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>e_val, e_vec <span class="op">=</span> np.linalg.eig(Z_centered.T <span class="op">@</span> Z_centered)</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> e_val.argsort()[<span class="dv">0</span>]</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co"># get minimum eigenvectors</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> e_vec[:, idx]</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> u[:, np.newaxis]</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co"># fitted line slope. Note that, as data is centered, the line passes through the origin</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>negative_a_over_b <span class="op">=</span> (<span class="op">-</span>u[<span class="dv">0</span>] <span class="op">/</span> u[<span class="dv">1</span>])[<span class="dv">0</span>]</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="co"># generate data for better plot TLS fit line</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>Z_ <span class="op">=</span> reverse_centering(</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>    np.column_stack(</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>        (</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>            np.arange(<span class="op">-</span><span class="fl">0.55</span>, <span class="fl">0.7</span>, <span class="fl">0.2</span>)[:, np.newaxis],</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>            np.arange(<span class="op">-</span><span class="fl">0.55</span>, <span class="fl">0.7</span>, <span class="fl">0.2</span>)[:, np.newaxis].dot(negative_a_over_b),</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="co"># plot TLS fitted line</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>ax.plot(</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    Z_[:, <span class="dv">0</span>],</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    Z_[:, <span class="dv">1</span>],</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#9467bd"</span>,</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"total least square (TLS) fit"</span>,</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>Z_centered_tls <span class="op">=</span> <span class="op">-</span>Z_centered.dot(u).dot(u.T)</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="co"># get ortogonal value for X and Y</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>X_tls_error <span class="op">=</span> Z_centered_tls[:, :<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>X_tls <span class="op">=</span> Z_centered[:, <span class="dv">0</span>][:, np.newaxis] <span class="op">+</span> X_tls_error</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>y_pred_tls <span class="op">=</span> (X_tls).dot(negative_a_over_b)</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="co"># reverse centering of adjusted matrix</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>Z_centered_pred_tls <span class="op">=</span> np.column_stack((X_tls, y_pred_tls))</span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>Z_pred_tls <span class="op">=</span> reverse_centering(Z_centered_pred_tls)</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>    Z_pred_tls[:, <span class="dv">0</span>],</span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>    Z_pred_tls[:, <span class="dv">1</span>],</span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#9467bd"</span>,</span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"k"</span>,</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"TLS predictions"</span>,</span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(x)):</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>    ax.plot(</span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>        [Z[i, <span class="dv">0</span>], Z_pred_tls[i, <span class="dv">0</span>]],</span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>        [Z[i, <span class="dv">1</span>], Z_pred_tls[i, <span class="dv">1</span>]],</span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">"#9467bd"</span>,</span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>        linestyle<span class="op">=</span><span class="st">":"</span>,</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>ax.annotate(</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>    <span class="st">"$</span><span class="ch">\\</span><span class="st">bar{</span><span class="ch">\\</span><span class="st">epsilon}$"</span>,</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>    xy<span class="op">=</span>(<span class="fl">0.1</span>, <span class="op">-</span><span class="fl">11.</span>),</span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>    xycoords<span class="op">=</span><span class="st">"data"</span>,</span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>    xytext<span class="op">=</span>(<span class="fl">0.1</span>, <span class="fl">0.1</span>),</span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    textcoords<span class="op">=</span><span class="st">"axes fraction"</span>,</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>    va<span class="op">=</span><span class="st">"top"</span>,</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"left"</span>,</span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>    arrowprops<span class="op">=</span><span class="bu">dict</span>(</span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>        arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>,</span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>        facecolor<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Total least square vs. least square"</span>)</span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"x"</span>)</span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"y"</span>)</span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>ax.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-total-least-square" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-total-least-square-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-total-least-square-output-1.png" width="596" height="597" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-total-least-square-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Total least square. As it is possible to see, residuals line are rotogonal w.r.t. the fitted line. Moreover, not that the predictions are done for both x and y.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="total-least-square-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="total-least-square-estimation">Total Least Square Estimation</h2>
+<p>Given a dataset composed of <span class="math inline">\(N\)</span> elements, the loss function for a total least square model can be defined as:</p>
+<p><span class="math display">\[
+\begin{align}
+\mathcal{L}(x, y; a, b) &amp; = \sum_{i=1}^N (ax_i + by_i)^2 \\
+&amp; = \sum_{i=1}^N \bar{\epsilon}_i ^2 \\
+&amp; = \left[ \begin{bmatrix} x_1 ~~ y_2 \\ x_i ~~ y_i \\ x_N ~~ y_N \end{bmatrix} \cdot \begin{bmatrix} a \\ b \end{bmatrix} \right]^2 \\
+&amp; = \left[ \rmZ \cdot \rvu \right]^2 \\
+&amp; = \bar{\rvd} \bar{\rvd}^T \\
+&amp; = || \\rmZ \cdot \rvu ||^2
+\end{align}
+\]</span></p>
+</section>
+</section>
+<section id="robust-linear-model" class="level1">
+<h1>Robust Linear Model</h1>
 <p>In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through <a href="https://www.youtube.com/watch?v=Q81RR3yKn30&amp;ab_channel=StatQuestwithJoshStarmer"><strong>Ridge Regression</strong></a>, described by the formula:</p>
 <p><span class="math display">\[
 y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k+1} w_i^2.
@@ -508,7 +682,6 @@ y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k+1} 
 \]</span></p>
 <p>The key distinction is that Lasso regression can reduce some coefficients to zero, producing a sparse model, whereas Ridge regression only reduces them to near zero.</p>
 <p>In conclusion, both these regularization approaches generate a model that has a bigger bias, but better generalization capability.</p>
-</section>
 <section id="parameters-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="parameters-analysis">Parameter’s Analysis</h2>
 <p>There are instances when we seek to comprehend how one of our predictors influences the dependent variable. Specifically, our interest lies in determining whether the parameter <span class="math inline">\(w_i\)</span> significantly affects the response variable <span class="math inline">\(y\)</span> - that is, whether including the predictor <span class="math inline">\(x_i\)</span> leads to a notable reduction in the model’s loss.</p>
@@ -553,6 +726,7 @@ y = \epsilon + w_0 + w_1 x_1 + ... + w_n x_n (x_i \cdot x_j)
 <li>Homoscedasticity Testing: Ensure that residuals have constant variance across different levels of predictors.</li>
 </ol>
 </section>
+</section>
 <section id="references" class="level1">
 <h1>References</h1>
 <div id="refs" class="references csl-bib-body" role="list">
@@ -564,6 +738,9 @@ y = \epsilon + w_0 + w_1 x_1 + ... + w_n x_n (x_i \cdot x_j)
 </div>
 <div id="ref-tsai1998examination" class="csl-entry" role="listitem">
 <div class="csl-left-margin">3. </div><div class="csl-right-inline">Tsai C-L, Cai Z, Wu X (1998) The examination of residual plots. Statistica Sinica 445–465</div>
+</div>
+<div id="ref-markovsky2007overview" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Markovsky I, Van Huffel S (2007) Overview of total least-squares methods. Signal processing 87(10):2283–2302</div>
 </div>
 </div>
 
