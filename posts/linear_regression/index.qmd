@@ -434,7 +434,8 @@ The analytical differentiation of [@eq-tls-loss-constrained-solution] as:
 
 $$
 \begin{align}
-\frac{ \partial \mathcal{L}(\rmZ; \rvu, \lambda)}{\partial \rvu} & = 2 \rmZ^T (\rmZ \cdot \rvu) + 2\lambda \rvu = 0 \\
+\frac{ \partial \mathcal{L}(\rmZ; \rvu, \lambda)}{\partial \rvu} & = 0 \\
+2 \rmZ^T (\rmZ \cdot \rvu) + 2\lambda \rvu & = 0 \\
 (\rmZ^T \cdot \rmZ) \rvu & = -\lambda \rvu & \substack{\text{Formulation of an} \\ \text{eigenvalue associated to} (\rmZ^T \cdot \rmZ).} \\
 \end{align}
 $${#eq-tls-loss-solution-1}
