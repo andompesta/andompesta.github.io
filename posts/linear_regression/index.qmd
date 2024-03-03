@@ -458,7 +458,7 @@ $$
 $${#eq-tls-loss-solution-3}
 
 From equation [@eq-tls-loss-solution-1] we know that $\rvu$ and $\lambda$ have to be an eigenvector and eigenvalue of $2 \times 2$ matrix $\rmZ^T \rmZ$. From equation [@eq-tls-loss-solution-3] we also know that $\lambda$ is equal to the original loss function we wanted to minimise in [@eq-tls-loss].
-Thus, the optimal parameter of a total least square model are equivalent to the eigenvector assocaite to the smallest eigenvalue of the matrix $\rmZ^T \rmZ$.
+Thus, the estimated optimal parameters for a total least square model are equivalent to the eigenvector assocaite to the smallest eigenvalue of the matrix $\rmZ^T \rmZ$.
 
 
 # Robust Linear Model
