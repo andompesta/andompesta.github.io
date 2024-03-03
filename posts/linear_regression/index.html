@@ -502,7 +502,7 @@ Figure&nbsp;2: Residual plot. As you can see, the residual are simmetrically ran
 <h1>Total Least Squares</h1>
 <p>Total Least Square <span class="citation" data-cites="markovsky2007overview">[<a href="#ref-markovsky2007overview" role="doc-biblioref">4</a>]</span> is a variation of the linear regression model specifically designed to handle situations in which the error affects not only on the mesurment of <span class="math inline">\(y\)</span>, but also in the independent variable <span class="math inline">\(x\)</span>. Thus, total least square is particularly usefull in situation where it is assumed that also the measurment of <span class="math inline">\(x\)</span> is noise.</p>
 <p>Instead of minimising the error between <span class="math inline">\(y\)</span> and <span class="math inline">\(\hat{y}\)</span>; as shown in <a href="#fig-total-least-square" class="quarto-xref">Figure&nbsp;3</a> total least square objective minimise the orthogonal distance between the given datapoints and the fitted line. Intuitively, total least square find the minimum perturbation to <strong>the dependent and independent</strong> variables such that the ortogonal distnace between the fitted line and the datapoint is minimised.</p>
-<p>Given any line $ a~x ~~ + ~~ b~y = 0$ we can formalize the ortoghonal distance between this line and any given point <span class="math inline">\((x_i, y_i)\)</span> as:</p>
+<p>Given any line <span class="math inline">\(ax ~~ + ~~ by = 0\)</span> we can formalize the ortoghonal distance between this line and any given point <span class="math inline">\((x_i, y_i)\)</span> as:</p>
 <p><span id="eq-orthogonal-distance"><span class="math display">\[
 \bar{\epsilon}_i = \frac{|ax_i + by_i|}{\sqrt{a^2 + b^2}}.
 \tag{5}\]</span></span></p>
@@ -655,17 +655,54 @@ Figure&nbsp;3: Total least square. As it is possible to see, residuals line are 
 </div>
 <section id="total-least-square-estimation" class="level2">
 <h2 class="anchored" data-anchor-id="total-least-square-estimation">Total Least Square Estimation</h2>
-<p>Given a dataset composed of <span class="math inline">\(N\)</span> elements, the loss function for a total least square model can be defined as:</p>
-<p><span class="math display">\[
+<p>Given a dataset composed of <span class="math inline">\(N\)</span> elements, the loss function for total least square is:</p>
+<p><span id="eq-tls-loss"><span class="math display">\[
 \begin{align}
 \mathcal{L}(x, y; a, b) &amp; = \sum_{i=1}^N (ax_i + by_i)^2 \\
 &amp; = \sum_{i=1}^N \bar{\epsilon}_i ^2 \\
-&amp; = \left[ \begin{bmatrix} x_1 ~~ y_2 \\ x_i ~~ y_i \\ x_N ~~ y_N \end{bmatrix} \cdot \begin{bmatrix} a \\ b \end{bmatrix} \right]^2 \\
-&amp; = \left[ \rmZ \cdot \rvu \right]^2 \\
-&amp; = \bar{\rvd} \bar{\rvd}^T \\
-&amp; = || \\rmZ \cdot \rvu ||^2
+&amp; = \sum_{i=1}^N \left[ \begin{bmatrix} x_1 ~~ y_2 \\ x_j ~~ y_j \\ x_N ~~ y_N \end{bmatrix} \cdot \begin{bmatrix} a \\ b \end{bmatrix} \right]^2_i   &amp; \substack{\text{With an abuse of notation, a sum reduce operation} \\ \text{is applied to all the raw of the matrix}} \\
+&amp; = \sum_{i=1}^N \left[ \rmZ \cdot \rvu \right]^2_i \\
+&amp; = \left[ \rmZ \cdot \rvu \right] \cdot \left[ \rmZ \cdot \rvu \right]^T &amp; \substack{\text{The sum of squared values of a column vector is obtained by} \\ \text{the matrix multiplication with the transpose column vector.}}\\
+&amp; = || \rmZ \cdot \rvu ||^2
 \end{align}
-\]</span></p>
+\tag{7}\]</span></span></p>
+<p>As done before, it is possible to optimise <a href="#eq-tls-loss" class="quarto-xref">Equation&nbsp;7</a> by computing its derivative w.r.t. the model parameters analitically. However, in so doing we need to avoid the degenerative solution <span class="math inline">\(\rvu = 0\)</span> and satisfy the previous assumption <span class="math inline">\(||\rvu||^2 = 1\)</span>. In other words, the toatl least square optimisation is a constraint problem:</p>
+<p><span id="eq-tls-loss-constrained"><span class="math display">\[
+\begin{align}
+\arg \min \mathcal{L}(\rmZ; \rvu) \\
+\text{s.t.} || \rvu ||^2 = 1
+\end{align}
+\tag{8}\]</span></span></p>
+<p>While there are multiple way to solve contrained optimization problem, Lagrangian multipliers <span class="citation" data-cites="rockafellar1993lagrange">[<a href="#ref-rockafellar1993lagrange" role="doc-biblioref">5</a>]</span> is a common approach that relax <a href="#eq-tls-loss-constrained" class="quarto-xref">Equation&nbsp;8</a> into a constinuous optimisazion problem:</p>
+<p><span id="eq-tls-loss-constrained-solution"><span class="math display">\[
+\begin{equation}
+\arg \min \mathcal{L}(\rmZ; \rvu, \lambda) = || \rmZ \cdot \rvu ||^2 + \lambda(|| \rvu ||^2 - 1)
+\end{equation}
+\tag{9}\]</span></span></p>
+<p>where <span class="math inline">\(\lambda\)</span> is an additional parameter to optimize for that is known as the lagrange multiplier. The analytical differentiation of <a href="#eq-tls-loss-constrained-solution" class="quarto-xref">Equation&nbsp;9</a> as:</p>
+<p><span id="eq-tls-loss-solution-1"><span class="math display">\[
+\begin{align}
+\frac{ \partial \mathcal{L}(\rmZ; \rvu, \lambda)}{\partial \rvu} &amp; = 0 \\
+2 \rmZ^T (\rmZ \cdot \rvu) + 2\lambda \rvu &amp; = 0 \\
+(\rmZ^T \cdot \rmZ) \rvu &amp; = -\lambda \rvu &amp; \substack{\text{Formulation of an} \\ \text{eigenvalue associated to} (\rmZ^T \cdot \rmZ).} \\
+\end{align}
+\tag{10}\]</span></span></p>
+<p><span id="eq-tls-loss-solution-2"><span class="math display">\[
+\begin{align}
+\frac{ \partial \mathcal{L}(\rmZ; \rvu, \lambda)}{\partial \lambda} &amp; = || \rvu ||^2 - 1 \\
+&amp; = \rvu^T \cdot \rvu -1 \\
+\rvu^T \cdot \rvu = 1
+\end{align}
+\tag{11}\]</span></span></p>
+<p>By combining <a href="#eq-tls-loss-solution-2" class="quarto-xref">Equation&nbsp;11</a> into <a href="#eq-tls-loss-solution-1" class="quarto-xref">Equation&nbsp;10</a> we obtain: <span id="eq-tls-loss-solution-3"><span class="math display">\[
+\begin{align}
+\rvu^T (\rmZ^T \cdot \rmZ) \rvu &amp; = -\lambda \rvu^T \rvu &amp; \substack{\text{By left-multiply } \rvu^T \text{ on both side.}} \\
+(\rvu^T \rmZ^T) \cdot (\rmZ \rvu) &amp; = -\lambda \\
+\left[ \rmZ \rvu \right]^T \cdot \left[ \rmZ \rvu \right] &amp; = -\lambda \\
+|| \rmZ \rvu ||^2 &amp; = -\lambda &amp; \substack{\text{The original objective of Eq. 7.}}
+\end{align}
+\tag{12}\]</span></span></p>
+<p>From equation <a href="#eq-tls-loss-solution-1" class="quarto-xref">Equation&nbsp;10</a> we know that <span class="math inline">\(\rvu\)</span> and <span class="math inline">\(\lambda\)</span> have to be an eigenvector and eigenvalue of <span class="math inline">\(2 \times 2\)</span> matrix <span class="math inline">\(\rmZ^T \rmZ\)</span>. From equation <a href="#eq-tls-loss-solution-3" class="quarto-xref">Equation&nbsp;12</a> we also know that <span class="math inline">\(\lambda\)</span> is equal to the original loss function we wanted to minimise in <a href="#eq-tls-loss" class="quarto-xref">Equation&nbsp;7</a>. Thus, the estimated optimal parameters for a total least square model are equivalent to the eigenvector assocaite to the smallest eigenvalue of the matrix <span class="math inline">\(\rmZ^T \rmZ\)</span>.</p>
 </section>
 </section>
 <section id="robust-linear-model" class="level1">
@@ -741,6 +778,9 @@ y = \epsilon + w_0 + w_1 x_1 + ... + w_n x_n (x_i \cdot x_j)
 </div>
 <div id="ref-markovsky2007overview" class="csl-entry" role="listitem">
 <div class="csl-left-margin">4. </div><div class="csl-right-inline">Markovsky I, Van Huffel S (2007) Overview of total least-squares methods. Signal processing 87(10):2283–2302</div>
+</div>
+<div id="ref-rockafellar1993lagrange" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">Rockafellar RT (1993) Lagrange multipliers and optimality. SIAM review 35(2):183–238</div>
 </div>
 </div>
 
