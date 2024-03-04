@@ -1,6 +1,7 @@
 ---
 categories:
 - Statistics
+- Linear Algebra
 
 author: Sandro Cavallari
 date: 2024-01-15
@@ -35,7 +36,7 @@ where:
 - $w_k$ are the model parameters that define the linear relationship between the independent variables and the target. These coefficients signify the anticipated change in the dependent variable for a one-unit change in the respective independent variable, with all other variables held constant.
 - $\epsilon$  represents the error term, accounting for the variability in  $y$ that can not be explained by linear model.
 
-Assuming that the sole source of error in the model is the difference between the predicted outcome ($\hat{y}$) and the actual value ($y$) of the dependent variable, the learning process adjusts the parameters to minimize the error terms:
+Assuming that the sole source of error in the model is the difference between the predicted outcome $\hat{y}$ and the actual value $y$ of the dependent variable, the learning process adjusts the parameters to minimize the error terms:
 
 $$
 \begin{align}
@@ -51,8 +52,7 @@ $$
 $$ {#eq-sum-of-squared-residuals}
 
 It's important to note that the minimization described in [@eq-sum-of-squared-residuals] entails minimizing **the vertical distance** between $\hat{y}$ and $y$, also knonw as residuals.
-This implies an implicit assumption that the only possible error is related to the model not accurately predicting the actual value, while the measurements of the independent variable are assumed to be **error-free**.
-This model formulation is commonly known as the least-square model, where [@eq-sum-of-squared-residuals] is the sum-of-squared-residual loss.
+Also, [@eq-sum-of-squared-residuals] assumes that the only possible error is related to the model not accurately predicting the actual value, while the measurements of the independent variable are **error-free**.
 
 ```{python}
 # | label: fig-least-square
@@ -158,7 +158,7 @@ plt.show()
 ```
 
 
-Finally, it is crucial to highlight some key assumptions of this model type:
+Finally, it is crucial to highlight some key characteristics of this model type:
 
 1. Linearity: There must be a linear relationship between the independent and dependent variables.
 2. Independence: The predictors should be independent of each other. This is vital for the model's stability and interpretability. Collinearity, or correlation between variables, can lead to significant changes in the outcome variable for minor alterations in the predictor variables, contradicting the assumption of a linear relationship. Additionally, a model with independent variables is easier to interpret as each variable contributes uniquely to the prediction.
