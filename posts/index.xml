@@ -1027,11 +1027,11 @@ Figure&nbsp;3: Total least square. As it is possible to see, residuals line are 
 <section id="robust-linear-model" class="level1">
 <h1>Robust Linear Model</h1>
 <p>In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through <a href="https://www.youtube.com/watch?v=Q81RR3yKn30&amp;ab_channel=StatQuestwithJoshStarmer"><strong>Ridge Regression</strong></a>, described by the formula:</p>
-<p><img src="https://latex.codecogs.com/png.latex?%0Ay%20=%20%5Cepsilon%20+%20w_0%20+%20w_1%20x_1%20+%20...%20+%20w_k%20x_k%20+%20%5Clambda%20%5Csum_%7B1%20%5Cleq%20i%20%5Cleq%20k+1%7D%20w_i%5E2.%0A"></p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ay%20=%20%5Cepsilon%20+%20w_0%20+%20w_1%20x_1%20+%20...%20+%20w_k%20x_k%20+%20%5Clambda%20%5Csum_%7B1%20%5Cleq%20i%20%5Cleq%20k%7D%20w_i%5E2.%0A"></p>
 <p>Ridge Regression is essentially linear regression augmented with a penalty term. This term comprises the squared coefficients of the model, effectively minimizing their magnitude. This added penalty increases the model’s bias but decreases prediction variance by imposing a normal distribution prior on the model parameters.</p>
 <hr>
 <p>On the other hand, <a href="https://www.youtube.com/watch?v=NGf0voTMlcs&amp;ab_channel=StatQuestwithJoshStarmer"><strong>Lasso Regression</strong></a> is another widely-used variation of linear regression. Similar to Ridge, Lasso adds a penalty to the loss function of the linear model. However, Lasso minimizes the absolute value of the coefficients rather than their square:</p>
-<p><img src="https://latex.codecogs.com/png.latex?%0Ay%20=%20%5Cepsilon%20+%20w_0%20+%20w_1%20x_1%20+%20...%20+%20w_k%20x_k%20+%20%5Clambda%20%5Csum_%7B1%20%5Cleq%20i%20%5Cleq%20k+1%7D%20%7Cw_i%7C.%0A"></p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ay%20=%20%5Cepsilon%20+%20w_0%20+%20w_1%20x_1%20+%20...%20+%20w_k%20x_k%20+%20%5Clambda%20%5Csum_%7B1%20%5Cleq%20i%20%5Cleq%20k%7D%20%7Cw_i%7C.%0A"></p>
 <p>The key distinction is that Lasso regression can reduce some coefficients to zero, producing a sparse model, whereas Ridge regression only reduces them to near zero.</p>
 <p>In conclusion, both these regularization approaches generate a model that has a bigger bias, but better generalization capability.</p>
 <section id="parameters-analysis" class="level2">

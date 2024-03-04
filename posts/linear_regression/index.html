@@ -709,13 +709,13 @@ Figure&nbsp;3: Total least square. As it is possible to see, residuals line are 
 <h1>Robust Linear Model</h1>
 <p>In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through <a href="https://www.youtube.com/watch?v=Q81RR3yKn30&amp;ab_channel=StatQuestwithJoshStarmer"><strong>Ridge Regression</strong></a>, described by the formula:</p>
 <p><span class="math display">\[
-y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k+1} w_i^2.
+y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k} w_i^2.
 \]</span></p>
 <p>Ridge Regression is essentially linear regression augmented with a penalty term. This term comprises the squared coefficients of the model, effectively minimizing their magnitude. This added penalty increases the model’s bias but decreases prediction variance by imposing a normal distribution prior on the model parameters.</p>
 <hr>
 <p>On the other hand, <a href="https://www.youtube.com/watch?v=NGf0voTMlcs&amp;ab_channel=StatQuestwithJoshStarmer"><strong>Lasso Regression</strong></a> is another widely-used variation of linear regression. Similar to Ridge, Lasso adds a penalty to the loss function of the linear model. However, Lasso minimizes the absolute value of the coefficients rather than their square:</p>
 <p><span class="math display">\[
-y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k+1} |w_i|.
+y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k} |w_i|.
 \]</span></p>
 <p>The key distinction is that Lasso regression can reduce some coefficients to zero, producing a sparse model, whereas Ridge regression only reduces them to near zero.</p>
 <p>In conclusion, both these regularization approaches generate a model that has a bigger bias, but better generalization capability.</p>
