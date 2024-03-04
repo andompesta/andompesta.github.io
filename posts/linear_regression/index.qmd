@@ -460,7 +460,7 @@ From [@eq-tls-loss-solution-1], we deduce that $\rvu$ and $\lambda$ must be an e
 In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through [**Ridge Regression**](https://www.youtube.com/watch?v=Q81RR3yKn30&ab_channel=StatQuestwithJoshStarmer), described by the formula:
 
 $$
-y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k+1} w_i^2.
+y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k} w_i^2.
 $$
 
 Ridge Regression is essentially linear regression augmented with a penalty term. This term comprises the squared coefficients of the model, effectively minimizing their magnitude. This added penalty increases the model's bias but decreases prediction variance by imposing a normal distribution prior on the model parameters.
@@ -471,7 +471,7 @@ Ridge Regression is essentially linear regression augmented with a penalty term.
 On the other hand, [**Lasso Regression**](https://www.youtube.com/watch?v=NGf0voTMlcs&ab_channel=StatQuestwithJoshStarmer) is another widely-used variation of linear regression. Similar to Ridge, Lasso adds a penalty to the loss function of the linear model. However, Lasso minimizes the absolute value of the coefficients rather than their square:
 
 $$
-y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k+1} |w_i|.
+y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k} |w_i|.
 $$
 
 The key distinction is that Lasso regression can reduce some coefficients to zero, producing a sparse model, whereas Ridge regression only reduces them to near zero.
