@@ -245,7 +245,7 @@ Total Least Squares (TLS), as outlined by [@markovsky2007overview], represents a
 
 In contrast to the above mentioned approach of minimizing the error solely between $y$ and $\hat{y}$, as depicted in [@fig-total-least-square], the TLS objective is to minimize the **orthogonal distance** between the given data points and the fitted line. In essence, TLS seeks the minimal perturbation to both the dependent and independent variables, ensuring the orthogonal distance between the fitted line and each data point is minimized.
 
-For any given line represented by the equation $ax ~~ + ~~ by = 0$, the formalization of the orthogonal distance between this line and a specific point $(x_i, y_i)$ is expressed as follows:
+As described in [@youtube], any given line represented by the equation $ax ~~ + ~~ by = 0$, the formalization of the orthogonal distance between this line and a specific point $(x_i, y_i)$ is expressed as follows:
 
 $$
 \bar{\epsilon}_i = \frac{|ax_i + by_i|}{\sqrt{a^2 + b^2}}.
