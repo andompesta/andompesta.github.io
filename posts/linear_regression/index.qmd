@@ -456,15 +456,15 @@ From [@eq-tls-loss-solution-1], we deduce that $\rvu$ and $\lambda$ must be an e
 
 # Robust Linear Model
 
-In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through [**Ridge Regression**](https://www.youtube.com/watch?v=Q81RR3yKn30&ab_channel=StatQuestwithJoshStarmer), described by the formula:
+Real-world datasets frequently encounter multicollinearity among independent variables. One effective approach to address this issue is through [**Ridge Regression**](https://www.youtube.com/watch?v=Q81RR3yKn30&ab_channel=StatQuestwithJoshStarmer), characterized by the formula:
 
 $$
 y = \epsilon + w_0 + w_1 x_1 + ... + w_K x_K + \lambda \sum_{1 \leq k \leq K} w_k^2.
 $${#eq-ridge-regression}
 
-Ridge Regression is essentially linear regression augmented with a penalty term. This term comprises the squared coefficients of the model, effectively minimizing their magnitude. This added penalty increases the model's bias but decreases prediction variance by imposing a normal distribution prior on the model parameters.
+Ridge Regression essentially augments linear regression with a penalty term, where this term consists of the squared coefficients of the model. Consequently, it minimizes the magnitude of the coefficients, introducing a bias to the model but simultaneously reducing prediction variance by imposing a normal distribution prior on the model parameters.
 
-The derivate of the loss defined in [@eq-sum-of-squared-residuals] for a Ridge Regression model would be:
+The derivative of the loss defined in Equation [@eq-sum-of-squared-residuals] for a Ridge Regression model can be expressed as:
 
 $$
 \begin{align}
@@ -474,9 +474,7 @@ $$
 \end{align}
 $$ {#eq-ridge-regression-loss}
 
-[@eq-ridge-regression-loss] demonstrates that Ridge Regression is equivalent to a linear regression, but with smaller weight in magnitude.
-Similarly a Ridge Regression will never zero-out any model's weights due to it's quadratic formulation, making it a prefereble choice for dense model.
-
+[@eq-ridge-regression-loss] illustrates that Ridge Regression is akin to linear regression but with smaller-weighted coefficients. Additionally, due to its quadratic formulation, Ridge Regression ensures that no model weights are zeroed out, making it a preferable choice when a dense model is desidered.
 
 ----
 
