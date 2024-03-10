@@ -932,7 +932,7 @@ font-style: inherit;">0.1</span>, <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">11.</span>),</span>
+font-style: inherit;">11.0</span>),</span>
 <span id="cb3-109">    xycoords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
@@ -1004,7 +1004,7 @@ font-style: inherit;">"y"</span>)</span>
 <img src="https://andompesta.github.io/posts/linear_regression/index_files/figure-html/fig-total-least-square-output-1.png" width="596" height="597" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-total-least-square-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Total least square. As it is possible to see, residuals line are rotogonal w.r.t. the fitted line. Moreover, not that the predictions are done for both x and y.
+Figure&nbsp;3: Total least square. As it is possible to see, residuals line are orthogonal w.r.t. the fitted line. Moreover, the predictions are done for both x and y variables. This is in plain contrast with the traditional least square model shown in green colors.
 </figcaption>
 </figure>
 </div>
