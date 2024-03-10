@@ -26,7 +26,7 @@ The foundational formula for linear regression is represented as:
 {{< include macro.tex >}}
 
 $$
-y = w_0 + w_1 x_1 + ... + w_k x_k + \epsilon
+y = w_0 + w_1 x_1 + ... + w_K x_K + \epsilon
 $${#eq-linear-model}
 
 where:
@@ -40,7 +40,7 @@ Assuming that the sole source of error in the model is the difference between th
 
 $$
 \begin{align}
-\hat{y} & = w_0 + w_1 x_1 + ... + w_k x_k \\
+\hat{y} & = w_0 + w_1 x_1 + ... + w_K x_K \\
 \epsilon &= y - \hat{y}.
 \end{align}
 $$ {#eq-least-square}
@@ -184,14 +184,14 @@ $$ {#eq-derivation}
 where:
 
 - $\rvy$ is the collumn vector $\left[\begin{align} y_1 \\ \vdots \\ y_N \end{align}\right]$;
-- $\rmX$ is the $N \times k+1$ matrix $\left[\begin{array}{ccc} 1 & x_{1,1} & \cdots & x_{k,1} \\ \vdots & \vdots & \vdots & \vdots \\ 1 & x_{1,N} & \cdots & x_{k,N}\end{array}\right]$;
-- $\rvw$ is the is the $k+1$ column vector $\left[\begin{align} w_0 \\ w_1 \\ \vdots \\ w_k \end{align}\right]$;
+- $\rmX$ is the $N \times K+1$ matrix $\left[\begin{array}{ccc} 1 & x_{1,1} & \cdots & x_{K,1} \\ \vdots & \vdots & \vdots & \vdots \\ 1 & x_{1,N} & \cdots & x_{K,N}\end{array}\right]$;
+- $\rvw$ is the is the $k+1$ column vector $\left[\begin{align} w_0 \\ w_1 \\ \vdots \\ w_K \end{align}\right]$;
 - $\rvd^T$ is the row vector $\left[y_1 - \hat{y}_1, ...,  y_N - \hat{y}_N\right]$.
 
 It is then possible to compute the optimal paramters by differenciating w.r.t. $\rvw$:
 $$
 \begin{align}
-\frac{\partial \mathcal{L}(y, \hat{y})}{\partial \rvw} = & \frac{\partial || \rvy - \rmX \rvw ||^2}{\partial \rvw} \\
+\frac{\partial \mathcal{L}(\rvy, \hat{\rvy})}{\partial \rvw} = & \frac{\partial || \rvy - \rmX \rvw ||^2}{\partial \rvw} \\
 & = 2\rmX^T (\rvy - \rmX \rvw) \\
 & = 2 \rmX^T\rvy - 2 \rmX^T \rmX \rvw \\
 & 2 \rmX^T \rmX \rvw = 2 \rmX^T\rvy & \substack{\text{The minumum of } \mathcal{L} \text{is given by} \\ \partial \mathcal{L} = 0 \text{ and solving by } \rvw}\\
@@ -199,7 +199,7 @@ $$
 \end{align}
 $$
 
-Note that $\rmX^T \rmX$ is an $k+1 \times k+1$ matrix; thus could be invertible, $\rmX^T\rvy$ is an $k+1 \times 1$ column vector and $\rvw$ is the $k+1 \times 1$ column vector of unknown parameters.
+Note that $\rmX^T \rmX$ is an $K+1 \times K+1$ matrix; thus could be invertible, $\rmX^T\rvy$ is an $K+1 \times 1$ column vector and $\rvw$ is the $K+1 \times 1$ column vector of unknown parameters.
 Finally, this solution, known as ordinary least squares, is applicable to any model with a linear formulation concerning the model's parameters, allowing for polynomial independent variables.
 
 
@@ -258,7 +258,7 @@ $$
 $$ {#eq-orthogonal-distance-prime}
 
 In this revised expression, the absolute value has been replaced by its squared counterpart, and a matrix formulation has been introduced for enhanced clarity.
-
+Finally, note that the model here proposed assume a centered dataset as the formulation $ax + by = 0$ imposes the line to pass through the origin.
 
 ```{python}
 # | label: fig-total-least-square
@@ -454,16 +454,28 @@ $${#eq-tls-loss-solution-3}
 
 From [@eq-tls-loss-solution-1], we deduce that $\rvu$ and $\lambda$ must be an eigenvector and eigenvalue of a $2 \times 2$ matrix, specifically $\rmZ^T \rmZ$. Moreover, [@eq-tls-loss-solution-3] establishes that $\lambda$ is equal to the original loss function aimed to be minimized in [@eq-tls-loss]. Consequently, the estimated optimal parameters for a Total Least Squares model are equivalent to the eigenvector associated with the smallest eigenvalue of the matrix $\rmZ^T \rmZ$.
 
-
 # Robust Linear Model
 
 In the real world, datasets often suffer from multicollinearity among independent variables. One effective method to mitigate this issue is through [**Ridge Regression**](https://www.youtube.com/watch?v=Q81RR3yKn30&ab_channel=StatQuestwithJoshStarmer), described by the formula:
 
 $$
-y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k} w_i^2.
-$$
+y = \epsilon + w_0 + w_1 x_1 + ... + w_K x_K + \lambda \sum_{1 \leq k \leq K} w_k^2.
+$${#eq-ridge-regression}
 
 Ridge Regression is essentially linear regression augmented with a penalty term. This term comprises the squared coefficients of the model, effectively minimizing their magnitude. This added penalty increases the model's bias but decreases prediction variance by imposing a normal distribution prior on the model parameters.
+
+The derivate of the loss defined in [@eq-sum-of-squared-residuals] for a Ridge Regression model would be:
+
+$$
+\begin{align}
+\frac{\partial \mathcal{L}(y, \hat{y})} {\partial w_k} & = \frac{\partial \sum_{i=1}^N(y_i - \hat{y}_i)^2 + \lambda \sum_{k=1}^K w_k^2}{\partial w_k} \\
+& = \frac{\partial \sum_{i=1}^N \left(y_i - w_0 - w_1 x_1 - ... - w_K x_K \right)^2 + \lambda \sum_{k=1}^K w_k^2}{\partial w_k} \\
+& = -2 \sum_{i=1}^N \left(y_i - w_0 - w_1 x_1 - ... - w_K x_K \right) + 2 \lambda \sum_{k=1}^K w_k.
+\end{align}
+$$ {#eq-ridge-regression-loss}
+
+[@eq-ridge-regression-loss] demonstrates that Ridge Regression is equivalent to a linear regression, but with smaller weight in magnitude.
+Similarly a Ridge Regression will never zero-out any model's weights due to it's quadratic formulation, making it a prefereble choice for dense model.
 
 
 ----
@@ -471,12 +483,30 @@ Ridge Regression is essentially linear regression augmented with a penalty term.
 On the other hand, [**Lasso Regression**](https://www.youtube.com/watch?v=NGf0voTMlcs&ab_channel=StatQuestwithJoshStarmer) is another widely-used variation of linear regression. Similar to Ridge, Lasso adds a penalty to the loss function of the linear model. However, Lasso minimizes the absolute value of the coefficients rather than their square:
 
 $$
-y = \epsilon + w_0 + w_1 x_1 + ... + w_k x_k + \lambda \sum_{1 \leq i \leq k} |w_i|.
+y = \epsilon + w_0 + w_1 x_1 + ... + w_K x_K + \lambda \sum_{1 \leq k \leq K} |w_k|.
 $$
 
-The key distinction is that Lasso regression can reduce some coefficients to zero, producing a sparse model, whereas Ridge regression only reduces them to near zero.
+Following the same reasoning as for Ridge Regression, it's weight update is computed as:
 
-In conclusion, both these regularization approaches generate a model that has a bigger bias, but better generalization capability.
+$$
+\begin{align}
+\frac{\partial \mathcal{L}(y, \hat{y})} {\partial w_k} & = \frac{\partial \sum_{i=1}^N(y_i - \hat{y}_i)^2 + \lambda \sum_{k=1}^K |w_k|}{\partial w_k} \\
+& = \frac{\partial \sum_{i=1}^N \left(y_i - w_0 - w_1 x_1 - ... - w_K x_K \right)^2 + \lambda \sum_{k=1}^K |w_k|}{\partial w_k}.
+\end{align}
+$$ {#eq-lasso-regression-loss}
+
+In general $\frac{\partial |x|}{\partial x}$ is not defined as the function is not differentiable when $x=0$.
+However, an approximate solution of [@eq-lasso-regression-loss] is defined by case:
+$$
+\frac{\partial \mathcal{L}(y, \hat{y})} {\partial w_k} = \begin{cases}
+ 0 \quad \text{if } - \frac{\lambda}{2} < \frac{\partial \mathcal{L}(y, \hat{y})} {\partial w_k} < \frac{\lambda}{2} \\
+ -2 \sum_{i=1}^N \left(y_i - w_0 - w_1 x_1 - ... - w_K x_K \right) + \lambda \quad \text{otherwise}
+\end{cases}.
+$$ {#eq-lasso-regression-loss-2}
+
+From [@eq-lasso-regression-loss-2] it is clear how a Lasso regression can reduce some coefficients to zero, producing a sparse model; whereas Ridge regression only reduces them to near zero.
+Thus, Lasso regression is a good alternative when a sparse model is desidered or when there is the need to perform feature selection.
+
 
 ## Parameter's Analysis
 
