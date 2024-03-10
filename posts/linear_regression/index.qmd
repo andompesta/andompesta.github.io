@@ -262,7 +262,7 @@ Finally, note that the model here proposed assume a centered dataset as the form
 
 ```{python}
 # | label: fig-total-least-square
-# | fig-cap: "Total least square. As it is possible to see, residuals line are rotogonal w.r.t. the fitted line. Moreover, not that the predictions are done for both x and y."
+# | fig-cap: "Total least square. As it is possible to see, residuals line are orthogonal w.r.t. the fitted line. Moreover, the predictions are done for both x and y variables. This is in plain contrast with the traditional least square model shown in green colors."
 
 import matplotlib.pyplot as plt
 
@@ -371,7 +371,7 @@ for i in range(len(x)):
 
 ax.annotate(
     "$\\bar{\\epsilon}$",
-    xy=(0.1, -11.),
+    xy=(0.1, -11.0),
     xycoords="data",
     xytext=(0.1, 0.1),
     textcoords="axes fraction",
