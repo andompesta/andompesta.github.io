@@ -478,13 +478,12 @@ $$ {#eq-ridge-regression-loss}
 
 ----
 
-On the other hand, [**Lasso Regression**](https://www.youtube.com/watch?v=NGf0voTMlcs&ab_channel=StatQuestwithJoshStarmer) is another widely-used variation of linear regression. Similar to Ridge, Lasso adds a penalty to the loss function of the linear model. However, Lasso minimizes the absolute value of the coefficients rather than their square:
-
+[**Lasso Regression**](https://www.youtube.com/watch?v=NGf0voTMlcs&ab_channel=StatQuestwithJoshStarmer) another widely employed variant of linear regression, incorporates a penalty term into the linear model's loss function. Unlike Ridge Regression, Lasso minimizes the absolute values of the coefficients:
 $$
 y = \epsilon + w_0 + w_1 x_1 + ... + w_K x_K + \lambda \sum_{1 \leq k \leq K} |w_k|.
 $$
 
-Following the same reasoning as for Ridge Regression, it's weight update is computed as:
+The weight update for Lasso Regression is computed as:
 
 $$
 \begin{align}
@@ -493,8 +492,8 @@ $$
 \end{align}
 $$ {#eq-lasso-regression-loss}
 
-In general $\frac{\partial |x|}{\partial x}$ is not defined as the function is not differentiable when $x=0$.
-However, an approximate solution of [@eq-lasso-regression-loss] is defined by case:
+The differentiation of the absolute value function poses challenges when $w_k = 0$ as it is not defined. However, an approximate solution of [@eq-lasso-regression-loss] is defined by case:
+
 $$
 \frac{\partial \mathcal{L}(y, \hat{y})} {\partial w_k} = \begin{cases}
  0 \quad \text{if } - \frac{\lambda}{2} < \frac{\partial \mathcal{L}(y, \hat{y})} {\partial w_k} < \frac{\lambda}{2} \\
@@ -502,9 +501,7 @@ $$
 \end{cases}.
 $$ {#eq-lasso-regression-loss-2}
 
-From [@eq-lasso-regression-loss-2] it is clear how a Lasso regression can reduce some coefficients to zero, producing a sparse model; whereas Ridge regression only reduces them to near zero.
-Thus, Lasso regression is a good alternative when a sparse model is desidered or when there is the need to perform feature selection.
-
+From [@eq-lasso-regression-loss-2], it is evident that Lasso Regression can drive some coefficients to zero, resulting in a sparse model. In contrast to Ridge Regression, which merely reduces coefficients to values near zero, Lasso Regression is a favorable choice when a sparse model is desired or when feature selection is necessary.
 
 ## Parameter's Analysis
 
