@@ -1,0 +1,367 @@
+---
+categories:
+- Deep Learning
+
+author: Sandro Cavallari
+date: 2024-04-10
+title: "Neural ODEs"
+comments:
+  giscus:
+    repo: quarto-dev/quarto-web
+format:
+  html:
+    toc: true
+---
+
+
+# Ordinalry Differential Equations
+
+Ordinalry Differential Equations or ODEs are equations with a single indipendent varlaible (usually called time $t$) and one or more derivatives of functions defined in terms of the indipendent variable. Formally,
+
+$$
+f(x(t), t) = x'(t) = \frac{ \partial x(t)} {\partial t} = \lim_{\Delta t \rightarrow 0} \frac{x(t + \Delta t) - x(t)}{\Delta t}
+$$
+
+where:
+
+  - $t$ represent the time or any other indipendent variable used as domain of the derivate operator;
+  - $x(t) \in \mathbb{R}^d$ is the dependent variable defining the system's state;
+  - $x'(t) \in \mathbb{R}^d$ is the first order derivative of $x(t)$;
+  - $f \in \mathbb{R}^d \times \mathbb{R}^+$ is the **vector-field** differential functioin describing the systems's evolution over time.
+
+
+As $f$ defines the evolution of a complex system over every infinitesimal interval of time $\Delta t$, we can formally define an ODE problem as:
+
+$$
+\begin{align}
+    x(t + \Delta t) & = x(t) + \Delta t \cdot f(x(t), t) \\
+    \text{s.t.} & ~~ \Delta t \rightarrow 0.
+\end{align}
+$$
+
+
+## Computing a Solution
+
+In the general term, the solution to an ODE involve to computetion of the antiderivative of $f$, in other words the integral of $f$.
+As the integral of any function involve an arbitrary constant, usually defined as $C$, there is the need to specify an *initial condition* $x_0$ to guarantee that the solution of the ODE is unique:
+
+$$
+x_t = x_0 + \int_0^t f(x_\tau) \partial \tau
+$$
+
+Note that, given the inital state $x_0$ and a set of points in time $\{ t_0, ..., t_N\}$, the objective is to obtain the state solution $x_{0:N} \equiv \{ x_0, ..., x_N\}$.
+Unfortunetly, solving the above integral analytically is possible only for a limited amount of differential functions.
+Therefore, numerical solvers are used in practice. 
+
+
+
+```{python}
+import torch
+import torch.nn as nn
+from torchdyn.numerics import odeint
+from IPython.display import HTML
+
+device = torch.device("cpu")
+
+
+class VDPoscillator(nn.Module):
+    def __init__(self, mu: float) -> None:
+        super().__init__()
+        self.mu = mu
+
+    def forward(
+        self,
+        t: torch.Tensor,
+        x: torch.Tensor,
+    ):
+        var_0 = x[..., 1]
+        var_1 = self.mu * (1 - x[..., 0] ** 2) * x[..., 1] - x[..., 0]
+        return torch.stack(
+            (var_0, var_1),
+            dim=-1,
+        )
+
+
+from typing import Callable
+import numpy as np
+import torch
+from matplotlib import pyplot as plt, animation
+
+
+def get_device():
+    return "cpu"
+
+
+def plot_ode(
+    t: np.ndarray,
+    X: np.ndarray,
+    ode_rhs: Callable,
+    Xhat: np.ndarray | None = None,
+    L: int = 1,
+    return_fig: bool = False,
+):
+    N_ = 10
+    X = X.transpose(1, 0, 2)
+
+    if Xhat is not None:
+        Xhat = Xhat.transpose(1, 0, 2)
+    min_x, min_y = X.min(axis=0).min(axis=0)
+    max_x, max_y = X.max(axis=0).max(axis=0)
+    xs1_, xs2_ = np.meshgrid(
+        np.linspace(min_x, max_x, N_),
+        np.linspace(min_y, max_y, N_),
+    )
+    Z = np.array(
+        [
+            xs1_.T.flatten(),
+            xs2_.T.flatten(),
+        ]
+    ).T
+    Z = torch.from_numpy(Z).float()
+    Z = torch.stack([Z] * L)
+    Z = Z.to(get_device()).contiguous()
+
+    with torch.no_grad():
+        F = ode_rhs(None, Z).detach().cpu().numpy()
+
+    F /= ((F**2).sum(-1, keepdims=True)) ** (0.25)
+    Z = Z.detach().cpu().numpy()
+
+    fig = plt.figure(
+        1,
+        [15, 7.5],
+        constrained_layout=True,
+    )
+    gs = fig.add_gridspec(3, 3)
+    ax1 = fig.add_subplot(gs[:, 0])
+
+    ax1.set_xlabel("State $x_1$", fontsize=17)
+    ax1.set_ylabel("State $x_2$", fontsize=17)
+    ax1.tick_params(axis="x", labelsize=15)
+    ax1.tick_params(axis="y", labelsize=15)
+
+    for Z_, F_ in zip(Z, F):
+        Z_ = Z_.reshape(N_, N_, -1)
+        F_ = F_.reshape(N_, N_, -1)
+        h1 = ax1.quiver(
+            Z_[:, :, 0],
+            Z_[:, :, 1],
+            F_[:, :, 0],
+            F_[:, :, 1],
+            np.linalg.norm(F_, axis=-1),
+            cmap="viridis",
+        )
+
+    if Xhat is None:  # only plotting data
+        for X_ in X:
+            (h2,) = ax1.plot(
+                X_[0, 0],
+                X_[0, 1],
+                "o",
+                fillstyle="none",
+                markersize=11.0,
+                linewidth=2.0,
+            )
+            (h3,) = ax1.plot(
+                X_[:, 0],
+                X_[:, 1],
+                "-",
+                color=h2.get_color(),
+                linewidth=3.0,
+            )
+    else:  # plotting data and fits, set the color correctly!
+        (h2,) = ax1.plot(
+            X[0, 0, 0],
+            X[0, 0, 1],
+            "o",
+            color="firebrick",
+            fillstyle="none",
+            markersize=11.0,
+            linewidth=2.0,
+        )
+        (h3,) = ax1.plot(
+            X[0, :, 0],
+            X[0, :, 1],
+            "-",
+            color="firebrick",
+            linewidth=3.0,
+        )
+    if Xhat is not None and Xhat.ndim == 3:
+        Xhat = np.expand_dims(Xhat, 0)
+    if Xhat is None:
+        plt.legend(
+            [h1, h2, h3],
+            ["Vector field", "Initial value", "State trajectory"],
+            loc="lower right",
+            fontsize=20,
+            bbox_to_anchor=(1.5, 0.05),
+        )
+    else:
+        for xhat in Xhat:
+            (h4,) = ax1.plot(
+                xhat[0, :, 0],
+                xhat[0, :, 1],
+                "-",
+                color="royalblue",
+                linewidth=3.0,
+            )
+        if Xhat.shape[0] > 1:
+            ax1.plot(
+                X[0, :, 0],
+                X[0, :, 1],
+                "-",
+                color="firebrick",
+                linewidth=5.0,
+            )
+        plt.legend(
+            [h1, h2, h3, h4],
+            ["Vector field", "Initial value", "Data sequence", "Forward simulation"],
+            loc="lower right",
+            fontsize=20,
+            bbox_to_anchor=(1.5, 0.05),
+        )
+
+    ax2 = fig.add_subplot(gs[0, 1:])
+    if Xhat is None:  # only plotting data
+        for X_ in X:
+            (h4,) = ax2.plot(
+                t,
+                X_[:, 0],
+                linewidth=3.0,
+            )
+    else:  # plotting data and fits, set the color correctly!
+        (h4,) = ax2.plot(
+            t,
+            X[0, :, 0],
+            color="firebrick",
+            linewidth=3.0,
+        )
+    if Xhat is not None:
+        for xhat in Xhat:
+            ax2.plot(
+                t,
+                xhat[0, :, 0],
+                color="royalblue",
+                linewidth=3.0,
+            )
+        if Xhat.shape[0] > 1:
+            ax2.plot(
+                t,
+                X[0, :, 0],
+                color="firebrick",
+                linewidth=5.0,
+            )
+    ax2.set_xlabel("time", fontsize=17)
+    ax2.set_ylabel("State $x_1$", fontsize=17)
+
+    ax3 = fig.add_subplot(gs[1, 1:])
+
+    if Xhat is None:  # only plotting data
+        for X_ in X:
+            (h5,) = ax3.plot(t, X_[:, 1], linewidth=3.0)
+    else:  # plotting data and fits, set the color correctly!
+        (h5,) = ax3.plot(
+            t,
+            X[0, :, 1],
+            color="firebrick",
+            linewidth=3.0,
+        )
+    if Xhat is not None:
+        for xhat in Xhat:
+            ax3.plot(
+                t,
+                xhat[0, :, 1],
+                color="royalblue",
+                linewidth=3.0,
+            )
+        if Xhat.shape[0] > 1:
+            ax3.plot(
+                t,
+                X[0, :, 1],
+                color="firebrick",
+                linewidth=5.0,
+            )
+    ax3.set_xlabel(
+        "time",
+        fontsize=17,
+    )
+    ax3.set_ylabel(
+        "State $x_2$",
+        fontsize=17,
+    )
+
+    if return_fig:
+        return fig, ax1, h3, h4, h5
+    else:
+        plt.show()
+
+
+def plot_vdp_animation(
+    t: np.ndarray,
+    X: np.ndarray,
+    ode_rhs: Callable,
+):
+    fig, ax1, h3, h4, h5 = plot_ode(
+        t=t,
+        X=X,
+        ode_rhs=ode_rhs,
+        return_fig=True,
+    )
+
+    def animate(i):
+        h3.set_data(X[: (i + 1) * 5, 0, 0], X[: (i + 1) * 5, 0, 1])
+        h4.set_data(t[: (i + 1) * 5], X[: (i + 1) * 5, 0, 0])
+        h5.set_data(t[: (i + 1) * 5], X[: (i + 1) * 5, 0, 1])
+        ax1.set_title(
+            "State trajectory until t={:.2f}".format(5 * t[i].item()),
+            fontsize=17,
+        )
+        return (
+            h3,
+            h4,
+            h5,
+        )
+
+    anim = animation.FuncAnimation(
+        fig,
+        animate,
+        frames=100,
+        interval=100,
+        blit=True,
+    )
+    plt.close()
+    return anim
+
+
+vdp = VDPoscillator(1.0).to(device)
+
+# initial value, of shape [N, d]
+x0 = torch.tensor([[1.0, 0.0]]).float().to(device)
+
+# integration time points, of shape [T]
+# ts = torch.linspace(0.0, 15.0, 500).to(device)
+t_span = torch.linspace(0.0, 15.0, 500).to(device)
+
+with torch.no_grad():
+    t_eval, base_sol = odeint(vdp, x0, t_span=t_span, solver="euler")  # [T], [T, N, d]
+
+
+anim = plot_vdp_animation(
+    t=t_span.detach().cpu().numpy(),
+    X=base_sol.detach().cpu().numpy(),
+    ode_rhs=vdp,
+)
+HTML(anim.to_jshtml())
+```
+
+
+
+
+# Resources
+
+- Original paper [Neural Oridnaly Differential Equations](https://papers.nips.cc/paper_files/paper/2018/file/69386f6bb1dfed68692a24c8686939b9-Paper.pdf)
+- Probabilistic AI tutorial: [video](https://www.youtube.com/watch?v=oh2X89rmMdQ&list=PLRy-VW__9hV8zhnmhzoz3yUzGE1NAA7ka&index=18&ab_channel=ProbabilisticAI) [website](https://cagatayyildiz.github.io/notes/node/NODE.html#References)
+- Deep Implicit Layer: [video](https://implicit-layers-tutorial.org/) [website](https://implicit-layers-tutorial.org/)
+- [Adjoint State Method](https://ilya.schurov.com/post/adjoint-method/) blog by Ilya Schurov
+- [ODE demo](https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/DL2/Dynamical_systems/dynamical_systems_neural_odes.html#0.-Introduction)
+- [Adjoint state Method from Lagrange multipliers](https://vaipatel.com/deriving-the-adjoint-equation-for-neural-odes-using-lagrange-multipliers/#:~:text=Luckily%2C%20a%20very%20well%2Dknown,to%20store%20intermediate%20function%20evaluations.)
