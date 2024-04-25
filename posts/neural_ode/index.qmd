@@ -59,7 +59,6 @@ Therefore, numerical solvers are used in practice.
 import torch
 import torch.nn as nn
 from torchdyn.numerics import odeint
-from IPython.display import HTML
 
 device = torch.device("cpu")
 
@@ -85,6 +84,7 @@ class VDPoscillator(nn.Module):
 from typing import Callable
 import numpy as np
 import torch
+from plot_vector_field import plot_vdp_animation
 
 vdp = VDPoscillator(1.0).to(device)
 
@@ -100,6 +100,12 @@ with torch.no_grad():
     )  # [T], [T, N, d]
 
 t_eval.size(), vdp_sol_euler.size()
+
+# anim = plot_vdp_animation(
+#     t=t_eval.detach().cpu().numpy(),
+#     X=sol_euler.detach().cpu().numpy(),
+#     ode_rhs=vdp,
+# )
 ```
 
 {{< video animations//vdp-oscillator_.mp4 >}}
@@ -108,6 +114,8 @@ t_eval.size(), vdp_sol_euler.size()
 As overmentioned the solution depend on the initial state of the system. Following there is a demonstration of how the system will behave if you used different starting points.
 
 ```{python}
+from plot_vector_field import plot_ode
+
 x0 = (
     torch.tensor(
         [
@@ -125,17 +133,21 @@ t_span = torch.linspace(0.0, 15.0, 500).to(device)
 
 # forward integration
 with torch.no_grad():
-    t_eval, vdps_sol_euler = odeint(vdp, x0, t_span=t_span, solver="euler")
+    t_vdps_eval, vdps_sol_euler = odeint(vdp, x0, t_span=t_span, solver="euler")
 
-t_eval.size(), vdp_sol_euler.size()
+plot_ode(
+    t=t_vdps_eval.detach().cpu().numpy(),
+    X=vdps_sol_euler.detach().cpu().numpy(),
+    ode_rhs=vdp,
+)
 ```
 
-::: {#fig-vpds-solution}
+<!-- ::: {#fig-vpds-solution}
 
 ![](img/vdps.png){#fig-vpds-solution}
 
 Representation of 3 different solutions for a vdp oscillator system.
-:::
+::: -->
 
 
 # Neural ODEs 
