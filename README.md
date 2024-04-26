@@ -1,3 +1,10 @@
 # notes
 
-Based on Quadro
+Based on [Quadro](https://quarto.org/).
+
+
+# Preview
+
+```bash
+quarto preview
+```
