@@ -2,50 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://andompesta.github.io/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.078Z</lastmod>
-  </url>
-  <url>
-    <loc>https://andompesta.github.io/posts/linear_regression/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.094Z</lastmod>
-  </url>
-  <url>
-    <loc>https://andompesta.github.io/posts/datastructure/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.086Z</lastmod>
-  </url>
-  <url>
-    <loc>https://andompesta.github.io/posts/vea/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.102Z</lastmod>
-  </url>
-  <url>
-    <loc>https://andompesta.github.io/posts/data_preprocessing/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.086Z</lastmod>
-  </url>
-  <url>
-    <loc>https://andompesta.github.io/posts/finetune/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.086Z</lastmod>
-  </url>
-  <url>
-    <loc>https://andompesta.github.io/notebooks/least_sauqre.html</loc>
-    <lastmod>2024-03-10T16:50:00.078Z</lastmod>
-  </url>
-  <url>
-    <loc>https://andompesta.github.io/posts/linear_algebra/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.094Z</lastmod>
+    <lastmod>2024-04-26T21:18:21.676Z</lastmod>
   </url>
   <url>
     <loc>https://andompesta.github.io/posts/normalization_flow/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.102Z</lastmod>
+    <lastmod>2024-04-26T21:18:21.700Z</lastmod>
   </url>
   <url>
-    <loc>https://andompesta.github.io/posts/gradient_descent_and_backprop/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.090Z</lastmod>
+    <loc>https://andompesta.github.io/posts/neural_ode/index.html</loc>
+    <lastmod>2024-04-26T21:18:21.692Z</lastmod>
   </url>
   <url>
-    <loc>https://andompesta.github.io/posts/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.090Z</lastmod>
+    <loc>https://andompesta.github.io/posts/finetune/index.html</loc>
+    <lastmod>2024-04-26T21:18:21.684Z</lastmod>
   </url>
   <url>
     <loc>https://andompesta.github.io/posts/metrics/index.html</loc>
-    <lastmod>2024-03-10T16:50:00.098Z</lastmod>
+    <lastmod>2024-04-26T21:18:21.692Z</lastmod>
+  </url>
+  <url>
+    <loc>https://andompesta.github.io/posts/vea/index.html</loc>
+    <lastmod>2024-04-26T21:18:21.700Z</lastmod>
+  </url>
+  <url>
+    <loc>https://andompesta.github.io/notebooks/least_sauqre.html</loc>
+    <lastmod>2024-04-26T21:18:21.676Z</lastmod>
+  </url>
+  <url>
+    <loc>https://andompesta.github.io/posts/linear_regression/index.html</loc>
+    <lastmod>2024-04-26T21:18:21.688Z</lastmod>
+  </url>
+  <url>
+    <loc>https://andompesta.github.io/posts/data_preprocessing/index.html</loc>
+    <lastmod>2024-04-26T21:18:21.680Z</lastmod>
+  </url>
+  <url>
+    <loc>https://andompesta.github.io/posts/linear_algebra/index.html</loc>
+    <lastmod>2024-04-26T21:18:21.688Z</lastmod>
+  </url>
+  <url>
+    <loc>https://andompesta.github.io/posts/datastructure/index.html</loc>
+    <lastmod>2024-04-26T21:18:21.680Z</lastmod>
+  </url>
+  <url>
+    <loc>https://andompesta.github.io/posts/index.html</loc>
+    <lastmod>2024-04-26T21:18:21.684Z</lastmod>
+  </url>
+  <url>
+    <loc>https://andompesta.github.io/posts/gradient_descent_and_backprop/index.html</loc>
+    <lastmod>2024-04-26T21:18:21.684Z</lastmod>
   </url>
 </urlset>
