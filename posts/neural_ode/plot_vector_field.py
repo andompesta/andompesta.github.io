@@ -154,7 +154,7 @@ def plot_ode(
     ax1.set_ylabel("State $x_2$", fontsize=10)
     ax1.tick_params(axis="x", labelsize=8)
     ax1.tick_params(axis="y", labelsize=8)
-
+    ax1.grid()
     for Z_, F_ in zip(Z, F):
         Z_ = Z_.reshape(N_, N_, -1)
         F_ = F_.reshape(N_, N_, -1)
@@ -182,7 +182,7 @@ def plot_ode(
                 X_[:, 1],
                 "-",
                 color=h2.get_color(),
-                linewidth=3.0,
+                linewidth=1.5,
             )
     else:  # plotting data and fits, set the color correctly!
         (h2,) = ax1.plot(
@@ -199,7 +199,7 @@ def plot_ode(
             X[0, :, 1],
             "-",
             color="firebrick",
-            linewidth=3.0,
+            linewidth=1.5,
         )
     if Xhat is not None and Xhat.ndim == 3:
         Xhat = np.expand_dims(Xhat, 0)
@@ -242,14 +242,14 @@ def plot_ode(
             (h4,) = ax2.plot(
                 t,
                 X_[:, 0],
-                linewidth=3.0,
+                linewidth=1.5,
             )
     else:  # plotting data and fits, set the color correctly!
         (h4,) = ax2.plot(
             t,
             X[0, :, 0],
             color="firebrick",
-            linewidth=3.0,
+            linewidth=1.5,
         )
     if Xhat is not None:
         for xhat in Xhat:
@@ -257,29 +257,29 @@ def plot_ode(
                 t,
                 xhat[0, :, 0],
                 color="royalblue",
-                linewidth=3.0,
+                linewidth=1.5,
             )
         if Xhat.shape[0] > 1:
             ax2.plot(
                 t,
                 X[0, :, 0],
                 color="firebrick",
-                linewidth=5.0,
+                linewidth=1.5,
             )
     ax2.set_xlabel("time", fontsize=10)
     ax2.set_ylabel("State $x_1$", fontsize=10)
-
+    ax2.grid()
     ax3 = fig.add_subplot(gs[1, 1:])
 
     if Xhat is None:  # only plotting data
         for X_ in X:
-            (h5,) = ax3.plot(t, X_[:, 1], linewidth=3.0)
+            (h5,) = ax3.plot(t, X_[:, 1], linewidth=1.5)
     else:  # plotting data and fits, set the color correctly!
         (h5,) = ax3.plot(
             t,
             X[0, :, 1],
             color="firebrick",
-            linewidth=3.0,
+            linewidth=1.5,
         )
     if Xhat is not None:
         for xhat in Xhat:
@@ -287,14 +287,14 @@ def plot_ode(
                 t,
                 xhat[0, :, 1],
                 color="royalblue",
-                linewidth=3.0,
+                linewidth=1.5,
             )
         if Xhat.shape[0] > 1:
             ax3.plot(
                 t,
                 X[0, :, 1],
                 color="firebrick",
-                linewidth=5.0,
+                linewidth=1.5,
             )
     ax3.set_xlabel(
         "time",
@@ -304,6 +304,7 @@ def plot_ode(
         "State $x_2$",
         fontsize=10,
     )
+    ax3.grid()
 
     if return_fig:
         return fig, ax1, h3, h4, h5

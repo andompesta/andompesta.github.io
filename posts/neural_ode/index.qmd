@@ -56,10 +56,13 @@ Therefore, numerical solvers are used in practice.
 
 
 ```{python}
+import numpy as np
 import torch
 import torch.nn as nn
 from torchdyn.numerics import odeint
 
+torch.manual_seed(42)
+np.random.seed(42)
 device = torch.device("cpu")
 
 
@@ -142,12 +145,6 @@ plot_ode(
 )
 ```
 
-<!-- ::: {#fig-vpds-solution}
-
-![](img/vdps.png){#fig-vpds-solution}
-
-Representation of 3 different solutions for a vdp oscillator system.
-::: -->
 
 
 # Neural ODEs 
@@ -177,17 +174,17 @@ from torch import nn, Tensor
 from torchdyn.core import NeuralODE
 
 
-class NODE(nn.Module):
+class VectorField(nn.Module):
     def __init__(self, d: int):
         """d - ODE dimensionality"""
         super().__init__()
         self.d = d
         self._f = nn.Sequential(
-            nn.Linear(d, 200),
+            nn.Linear(d, 20),
             nn.ReLU(),
-            nn.Linear(200, 200),
+            nn.Linear(20, 20),
             nn.ReLU(),
-            nn.Linear(200, d),
+            nn.Linear(20, d),
         )
         self.reset_parameter()
 
@@ -199,25 +196,186 @@ class NODE(nn.Module):
             else:
                 nn.init.xavier_uniform_(param, gain=nn.init.calculate_gain("relu"))
 
-    def ode_rhs(self, t, x):
-        """differential function = f(x)"""
-        return self._f(x)
-
-    def forward(
-        self,
-        t: Tensor,
-        x: Tensor,
-        **kwargs
-    ):
+    def forward(self, t: Tensor, x: Tensor, **kwargs):
         """Forward integrates the NODE system and returns state solutions
         Input
             ts - [T]   time points
             x0 - [N,d] initial value
         Returns
-            X  - [T,N,d] forward simulated states
+            X  - [N,d] forward simulated states
         """
-        return self.ode_rhs(t, x)
+        return self._f(x)
+
+
+# define vector-field
+field = VectorField(2).to(device)
+model = NeuralODE(field, solver="euler").to(device)
+
+# let's compute the integral of our neural net!
+x0 = torch.tensor([[1.0, 0.0]]).float().to(device)
+t_span = torch.linspace(0.0, 1.0, 100).to(device)
+
+t_eval, trajectory_init = model(x0, t_span)
+
+plot_ode(
+    t_eval.detach().cpu().numpy(),
+    trajectory_init.detach().cpu().numpy(),
+    field.forward,
+)
 ```
+
+
+## VDP Learning
+
+In the previous example $f_\theta$ is randomly initialized, thus the resulting vector-field does not exibit any interesting behaviour.
+As abovementioned, the objective is to learn such $f_\theta$ from some observations $y_n$.
+Getting a state solution $x_n$ involve solving an ODE defined by $f_\theta$. Similarly, optimizing $\theta$ involves computing the gradinets w.r.t. $x_n$.
+As differentiating through the ODE solver is computationally inefficent, the gradients of the paramters are obtained with the [Adjoint State Method](https://ilya.schurov.com/post/adjoint-method/).
+Thus, we can adopt maximum-likelihood estimation (MLE) to train our neural ODE:
+
+$$
+\begin{split}
+\text{argmin}_\theta  \mathcal{L(\theta)} & = \frac{1}{2} \sum_{n=0}^N || y_n - x_n||_2^2 \\
+s.t. ~~ x_n & = x_0 + \int_0^{n} f_\theta(x_\tau) \partial \tau
+\end{split}
+$$
+
+In order to train our $f_\theta$, some observations of a systems are needed.
+Thus, next some noise observation are generated from the original VDP oscillator.
+
+```{python}
+import torch.utils.data as data
+
+# generate noise examples
+y_n = vdps_sol_euler + torch.randn_like(vdps_sol_euler) * 0.05
+
+observations_flatten = y_n.permute(1, 0, 2).reshape(-1, 2)
+t_eval = t_vdps_eval.repeat(3)
+
+t_steps = 50
+dataset_size = 10
+
+
+# function that extract portion of a batch of trajectory
+def get_example(t_eval_, observations_, t_steps):
+    T = t_eval_.size(0) // 3
+    example_id = torch.multinomial(torch.ones(3) / 3, 1).item()
+
+    t_start = example_id * T
+    t_end = (example_id + 1) * T
+    t0 = torch.randint(
+        t_start, (t_end - t_steps), (1,)
+    ).item()  # pick the initial value
+
+    (
+        t_span_,
+        x_start_,
+        x_targets_,
+    ) = (
+        t_eval_[t0 : t0 + t_steps],
+        observations_[t0],
+        observations_[t0 : t0 + t_steps],
+    )  # pick subsequences
+
+    return (
+        t_span_.detach().cpu().numpy(),
+        x_start_.unsqueeze(0).detach().cpu().numpy(),
+        x_targets_.unsqueeze(0).detach().cpu().numpy(),
+    )
+
+
+t_spans = []
+x_starts = []
+x_targets = []
+
+for i in range(dataset_size):
+    t_span, x_start, x_target = get_example(t_eval, observations_flatten, t_steps)
+    t_spans.append(t_span)
+    x_starts.append(x_start)
+    x_targets.append(x_target)
+
+
+t_spans = torch.tensor(t_spans).float()
+x_starts = torch.from_numpy(np.concatenate(x_starts, 0)).float()
+x_targets = torch.from_numpy(np.concatenate(x_targets, 0)).float()
+t_spans.size(), x_starts.size(), x_targets.size()
+
+train_dataset = data.TensorDataset(x_starts, x_targets, t_spans)
+
+# plot noise examples
+plot_ode(
+    t_vdps_eval.detach().cpu().numpy(),
+    y_n.detach().cpu().numpy(),
+    vdp,
+)
+```
+
+Obtained a sample of trajectories we can train a model on it. Namely, the objective is to adjust the paramters of the vector field in such a way that given a starting point we simulate the dynamic of the system. Note that during training we can not leverage GPU parallelization trought batches as we need to solve a ODE at each step. However, it is possible to save memory by train on section of collected trajectories.
+
+```{python}
+from PIL import Image
+import torch
+import torch.nn as nn
+import torch.utils.data as data
+import pytorch_lightning as pl
+
+epochs = 15  # number of optimization iterations
+lr = 5e-4
+max_steps_per_epoch = 300
+trainloader = data.DataLoader(
+    train_dataset,
+    batch_size=1,
+    shuffle=True,
+)
+model.vf.vf.reset_parameter()
+
+
+class Learner(pl.LightningModule):
+
+    def __init__(
+        self,
+        model: nn.Module,
+        lr: float,
+    ):
+        super().__init__()
+        self.model, self.lr = model, lr
+        self.loss = nn.MSELoss()
+
+    def forward(self, x, t_span, **kwargs):
+        return self.model(x, t_span, **kwargs)
+
+    def training_step(self, batch, batch_idx):
+        x, y, t_span = batch
+        t_span = t_span[0]  # [1, T] -> [T]
+        t_eval, y_hat = self.model(x, t_span)
+        y = y[0].flatten()
+        y_hat = y_hat[:, 0].flatten()
+        loss = self.loss(y_hat, y)
+        self.log("train_loss", loss, on_step=True, on_epoch=True, prog_bar=True)
+        return {"loss": loss}
+
+    def configure_optimizers(self):
+        return torch.optim.AdamW(self.model.parameters(), lr=self.lr)
+
+
+learner = Learner(
+    model,
+    lr=lr,
+)
+
+trainer = pl.Trainer(
+    gradient_clip_val=1.0,
+    gradient_clip_algorithm="norm",
+    max_epochs=epochs,
+    limit_train_batches=max_steps_per_epoch,
+)
+# trainer.fit(learner, trainloader)
+```
+
+Following there is an animation that demonstare how the training process refine the underling vector field to produce always more accurate prediction of the system dinamics.
+
+{{< video animations//vdp-oscillator-learned.mp4 >}}
+
 
 # Resources
 
