@@ -11,6 +11,8 @@ comments:
 format:
   html:
     toc: true
+execute:
+  freeze: auto
 ---
 
 
@@ -377,10 +379,191 @@ Following there is an animation that demonstare how the training process refine 
 {{< video animations//vdp-oscillator-learned.mp4 >}}
 
 
+# Classification Problem
+
+Until now we have focus on problem that naturally fit the NeuralODE space, namly we focused on regression problem over trajectories of phisical system where the functional form of the dynamics is learned by a neural network.
+However, NeuralODEs are not strictly limited to solve regression problems.
+By assuming arbitrary time-steps: where $t_0$ and $t_1$ are respectively the starting and end time of the dynamic system transforming the input data $x(t_0)$ into a representation $x(t_1)$ that is usefull to solve a classification problem.
+NeuralODEs vector fields is limited to work on data of the same dimensionality, in other words $x(t_0)$ and $x(t_1) \in \mathbb{R}^n$.
+However, as NeuralODE are continuous and differentiable, they can be jointly trained with a linear classifier to solve the final task.
+
+
+For example, given the dataset in [@fig-half-moon-dataset]; it is possible to define the following classifier:
+
+```{python}
+from torch import nn, Tensor
+from torchdyn.core import NeuralODE
+
+
+class VectorField(nn.Module):
+    def __init__(
+        self,
+        input_dim: int,
+    ):
+        """d - ODE dimensionality"""
+        super().__init__()
+        self.input_dim = input_dim
+        self._f = nn.Sequential(
+            nn.Linear(self.input_dim, 64),
+            nn.ReLU(),
+            nn.Linear(64, 64),
+            nn.ReLU(),
+            nn.Linear(64, self.input_dim),
+        )
+
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        for name, param in self.named_parameters():
+            if "bias" in name:
+                nn.init.constant_(param, val=0.0)
+
+            else:
+                nn.init.xavier_normal_(param, gain=nn.init.calculate_gain("relu"))
+
+    def forward(self, t: Tensor, x: Tensor, **kwargs):
+        return self._f(x)
+
+
+class ClassifierODE(nn.Module):
+    def __init__(
+        self,
+        input_dim: int,
+        num_classes: int,
+        solver="dopri5",
+        rtol=1e-5,
+        atol=1e-5,
+        sensitivity: str = "adjoint",
+    ):
+        super().__init__()
+        self.input_dim = input_dim
+        self.num_classes = num_classes
+
+        self.vector_field = VectorField(input_dim=self.input_dim)
+        # combine neural ODE
+        self.neural_ode = NeuralODE(
+            vector_field=self.vector_field,
+            solver=solver,
+            atol=atol,
+            rtol=rtol,
+            sensitivity=sensitivity,
+            atol_adjoint=atol,
+            rtol_adjoint=rtol,
+        )
+        # and linear classifier
+        self.final = nn.Linear(
+            self.input_dim,
+            self.num_classes,
+            bias=False,
+        )
+
+    def forward(self, x: Tensor, t_span: Tensor, **kwargs):
+        t_eval, trajectory = self.neural_ode(x, t_span, **kwargs)
+        return self.final(trajectory[-1])
+
+    def reset_parameters(self):
+        self.vector_field.reset_parameters()
+        nn.init.xavier_normal_(self.final.weight)
+
+
+input_dim = 2
+num_classes = 1
+
+model = ClassifierODE(
+    input_dim=input_dim,
+    num_classes=num_classes,
+)
+model = model.to(device)
+```
+
+
+:::{#fig-halfmoon}
+![](img/half-moon-dataset.png)
+
+Illustration the [HalfMoon](./half_moon.py) dataset used for training.
+:::
+
+```{python}
+from half_moon import HalfMoonDataset
+from torch.utils.data import DataLoader
+
+dataset = HalfMoonDataset(1000)
+
+train_size = int(0.8 * len(dataset))
+val_size = int(0.1 * len(dataset))
+test_size = len(dataset) - train_size - val_size
+
+train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(
+    dataset, [train_size, val_size, test_size]
+)
+
+epochs = 15  # number of optimization iterations
+lr = 1e-3
+model.reset_parameters()
+# we can use batch_size since we are using the sampe time span for all the examples
+batch_size = 64
+
+train_dataloader = DataLoader(train_dataset, batch_size=batch_size)
+valid_dataloader = DataLoader(val_dataset, batch_size=batch_size)
+test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
+
+
+class HalfMoonLearner(pl.LightningModule):
+    def __init__(
+        self,
+        model: nn.Module,
+        lr: float,
+    ):
+        super().__init__()
+        self.model, self.lr = model, lr
+        self.loss = nn.BCEWithLogitsLoss()
+        self.epoch_images = []
+        self.t_span = torch.linspace(0.0, 1.0, 50)
+        self.y_n = y_n
+
+    def forward(self, x, t_span, **kwargs):
+        return self.model(x, t_span, **kwargs)
+
+    def training_step(self, batch, batch_idx):
+        x0 = batch["data"]
+        y = batch["label"].unsqueeze(-1)
+        y_hat = self.model(x0, self.t_span)
+        loss = self.loss(y_hat, y)
+        self.log("train_loss", loss, on_step=True, on_epoch=True, prog_bar=True)
+        return {"loss": loss}
+
+    def configure_optimizers(self):
+        return torch.optim.AdamW(self.model.parameters(), lr=self.lr)
+
+
+half_moon_learner = HalfMoonLearner(
+    model,
+    lr=lr,
+)
+
+trainer = pl.Trainer(
+    gradient_clip_val=1.0,
+    gradient_clip_algorithm="norm",
+    max_epochs=epochs,
+)
+
+# trainer.fit(half_moon_learner, train_dataloader)
+```
+
+Finally, we can inspect the learned trajectories for classification as we did for the regression problem.
+
+:::{#fig-halfmoon-trajectories}
+![](img/half-moon-trajectories.png)
+
+Learned trajectories for a classification problem. Note that the graph represents the evolution trought time each dimentions of the input $x$. I.e., it is the evolution from $x(t_0)$ to $x(t_1)$, but this time it is learned purely based on the class lable and not based on a sampled trajectory.
+:::
+
 # Resources
 
 - Original paper [Neural Oridnaly Differential Equations](https://papers.nips.cc/paper_files/paper/2018/file/69386f6bb1dfed68692a24c8686939b9-Paper.pdf)
-- Probabilistic AI tutorial: [video](https://www.youtube.com/watch?v=oh2X89rmMdQ&list=PLRy-VW__9hV8zhnmhzoz3yUzGE1NAA7ka&index=18&ab_channel=ProbabilisticAI) [website](https://cagatayyildiz.github.io/notes/node/NODE.html#References)
+- Probabilistic AI tutorial: [video](https://www.youtube.com/watch?v=oh2X89rmMdQ&list=PLRy-VW__9hV8zhnmhzoz3yUzGE1NAA7ka&index=18&ab_channel=ProbabilisticAI)
+- Tutorial on NeuralODE by Mikhail Surtsukov [website](https://github.com/msurtsukov/neural-ode?tab=readme-ov-file)
+- Tutorial on NeuralODE by  Çağatay  Yıldız [website](https://cagatayyildiz.github.io/notes/2022-06-18-node/)
 - Deep Implicit Layer: [video](https://implicit-layers-tutorial.org/) [website](https://implicit-layers-tutorial.org/)
 - [Adjoint State Method](https://ilya.schurov.com/post/adjoint-method/) blog by Ilya Schurov
 - [ODE demo](https://uvadlc-notebooks.readthedocs.io/en/latest/tutorial_notebooks/DL2/Dynamical_systems/dynamical_systems_neural_odes.html#0.-Introduction)
