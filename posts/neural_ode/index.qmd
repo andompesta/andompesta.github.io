@@ -18,7 +18,7 @@ execute:
 
 # Ordinalry Differential Equations
 
-Ordinalry Differential Equations or ODEs are equations with a single indipendent varlaible (usually called time $t$) and one or more derivatives of functions defined in terms of the indipendent variable. Formally,
+Ordinary Differential Equations (ODEs) are equations that involve a single independent variable (usually time, denoted by $t$) and one or more derivatives of functions defined in terms of this independent variable. Formally, an ODE can be written as:
 
 $$
 \begin{align}
@@ -29,13 +29,13 @@ $$ {#eq-ode}
 
 where:
 
-  - $t$ represent the time or any other indipendent variable used as domain of the derivate operator;
+  - $t$ represents time or any other independent variable used as the domain of the derivative operator;
   - $x(t) \in \mathbb{R}^d$ is the dependent variable defining the system's state;
   - $x'(t) \in \mathbb{R}^d$ is the first order derivative of $x(t)$;
   - $f \in \mathbb{R}^d \times \mathbb{R}^+$ is the **vector-field** differential functioin describing the systems's evolution over time.
 
 
-As $f$ defines the evolution of a complex system over every infinitesimal interval of time $\Delta t$, we can define the evolution of such system over time as:
+As $f$ defines the evolution of a complex system over small interval of time $\Delta t$, we can describe the evolution of the system over time as:
 
 $$
 \begin{align}
@@ -44,8 +44,8 @@ $$
 \end{align}
 $$ {#eq-ode-descrete}
 
+Given an initial state $x(t_0)$ and summing up all the infinitesimal time intervals from $t_0$ to $T$, it is possible to obtain the final state $x(T)$ as:
 
-Given an inital state $x(t_0)$ and summing up all the infinitesimal time interval from $t_0$ to $T$ it is possible to obtain the final state $x(T)$ as:
 $$
 \begin{align}
     x(T) & = x(t_0) + \sum_{t_0}^{T} \Delta t \cdot f(x(t), t) \quad \substack{\text{s.t. } \Delta t \rightarrow 0}\\
@@ -55,8 +55,7 @@ $$
 
 ## Computing a Solution
 
-An ODE is generally defined in a functional form as in [@eq-ode].
-Solving such type of equations involve to computetion of the antiderivative of $f$, in other words the integral of $f$:
+An ODE is generally defined in functional form, as in [@eq-ode]. Solving such equations involves computing the antiderivative of $f$, in other words, the integral of $f$:
 
 $$
 \begin{align}
@@ -67,11 +66,10 @@ $$
 \end{align}
 $$ {#eq-ode-solution}
 
-
-As the integral of any function involve the introduction of an arbitrary constant $c$, the solution of [@eq-ode-solution] is, in most cases, not unique.
-In other words, an ordinary differential equation specifies a rule for the derivative of an unknown function, but it does not specify the value of the function itself. 
-To uniquely determine the solution, there is the need to specify the *initial condition* $x(t_0)$ from which we start to evolve the system.
-Note that, given the inital state $x(t_0)$ and a set of points in time $\{ t_0, ..., T\}$, the objective is to obtain the state solution $x(t_0:T) \equiv \{ x(t_0), ..., x(T)\}$.
+ince the integral of any function introduces an arbitrary constant $c$, the solution of [@eq-ode-solution] is, in most cases, not unique.
+In other words, an ODE specifies a rule for the derivative of an unknown function but does not specify the value of the function itself.
+To uniquely determine the solution, it is necessary to specify the **initial condition** $x(t_0)$ from which the system evolves.
+Given the inital state $x(t_0)$ and a set of points in time $\{ t_0, ..., T\}$, the objective is to obtain the solution states $x(t_0:T) \equiv \{ x(t_0), ..., x(T)\}$. 
 
 
 ### Solving a First-Order Linear Ordinary Differencial Equation
