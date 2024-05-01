@@ -21,8 +21,11 @@ execute:
 Ordinalry Differential Equations or ODEs are equations with a single indipendent varlaible (usually called time $t$) and one or more derivatives of functions defined in terms of the indipendent variable. Formally,
 
 $$
-f(x(t), t) = x'(t) = \frac{ \partial x(t)} {\partial t} = \lim_{\Delta t \rightarrow 0} \frac{x(t + \Delta t) - x(t)}{\Delta t}
-$$
+\begin{align}
+f(x(t), t) &= \frac{ \partial x(t)} {\partial t} \\
+& = \lim_{\Delta t \rightarrow 0} \frac{x(t + \Delta t) - x(t)}{\Delta t}
+\end{align}
+$$ {#eq-ode}
 
 where:
 
@@ -32,26 +35,47 @@ where:
   - $f \in \mathbb{R}^d \times \mathbb{R}^+$ is the **vector-field** differential functioin describing the systems's evolution over time.
 
 
-As $f$ defines the evolution of a complex system over every infinitesimal interval of time $\Delta t$, we can formally define an ODE problem as:
+As $f$ defines the evolution of a complex system over every infinitesimal interval of time $\Delta t$, we can define the evolution of such system over time as:
 
 $$
 \begin{align}
     x(t + \Delta t) & = x(t) + \Delta t \cdot f(x(t), t) \\
     \text{s.t.} & ~~ \Delta t \rightarrow 0.
 \end{align}
-$$
+$$ {#eq-ode-descrete}
 
+
+Given an inital state $x(t_0)$ and summing up all the infinitesimal time interval from $t_0$ to $T$ it is possible to obtain the final state $x(T)$ as:
+$$
+\begin{align}
+    x(T) & = x(t_0) + \sum_{t_0}^{T} \Delta t \cdot f(x(t), t) \quad \substack{\text{s.t. } \Delta t \rightarrow 0}\\
+    & = x(t_0) + \int_{t_0}^{T} f(x(t), t) \partial t.
+\end{align}
+$$
 
 ## Computing a Solution
 
-In the general term, the solution to an ODE involve to computetion of the antiderivative of $f$, in other words the integral of $f$.
-As the integral of any function involve an arbitrary constant, usually defined as $C$, there is the need to specify an *initial condition* $x_0$ to guarantee that the solution of the ODE is unique:
+An ODE is generally defined in a functional form as in [@eq-ode].
+Solving such type of equations involve to computetion of the antiderivative of $f$, in other words the integral of $f$:
 
 $$
-x_t = x_0 + \int_0^t f(x_\tau) \partial \tau
-$$
+\begin{align}
+    \frac{\partial x(t)}{\partial t} &= f(x(t), t) \\
+    \frac{\partial x(t)}{f(x(t), t)} &= \partial t \\
+    \int \frac{\partial x(t)}{f(x(t), t)} &= \int \partial t \\
+    \int \frac{\partial x(t)}{f(x(t), t)} &= t + c.
+\end{align}
+$$ {#eq-ode-solution}
 
-Note that, given the inital state $x_0$ and a set of points in time $\{ t_0, ..., t_N\}$, the objective is to obtain the state solution $x_{0:N} \equiv \{ x_0, ..., x_N\}$.
+
+As the integral of any function involve the introduction of an arbitrary constant $c$, the solution of [@eq-ode-solution] is, in most cases, not unique.
+In other words, an ordinary differential equation specifies a rule for the derivative of an unknown function, but it does not specify the value of the function itself. 
+To uniquely determine the solution, there is the need to specify the *initial condition* $x(t_0)$ from which we start to evolve the system.
+Note that, given the inital state $x(t_0)$ and a set of points in time $\{ t_0, ..., T\}$, the objective is to obtain the state solution $x(t_0:T) \equiv \{ x(t_0), ..., x(T)\}$.
+
+
+### Solving a First-Order Linear Ordinary Differencial Equation
+
 Unfortunetly, solving the above integral analytically is possible only for a limited amount of differential functions.
 Therefore, numerical solvers are used in practice. 
 
