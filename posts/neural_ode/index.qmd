@@ -76,6 +76,14 @@ Most commonly, given the inital state $x(t_0)$ and a set of points in time $\{ t
 
 ### Solving a First-Order Linear Ordinary Differencial Equation
 
+When an ODE is defined by a firs-order polynomial, is called First-Order Linear ODE.
+These type of ODEs are used to express exponential changes in the dependent variable and are formulated as:
+
+$$
+\begin{align}
+\frac{\partial x(t)}{\partial t} = \lambda x(t).
+\end{align}
+$$
 
 ### Numerical Solvers
 
