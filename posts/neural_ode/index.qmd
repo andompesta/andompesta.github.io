@@ -5,6 +5,8 @@ categories:
 author: Sandro Cavallari
 date: 2024-04-10
 title: "Neural ODEs"
+bibliography: references.bib
+csl: ../diabetologia.csl
 comments:
   giscus:
     repo: quarto-dev/quarto-web
@@ -35,7 +37,7 @@ where:
   - $f \in \mathbb{R}^d \times \mathbb{R}^+$ is the **vector-field** differential functioin describing the systems's evolution over time.
 
 
-As $f$ defines the evolution of a complex system over small interval of time $\Delta t$, we can describe the evolution of the system over time as:
+As $f$ defines the evolution of a complex system over small interval of time $\Delta t$, we can describe the evolution of the system over descreate time steps as:
 
 $$
 \begin{align}
@@ -53,9 +55,10 @@ $$
 \end{align}
 $$
 
-## Computing a Solution
+----
 
-An ODE is generally defined in functional form, as in [@eq-ode]. Solving such equations involves computing the antiderivative of $f$, in other words, the integral of $f$:
+ODEs are generally expressed as in [@eq-ode], where only the derivate of a function is specified.
+Solving such equations involves computing the antiderivative of $f$, in other words, the integral of $f$:
 
 $$
 \begin{align}
@@ -66,16 +69,41 @@ $$
 \end{align}
 $$ {#eq-ode-solution}
 
-ince the integral of any function introduces an arbitrary constant $c$, the solution of [@eq-ode-solution] is, in most cases, not unique.
+Since the integral of any function introduces an arbitrary constant $c$, the solution of [@eq-ode-solution] is, in most cases, not unique.
 In other words, an ODE specifies a rule for the derivative of an unknown function but does not specify the value of the function itself.
 To uniquely determine the solution, it is necessary to specify the **initial condition** $x(t_0)$ from which the system evolves.
-Given the inital state $x(t_0)$ and a set of points in time $\{ t_0, ..., T\}$, the objective is to obtain the solution states $x(t_0:T) \equiv \{ x(t_0), ..., x(T)\}$. 
-
+Most commonly, given the inital state $x(t_0)$ and a set of points in time $\{ t_0, ..., T\}$, the objective of solving an ODE is to obtain the solution states $x(t_0:T) \equiv \{ x(t_0), ..., x(T)\}$ that evolves according to [@eq-ode].
 
 ### Solving a First-Order Linear Ordinary Differencial Equation
 
-Unfortunetly, solving the above integral analytically is possible only for a limited amount of differential functions.
-Therefore, numerical solvers are used in practice. 
+
+### Numerical Solvers
+
+Unfortunetly, solving integral analytically is possible only for a limited amount of differential functions.
+To overcome the complexity of simulating the evolution of complex system over time, numerical approaches are used in practice to approximate the solution up to a tolerable error.
+One of the simples solvers is the **Euler solver** which approximates the solution of an ODE by iteratively adding the product of the step size $h$ (representing a small change in time) and the derivative to the current estimate of the solution:
+
+$$
+x(t+1) = x(t) + h \cdot f(x(t), t).
+$$
+
+
+<!-- introduce VDP example  -->
+
+
+For example, conside the dynamics of a VDP oscillator [@van1960theory]: a non-conservative oscillating system with non-linear damping defined by a parametric 2D time-invariant order differential equation:
+
+$$
+\frac{\partial}{\partial t} \left[\begin{array}{c}
+x_1(t) \\
+x_2(t)
+\end{array} \right] = \left[\begin{array}{c}
+x_2(t) \\
+u\big(1-x_2(t)^2\big) x_2(t) - x_1
+\end{array} \right]
+$$ {#eq-vdp-ode}
+
+where $x_1(t)$ and $x_2(t)$ are the two dimention of the column vector $\mathbf{x} \in \mathbb{R}^2$. Solving [@eq-vdp-ode] analytically is not as symple as in the previous example, yet Cagatay Yildiz [@probabilistic_ai_school_neural_ode] [@cagatayyildizNeuralOrdinary] inllustrates how the Euler solver could easy solve such type of systems. Here I will follow his code and visualizations.
 
 
 
@@ -173,7 +201,7 @@ plot_ode(
 
 # Neural ODEs 
 
-Neural ODEs are a family of ODEs for which the vector-field $f(x_t, t)$ is defined by a neural network. As such, $f(x_t, t)$ is both differentiable and learnable. Thus, given a set of observation $y_{0:N}$ from a unknwon dynamical system, we can used it to learn a model of the evolution of the system's dynamics.
+Neural ODEs [@DBLP:journals/corr/abs-1806-07366] are a family of ODEs for which the vector-field $f(x_t, t)$ is defined by a neural network. As such, $f(x_t, t)$ is both differentiable and learnable. Thus, given a set of observation $y_{0:N}$ from a unknwon dynamical system, we can used it to learn a model of the evolution of the system's dynamics.
 
 ## Problem Formulation
 
@@ -582,8 +610,9 @@ Learned trajectories for a classification problem. Note that the graph represent
 
 # Resources
 
-- Original paper [Neural Oridnaly Differential Equations](https://papers.nips.cc/paper_files/paper/2018/file/69386f6bb1dfed68692a24c8686939b9-Paper.pdf)
-- Probabilistic AI tutorial: [video](https://www.youtube.com/watch?v=oh2X89rmMdQ&list=PLRy-VW__9hV8zhnmhzoz3yUzGE1NAA7ka&index=18&ab_channel=ProbabilisticAI)
+::: {#refs}
+:::
+
 - Tutorial on NeuralODE by Mikhail Surtsukov [website](https://github.com/msurtsukov/neural-ode?tab=readme-ov-file)
 - Tutorial on NeuralODE by  Çağatay  Yıldız [website](https://cagatayyildiz.github.io/notes/2022-06-18-node/)
 - Deep Implicit Layer: [video](https://implicit-layers-tutorial.org/) [website](https://implicit-layers-tutorial.org/)
