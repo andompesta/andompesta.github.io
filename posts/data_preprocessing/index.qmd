@@ -6,7 +6,7 @@ author: Sandro Cavallari
 date: 2022-11-13
 title: "Efficient and Scalable Machine Learning Pipelines"
 bibliography: references.bib
-csl: diabetologia.csl
+csl: ../diabetologia.csl
 comments:
   giscus:
     repo: quarto-dev/quarto-web

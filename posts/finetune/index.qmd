@@ -6,7 +6,7 @@ author: Sandro Cavallari
 date: 2023-01-05
 title: "Finetune Large Models"
 bibliography: references.bib
-csl: diabetologia.csl
+csl: ../diabetologia.csl
 comments:
   giscus:
     repo: quarto-dev/quarto-web

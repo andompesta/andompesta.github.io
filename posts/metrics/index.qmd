@@ -6,7 +6,7 @@ author: Sandro Cavallari
 date: 2022-07-15
 title: "Evaluation Metrics for Ads Ranking Systems"
 bibliography: references.bib
-csl: diabetologia.csl
+csl: ../diabetologia.csl
 comments:
   giscus:
     repo: quarto-dev/quarto-web

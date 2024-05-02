@@ -7,7 +7,7 @@ date: 2020-12-23
 title: "Basic Principles of Linear Algebra"
 # number-sections: true
 bibliography: references.bib
-csl: diabetologia.csl
+csl: ../diabetologia.csl
 comments:
   giscus:
     repo: quarto-dev/quarto-web
