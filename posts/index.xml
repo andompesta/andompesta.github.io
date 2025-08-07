@@ -9,7 +9,7 @@
 <link>https://andompesta.github.io/posts/</link>
 <atom:link href="https://andompesta.github.io/posts/index.xml" rel="self" type="application/rss+xml"/>
 <description>Personal website of Sandro Cavallari</description>
-<generator>quarto-1.4.553</generator>
+<generator>quarto-1.7.33</generator>
 <lastBuildDate>Wed, 10 Apr 2024 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Neural ODEs</title>
@@ -38,7 +38,7 @@
 <p>In the general term, the solution to an ODE involve to computetion of the antiderivative of <img src="https://latex.codecogs.com/png.latex?f">, in other words the integral of <img src="https://latex.codecogs.com/png.latex?f">. As the integral of any function involve an arbitrary constant, usually defined as <img src="https://latex.codecogs.com/png.latex?C">, there is the need to specify an <em>initial condition</em> <img src="https://latex.codecogs.com/png.latex?x_0"> to guarantee that the solution of the ODE is unique:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0Ax_t%20=%20x_0%20+%20%5Cint_0%5Et%20f(x_%5Ctau)%20%5Cpartial%20%5Ctau%0A"></p>
 <p>Note that, given the inital state <img src="https://latex.codecogs.com/png.latex?x_0"> and a set of points in time <img src="https://latex.codecogs.com/png.latex?%5C%7B%20t_0,%20...,%20t_N%5C%7D">, the objective is to obtain the state solution <img src="https://latex.codecogs.com/png.latex?x_%7B0:N%7D%20%5Cequiv%20%5C%7B%20x_0,%20...,%20x_N%5C%7D">. Unfortunetly, solving the above integral analytically is possible only for a limited amount of differential functions. Therefore, numerical solvers are used in practice.</p>
-<div id="891f3f56" class="cell" data-execution_count="1">
+<div id="bc6ac848" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -73,9 +73,11 @@ font-style: inherit;">"cpu"</span>)</span>
 <span id="cb1-10"></span>
 <span id="cb1-11"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> VDPoscillator(nn.Module):</span>
 <span id="cb1-12">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -100,6 +102,7 @@ font-style: inherit;">=</span> mu</span>
 <span id="cb1-15"></span>
 <span id="cb1-16">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(</span>
 <span id="cb1-17">        <span class="va" style="color: #111111;
 background-color: null;
@@ -139,6 +142,7 @@ background-color: null;
 font-style: inherit;">0</span>]</span>
 <span id="cb1-23">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> torch.stack(</span>
 <span id="cb1-24">            (var_0, var_1),</span>
 <span id="cb1-25">            dim<span class="op" style="color: #5E5E5E;
@@ -202,6 +206,7 @@ font-style: inherit;">500</span>).to(device)</span>
 <span id="cb1-41"></span>
 <span id="cb1-42"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> torch.no_grad():</span>
 <span id="cb1-43">    t_eval, vdp_sol_euler <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -240,7 +245,7 @@ font-style: inherit;"># )</span></span></code></pre></div>
 </div>
 <div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="animations//vdp-oscillator_.mp4"></video></div>
 <p>As overmentioned the solution depend on the initial state of the system. Following there is a demonstration of how the system will behave if you used different starting points.</p>
-<div id="9385f76f" class="cell" data-execution_count="2">
+<div id="f8f1aeb7" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> plot_vector_field <span class="im" style="color: #00769E;
@@ -299,6 +304,7 @@ background-color: null;
 font-style: inherit;"># forward integration</span></span>
 <span id="cb3-19"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> torch.no_grad():</span>
 <span id="cb3-20">    t_vdps_eval, vdps_sol_euler <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -340,7 +346,7 @@ font-style: inherit;">=</span>vdp,</span>
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%20%20%20%20y_%7Bn%7D%20&amp;%20=%20x_%7Bn%7D%20+%20%5Cepsilon,%20~~%20%5Cepsilon%20%5Csim%20%5Cmathcal%7BN%7D(0,%20%5Csigma%5E2)%20%5Cquad%20%5Csubstack%7By_n%20%5Ctext%7B%20is%20a%20noise%20variable%7D%7D%20%5C%5C%0A%20%20%20%20x_%7Bn%7D%20&amp;%20=%20x_%7B0%7D%20+%20%5Cint_%7B0%7D%5E%7Bn%7D%20f_%7Btrue%7D(x_%7B%5Ctau%7D)%20%5Cpartial%20%5Ctau%0A%5Cend%7Balign%7D%0A"></p>
 <p>The objective is to learn a neural network <img src="https://latex.codecogs.com/png.latex?f_%5Ctheta"> that matches the unknown dynamics:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0Af_%5Ctheta%20%5Capprox%20f_%7Btrue%7D.%0A"></p>
-<div id="1c62fe2e" class="cell" data-execution_count="3">
+<div id="a758ee45" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> torch <span class="im" style="color: #00769E;
@@ -355,9 +361,11 @@ font-style: inherit;">import</span> NeuralODE</span>
 <span id="cb4-4"></span>
 <span id="cb4-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> VectorField(nn.Module):</span>
 <span id="cb4-6">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -403,22 +411,27 @@ font-style: inherit;">self</span>.reset_parameter()</span>
 <span id="cb4-18"></span>
 <span id="cb4-19">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> reset_parameter(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb4-20">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> name, param <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.named_parameters():</span>
 <span id="cb4-21">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"bias"</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> name:</span>
 <span id="cb4-22">                nn.init.constant_(param, <span class="fl" style="color: #AD0000;
 background-color: null;
@@ -426,6 +439,7 @@ font-style: inherit;">0.0</span>)</span>
 <span id="cb4-23"></span>
 <span id="cb4-24">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb4-25">                nn.init.xavier_uniform_(param, gain<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -435,6 +449,7 @@ font-style: inherit;">"relu"</span>))</span>
 <span id="cb4-26"></span>
 <span id="cb4-27">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, t: Tensor, x: Tensor, <span class="op" style="color: #5E5E5E;
@@ -463,6 +478,7 @@ background-color: null;
 font-style: inherit;">        """</span></span>
 <span id="cb4-35">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>._f(x)</span>
@@ -529,7 +545,7 @@ font-style: inherit;">=</span> model(x0, t_span)</span>
 <p>In the previous example <img src="https://latex.codecogs.com/png.latex?f_%5Ctheta"> is randomly initialized, thus the resulting vector-field does not exibit any interesting behaviour. As abovementioned, the objective is to learn such <img src="https://latex.codecogs.com/png.latex?f_%5Ctheta"> from some observations <img src="https://latex.codecogs.com/png.latex?y_n">. Getting a state solution <img src="https://latex.codecogs.com/png.latex?x_n"> involve solving an ODE defined by <img src="https://latex.codecogs.com/png.latex?f_%5Ctheta">. Similarly, optimizing <img src="https://latex.codecogs.com/png.latex?%5Ctheta"> involves computing the gradinets w.r.t. <img src="https://latex.codecogs.com/png.latex?x_n">. As differentiating through the ODE solver is computationally inefficent, the gradients of the paramters are obtained with the <a href="https://ilya.schurov.com/post/adjoint-method/">Adjoint State Method</a>. Thus, we can adopt maximum-likelihood estimation (MLE) to train our neural ODE:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bsplit%7D%0A%5Ctext%7Bargmin%7D_%5Ctheta%20%20%5Cmathcal%7BL(%5Ctheta)%7D%20&amp;%20=%20%5Cfrac%7B1%7D%7B2%7D%20%5Csum_%7Bn=0%7D%5EN%20%7C%7C%20y_n%20-%20x_n%7C%7C_2%5E2%20%5C%5C%0As.t.%20~~%20x_n%20&amp;%20=%20x_0%20+%20%5Cint_0%5E%7Bn%7D%20f_%5Ctheta(x_%5Ctau)%20%5Cpartial%20%5Ctau%0A%5Cend%7Bsplit%7D%0A"></p>
 <p>In order to train our <img src="https://latex.codecogs.com/png.latex?f_%5Ctheta">, some observations of a systems are needed. Thus, next some noise observation are generated from the original VDP oscillator.</p>
-<div id="4cb72a07" class="cell" data-execution_count="4">
+<div id="c75a39f6" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> torch.utils.data <span class="im" style="color: #00769E;
@@ -587,6 +603,7 @@ background-color: null;
 font-style: inherit;"># function that extract portion of a batch of trajectory</span></span>
 <span id="cb5-14"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_example(t_eval_, observations_, t_steps):</span>
 <span id="cb5-15">    T <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -655,6 +672,7 @@ font-style: inherit;"># pick subsequences</span></span>
 <span id="cb5-33"></span>
 <span id="cb5-34">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> (</span>
 <span id="cb5-35">        t_span_.detach().cpu().numpy(),</span>
 <span id="cb5-36">        x_start_.unsqueeze(<span class="dv" style="color: #AD0000;
@@ -678,8 +696,10 @@ font-style: inherit;">=</span> []</span>
 <span id="cb5-44"></span>
 <span id="cb5-45"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(dataset_size):</span>
@@ -725,7 +745,7 @@ font-style: inherit;"># plot noise examples</span></span>
 <span id="cb5-63">    vdp,</span>
 <span id="cb5-64">)</span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_2201/3053862232.py:52: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at ../torch/csrc/utils/tensor_new.cpp:274.)
+<pre><code>/tmp/ipykernel_2486/3053862232.py:52: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /pytorch/torch/csrc/utils/tensor_new.cpp:253.)
   t_spans = torch.tensor(t_spans).float()</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -737,7 +757,7 @@ font-style: inherit;"># plot noise examples</span></span>
 </div>
 </div>
 <p>Obtained a sample of trajectories we can train a model on it. Namely, the objective is to adjust the paramters of the vector field in such a way that given a starting point we simulate the dynamic of the system. Note that during training we can not leverage GPU parallelization trought batches as we need to solve a ODE at each step. However, it is possible to save memory by train on section of collected trajectories.</p>
-<div id="4a56461b" class="cell" data-execution_count="5">
+<div id="8608c641" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> PIL <span class="im" style="color: #00769E;
@@ -799,10 +819,12 @@ font-style: inherit;">True</span>,</span>
 <span id="cb7-17"></span>
 <span id="cb7-18"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> Learner(pl.LightningModule):</span>
 <span id="cb7-19"></span>
 <span id="cb7-20">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(</span>
@@ -834,6 +856,7 @@ font-style: inherit;">=</span> nn.MSELoss()</span>
 <span id="cb7-28"></span>
 <span id="cb7-29">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, x, t_span, <span class="op" style="color: #5E5E5E;
@@ -841,6 +864,7 @@ background-color: null;
 font-style: inherit;">**</span>kwargs):</span>
 <span id="cb7-30">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.model(x, t_span, <span class="op" style="color: #5E5E5E;
@@ -849,6 +873,7 @@ font-style: inherit;">**</span>kwargs)</span>
 <span id="cb7-31"></span>
 <span id="cb7-32">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> training_step(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, batch, batch_idx):</span>
@@ -901,17 +926,20 @@ background-color: null;
 font-style: inherit;">True</span>)</span>
 <span id="cb7-40">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> {<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"loss"</span>: loss}</span>
 <span id="cb7-41"></span>
 <span id="cb7-42">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> configure_optimizers(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb7-43">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> torch.optim.AdamW(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.model.parameters(), lr<span class="op" style="color: #5E5E5E;
@@ -954,11 +982,11 @@ font-style: inherit;">=</span>max_steps_per_epoch,</span>
 background-color: null;
 font-style: inherit;"># trainer.fit(learner, trainloader)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>GPU available: False, used: False
+<pre><code>💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+GPU available: False, used: False
 TPU available: False, using: 0 TPU cores
-IPU available: False, using: 0 IPUs
 HPU available: False, using: 0 HPUs
-/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/logger_connector/logger_connector.py:75: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `pytorch_lightning` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default</code></pre>
+/opt/hostedtoolcache/Python/3.10.18/x64/lib/python3.10/site-packages/pytorch_lightning/trainer/connectors/logger_connector/logger_connector.py:76: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `pytorch_lightning` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default</code></pre>
 </div>
 </div>
 <p>Following there is an animation that demonstare how the training process refine the underling vector field to produce always more accurate prediction of the system dinamics.</p>
@@ -969,7 +997,7 @@ HPU available: False, using: 0 HPUs
 <h1>Classification Problem</h1>
 <p>Until now we have focus on problem that naturally fit the NeuralODE space, namly we focused on regression problem over trajectories of phisical system where the functional form of the dynamics is learned by a neural network. However, NeuralODEs are not strictly limited to solve regression problems. By assuming arbitrary time-steps: where <img src="https://latex.codecogs.com/png.latex?t_0"> and <img src="https://latex.codecogs.com/png.latex?t_1"> are respectively the starting and end time of the dynamic system transforming the input data <img src="https://latex.codecogs.com/png.latex?x(t_0)"> into a representation <img src="https://latex.codecogs.com/png.latex?x(t_1)"> that is usefull to solve a classification problem. NeuralODEs vector fields is limited to work on data of the same dimensionality, in other words <img src="https://latex.codecogs.com/png.latex?x(t_0)"> and <img src="https://latex.codecogs.com/png.latex?x(t_1)%20%5Cin%20%5Cmathbb%7BR%7D%5En">. However, as NeuralODE are continuous and differentiable, they can be jointly trained with a linear classifier to solve the final task.</p>
 <p>For example, given the dataset in <strong>?@fig-half-moon-dataset</strong>; it is possible to define the following classifier:</p>
-<div id="41115084" class="cell" data-execution_count="6">
+<div id="bdca884a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> torch <span class="im" style="color: #00769E;
@@ -984,9 +1012,11 @@ font-style: inherit;">import</span> NeuralODE</span>
 <span id="cb9-4"></span>
 <span id="cb9-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> VectorField(nn.Module):</span>
 <span id="cb9-6">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(</span>
@@ -1040,22 +1070,27 @@ font-style: inherit;">self</span>.reset_parameters()</span>
 <span id="cb9-22"></span>
 <span id="cb9-23">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> reset_parameters(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb9-24">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> name, param <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.named_parameters():</span>
 <span id="cb9-25">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"bias"</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> name:</span>
 <span id="cb9-26">                nn.init.constant_(param, val<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1065,6 +1100,7 @@ font-style: inherit;">0.0</span>)</span>
 <span id="cb9-27"></span>
 <span id="cb9-28">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb9-29">                nn.init.xavier_normal_(param, gain<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1074,6 +1110,7 @@ font-style: inherit;">"relu"</span>))</span>
 <span id="cb9-30"></span>
 <span id="cb9-31">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, t: Tensor, x: Tensor, <span class="op" style="color: #5E5E5E;
@@ -1081,6 +1118,7 @@ background-color: null;
 font-style: inherit;">**</span>kwargs):</span>
 <span id="cb9-32">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>._f(x)</span>
@@ -1088,9 +1126,11 @@ font-style: inherit;">self</span>._f(x)</span>
 <span id="cb9-34"></span>
 <span id="cb9-35"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> ClassifierODE(nn.Module):</span>
 <span id="cb9-36">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(</span>
@@ -1206,6 +1246,7 @@ font-style: inherit;">False</span>,</span>
 <span id="cb9-66"></span>
 <span id="cb9-67">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, x: Tensor, t_span: Tensor, <span class="op" style="color: #5E5E5E;
@@ -1220,6 +1261,7 @@ background-color: null;
 font-style: inherit;">**</span>kwargs)</span>
 <span id="cb9-69">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.final(trajectory[<span class="op" style="color: #5E5E5E;
@@ -1230,6 +1272,7 @@ font-style: inherit;">1</span>])</span>
 <span id="cb9-70"></span>
 <span id="cb9-71">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> reset_parameters(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
@@ -1266,7 +1309,7 @@ font-style: inherit;">=</span>num_classes,</span>
 background-color: null;
 font-style: inherit;">=</span> model.to(device)</span></code></pre></div>
 </div>
-<div id="fig-halfmoon" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-halfmoon" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-halfmoon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/neural_ode/img/half-moon-dataset.png" class="img-fluid figure-img">
@@ -1276,7 +1319,7 @@ Figure&nbsp;1: Illustration the <a href="./half_moon.py">HalfMoon</a> dataset us
 </figcaption>
 </figure>
 </div>
-<div id="5b9e7014" class="cell" data-execution_count="7">
+<div id="350c44ad" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> half_moon <span class="im" style="color: #00769E;
@@ -1373,9 +1416,11 @@ font-style: inherit;">=</span>batch_size)</span>
 <span id="cb10-24"></span>
 <span id="cb10-25"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> HalfMoonLearner(pl.LightningModule):</span>
 <span id="cb10-26">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(</span>
@@ -1428,6 +1473,7 @@ font-style: inherit;">=</span> y_n</span>
 <span id="cb10-37"></span>
 <span id="cb10-38">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, x, t_span, <span class="op" style="color: #5E5E5E;
@@ -1435,6 +1481,7 @@ background-color: null;
 font-style: inherit;">**</span>kwargs):</span>
 <span id="cb10-39">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.model(x, t_span, <span class="op" style="color: #5E5E5E;
@@ -1443,6 +1490,7 @@ font-style: inherit;">**</span>kwargs)</span>
 <span id="cb10-40"></span>
 <span id="cb10-41">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> training_step(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, batch, batch_idx):</span>
@@ -1491,17 +1539,20 @@ background-color: null;
 font-style: inherit;">True</span>)</span>
 <span id="cb10-47">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> {<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"loss"</span>: loss}</span>
 <span id="cb10-48"></span>
 <span id="cb10-49">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> configure_optimizers(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb10-50">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> torch.optim.AdamW(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.model.parameters(), lr<span class="op" style="color: #5E5E5E;
@@ -1542,14 +1593,14 @@ font-style: inherit;">=</span>epochs,</span>
 background-color: null;
 font-style: inherit;"># trainer.fit(half_moon_learner, train_dataloader)</span></span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>GPU available: False, used: False
+<pre><code>💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+GPU available: False, used: False
 TPU available: False, using: 0 TPU cores
-IPU available: False, using: 0 IPUs
 HPU available: False, using: 0 HPUs</code></pre>
 </div>
 </div>
 <p>Finally, we can inspect the learned trajectories for classification as we did for the regression problem.</p>
-<div id="fig-halfmoon-trajectories" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-halfmoon-trajectories" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-halfmoon-trajectories-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/neural_ode/img/half-moon-trajectories.png" class="img-fluid figure-img">
@@ -1755,8 +1806,10 @@ font-style: inherit;">"Initial fit"</span>,</span>
 <span id="cb1-37">)</span>
 <span id="cb1-38"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(<span class="bu" style="color: null;
@@ -1831,8 +1884,10 @@ background-color: null;
 font-style: inherit;"># Optionally, plot residuals (errors)</span></span>
 <span id="cb1-66"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(<span class="bu" style="color: null;
@@ -1945,7 +2000,7 @@ font-style: inherit;">"Fited model"</span>)</span>
 <span id="cb1-97">plt.show()</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-least-square" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-least-square" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-least-square-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/linear_regression/index_files/figure-html/fig-least-square-output-1.png" width="856" height="376" class="figure-img">
@@ -2078,7 +2133,7 @@ font-style: inherit;">"residual"</span>)</span>
 <span id="cb2-15">ax.legend()</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-residual-plot" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-residual-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-residual-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/linear_regression/index_files/figure-html/fig-residual-plot-output-1.png" width="596" height="356" class="figure-img">
@@ -2176,8 +2231,10 @@ background-color: null;
 font-style: inherit;"># plot least square residuals (errors)</span></span>
 <span id="cb3-18"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(<span class="bu" style="color: null;
@@ -2214,6 +2271,7 @@ background-color: null;
 font-style: inherit;"># center data</span></span>
 <span id="cb3-32"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> centering(Z: np.ndarray) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> np.ndarray:</span>
@@ -2254,6 +2312,7 @@ font-style: inherit;">True</span>)</span>
 <span id="cb3-37"></span>
 <span id="cb3-38">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> reverse_centering(Z_centered: np.ndarray) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> np.ndarray:</span>
@@ -2273,10 +2332,12 @@ background-color: null;
 font-style: inherit;">+</span> Z_min</span>
 <span id="cb3-41">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> Z</span>
 <span id="cb3-42"></span>
 <span id="cb3-43">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> Z_norm <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span> Z_means, reverse_centering</span>
@@ -2447,8 +2508,10 @@ font-style: inherit;">"TLS predictions"</span>,</span>
 <span id="cb3-96"></span>
 <span id="cb3-97"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(<span class="bu" style="color: null;
@@ -2568,7 +2631,7 @@ font-style: inherit;">"y"</span>)</span>
 <span id="cb3-125">ax.legend()</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-total-least-square" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-total-least-square" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-total-least-square-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/linear_regression/index_files/figure-html/fig-total-least-square-output-1.png" width="596" height="597" class="figure-img">
@@ -2697,7 +2760,7 @@ Figure&nbsp;3: Total least square. As it is possible to see, residuals line are 
 <p>In its definition, <img src="https://latex.codecogs.com/png.latex?%5Cpartial%20x"> represents the width of an infinitesimally small rectangle with height <img src="https://latex.codecogs.com/png.latex?p(x)">. Consequently, <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20f_%7B%5Ctheta%7D%5E%7B-1%7D(x)%7D%7B%5Cpartial%20x%7D"> denotes the ratio between the areas of rectangles defined in two distinct coordinate systems: one in terms of <img src="https://latex.codecogs.com/png.latex?x"> and the other in terms of <img src="https://latex.codecogs.com/png.latex?z">.<br>
 For illustrative purposes, consider Figure&nbsp;1, which depicts how the affine transformation <img src="https://latex.codecogs.com/png.latex?f_%7B%5Ctheta%7D%5E%7B-1%7D(x)%20=%20(5%20%5Ccdot%20x)%20-%202"> maps the Normal distribution <img src="https://latex.codecogs.com/png.latex?p(x;%20%5Cmu=0,%20%5Csigma=1)"> to another Gaussian distribution <img src="https://latex.codecogs.com/png.latex?p(z;%20%5Cmu=-2,%20%5Csigma=5)">. With <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20z%7D%7B%5Cpartial%20x%7D%20=%205">, the area <img src="https://latex.codecogs.com/png.latex?%5Cpartial%20x"> undergoes a stretching factor of 5 when transformed into the variable <img src="https://latex.codecogs.com/png.latex?z">. Consequently, <img src="https://latex.codecogs.com/png.latex?p(z)"> must be lowered by a factor of 5 to maintain its validity as a probability density function, satisfying the condition <img src="https://latex.codecogs.com/png.latex?%5Cint%20p(z)%20%5Cpartial%20z%20=%201">:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0Ap(z)%20=%20%5Cfrac%7Bp(x)%7D%7B%5Cfrac%7B%5Cpartial%20f_%7B%5Ctheta%7D%5E%7B-1%7D(x)%7D%7B%5Cpartial%20x%7D%7D%20=%20%5Cfrac%7Bp(x)%7D%7Bf_%7B%5Ctheta%7D%5E%7B-1'%7D(x)%7D.%0A"></p>
-<div id="fig-change-of-variable" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-change-of-variable" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-change-of-variable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/normalization_flow/img/change-of-variable.png" class="img-fluid figure-img">
@@ -2736,9 +2799,11 @@ On the flip side, data generation stands out as the central application for NFs.
 <p>Starting from first principles, any NF model can be specified as comprising a base distribution and a series of flows that map <img src="https://latex.codecogs.com/png.latex?x"> to <img src="https://latex.codecogs.com/png.latex?z_0">. Here is a Python implementation:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> NormalizingFlow(nn.Module):</span>
 <span id="cb1-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(</span>
@@ -2766,6 +2831,7 @@ font-style: inherit;">=</span> flows</span>
 <span id="cb1-10"></span>
 <span id="cb1-11">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, x: Tensor):</span>
@@ -2782,8 +2848,10 @@ background-color: null;
 font-style: inherit;">=</span> torch.zeros(bs).to(x.device)</span>
 <span id="cb1-15">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> flow <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.flows:</span>
@@ -2839,6 +2907,7 @@ font-style: inherit;">=</span>zs,</span>
 <span id="cb1-29">        )</span>
 <span id="cb1-30">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> log_prob, intermediat_results</span></code></pre></div>
 <p>where the prior can be any base distribution inplemented in <a href="https://pytorch.org/docs/stable/distributions.html">torch.distributions</a>, and flows can be any module that statisfy the NF’s properties.</p>
 <p>Suppose we are given a 1D dataset, as shown in Fig. [2.a]. We can fit an NF to the underlying probability distribution <img src="https://latex.codecogs.com/png.latex?p(x)"> of the dataset. To successfully learn the density of the dataset, we need a base distribution (let’s say a Beta distribution parameterized by <img src="https://latex.codecogs.com/png.latex?%5Calpha%20=%202"> and <img src="https://latex.codecogs.com/png.latex?%5Cbeta%20=%205">) and a functional definition for our flow. In this case, let’s use the cumulative distribution function of a Gaussian Mixture Model (GMM) with 4 different components:</p>
@@ -2880,8 +2949,10 @@ font-style: inherit;">1e-5</span>)</span></code></pre></div>
 <p>With these ingredients, we can train the model by minimizing the negative log-likelihood using stochastic gradient descent (SGD):</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> epoch <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(epochs):</span>
@@ -2889,8 +2960,10 @@ font-style: inherit;">range</span>(epochs):</span>
 <span id="cb3-3"></span>
 <span id="cb3-4">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> idx, (x, y) <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">enumerate</span>(dataloader):</span>
@@ -2913,13 +2986,10 @@ font-style: inherit;">1</span>)</span>
 <p>Note that no labels are used for training, as the objective is to directly maximize the predicted density of the dataset.</p>
 <p>Figure&nbsp;2 shows the learned density and how the 4 different components are used to correctly model <img src="https://latex.codecogs.com/png.latex?p(x)">. While the same results might be achieved by using only 2 components, in the general case, the minimum number of needed components is not known a priori; thus using a larger number of components is a good practice.</p>
 <p>Finally, Figure&nbsp;4 demonstrates how the learned model is able to map a dataset coming from an unknown density to the Beta distributin over-defined.</p>
-<div>
-
-</div>
 <div class="quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-1d-dataset" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-1d-dataset" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-1d-dataset-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/normalization_flow/img/1d/dataset.png" class="img-fluid figure-img" width="300">
@@ -2931,7 +3001,7 @@ Figure&nbsp;2: Training dataset build by sampling 750 elements from two distinct
 </div>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-1d-fit" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-1d-fit" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-1d-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/normalization_flow/img/1d/fit-model.png" class="img-fluid figure-img" width="420">
@@ -2944,7 +3014,7 @@ Figure&nbsp;3: A normalizing flow fitted to the given dataset to learn p(x). The
 </div>
 </div>
 </div>
-<div id="fig-1d-learned-transform" class="quarto-figure quarto-figure-center quarto-float anchored" width="600px">
+<div id="fig-1d-learned-transform" class="quarto-float quarto-figure quarto-figure-center anchored" width="600px">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-1d-learned-transform-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/normalization_flow/img/1d/learned-transformation.png" class="img-fluid figure-img">
@@ -2960,13 +3030,10 @@ Figure&nbsp;4: Learned normalizing flow from the unknown distribution <img src="
 <h3 class="anchored" data-anchor-id="d-training-example">2D Training Example</h3>
 <p>Consider a more intricate dataset, such as the famous 2 Moon dataset depicted in Fig. [3.a]. The objective here is to map samples from this dataset into a latent variable that conforms to a Gaussian distribution.</p>
 <p>In this context, relying solely on the cumulative distribution function of a Gaussian Mixture model as NF formulation may not provide the necessary expressiveness. While Neural Networks serve as powerful function approximators, they do not inherently guarantee the conditions required by a normalizing flow. Furthermore, computing the determinant of a linear layer within a neural network is computationally expensive.</p>
-<div>
-
-</div>
 <div class="quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-2d-moon" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-width="300px">
+<div id="fig-2d-moon" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-width="300px">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-2d-moon-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/normalization_flow/img/2d/dataset.png" class="img-fluid figure-img" data-fig-width="300px">
@@ -2978,7 +3045,7 @@ Figure&nbsp;5: 2D Moon dataset.
 </div>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-2d-moon-flow" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-width="500px">
+<div id="fig-2d-moon-flow" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-width="500px">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-2d-moon-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/normalization_flow/img/2d/2d_moon_flow.gif" class="img-fluid figure-img" data-fig-width="500px">
@@ -3000,13 +3067,10 @@ Figure&nbsp;6: Gif of all the steps needed by the normalization flow to map the 
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%20%20%20%20z_%7Bi+1%7D%5B0%5D,%20...,%20z_%7Bi+1%7D%5Bd%5D%20&amp;%20=%20z_%7Bi%7D%5B0%5D,%20...,%20z_%7Bi%7D%5Bd%5D%20%5C%5C%0A%20%20%20%20d_%7Bi%7D%5Bd+1%5D,%20...,%20d_%7Bi%7D%5BD%5D,%20t_%7Bi%7D%5Bd+1%5D,%20...,%20t_%7Bi%7D%5BD%5D%20&amp;%20=%20f(z_%7Bi%7D%5B0%5D,%20...,%20z_%7Bi%7D%5Bd%5D;%20%5Ctheta_%7Bi%7D)%20%5C%5C%0A%20%20%20%20z_%7Bi+1%7D%5Bd+1%5D,%20...,%20z_%7Bi+1%7D%5BD%5D%20&amp;%20=%20(z_%7Bi%7D%5Bd+1%5D%20%5Ccdot%20d_%7Bi%7D%5Bd+1%5D)%20+%20t_%7Bi%7D%5Bd+1%5D,%20...,%20(z_%7Bi%7D%5BD%5D%20%5Ccdot%20d_%7Bi%7D%5BD%5D)%20+%20t_%7Bi%7D%5BD%5D%0A%5Cend%7Balign*%7D%0A"></p>
 <p>where <img src="https://latex.codecogs.com/png.latex?f(%5Ccdot;%20%5Ctheta_i)"> is any neural network. Intuitively, a coupling layer is akin to an autoregressive layer, where the autoregressive mask only permits <img src="https://latex.codecogs.com/png.latex?z_%7Bi+1%7D%5B%3Ed%5D"> to depend on <img src="https://latex.codecogs.com/png.latex?z_%7Bi%7D%5B%5Cleq%20d%5D">.<br>
 As shown in Figure&nbsp;7 and Figure&nbsp;8, the beauty of coupling layers lies in the ease of inverting their transformation. Given the initial conditiokn <img src="https://latex.codecogs.com/png.latex?z_%7Bi+1%7D%5B%5Cleq%20d%5D%20=%20z_%7Bi%7D%5B%5Cleq%20d%5D">, it is possible to derive the affine parameters <img src="https://latex.codecogs.com/png.latex?d_%7Bi%7D%5B%3E%20d%5D"> and <img src="https://latex.codecogs.com/png.latex?t_%7Bi%7D%5B%3E%20d%5D"> by directly applying <img src="https://latex.codecogs.com/png.latex?f(%5Ccdot;%20%5Ctheta_i)"> to <img src="https://latex.codecogs.com/png.latex?z_%7Bi+1%7D%5B%5Cleq%20d%5D">.</p>
-<div>
-
-</div>
 <div class="quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-coupling-forward" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-coupling-forward" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-coupling-forward-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/normalization_flow/img/coupling_layer-forward.png" class="img-fluid figure-img">
@@ -3018,7 +3082,7 @@ Figure&nbsp;7: Coupling layer forward pass.
 </div>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-coupling-backward" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-coupling-backward" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-coupling-backward-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/normalization_flow/img/coupling_layer-backward.png" class="img-fluid figure-img">
@@ -3035,7 +3099,7 @@ Figure&nbsp;8: Coupling layer backward pass.
 <p><img src="https://latex.codecogs.com/png.latex?%0AJ_%7Bz_%7Bi+1%7D%7D(z_%7Bi%7D)%20=%20%5Cbegin%7Bbmatrix%7D%0A%20%20%20%20%5Cmathbf%7BI%7D%20&amp;%20%5Cmathbf%7BO%7D%20%5C%5C%0A%20%20%20%20%5Cmathbf%7BA%7D%20&amp;%20%5Cmathbf%7BD%7D%20%5C%5C%0A%5Cend%7Bbmatrix%7D.%0A"></p>
 <p>Here, <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BI%7D"> is an identity matrix of size <img src="https://latex.codecogs.com/png.latex?d%20%5Ctimes%20d">, <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BO%7D"> is a zeros matrix of size <img src="https://latex.codecogs.com/png.latex?d%20%5Ctimes%20(D-d)">, <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BA%7D"> is a full matrix of size <img src="https://latex.codecogs.com/png.latex?(D-d)%20%5Ctimes%20d"> and <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BD%7D"> is a diagonal matrix of shape <img src="https://latex.codecogs.com/png.latex?(D-d)%20%5Ctimes%20(D-d)">. The determinant of such a matrix is formed by the product of the diagonal elements of <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BD%7D">, making it efficient to compute.</p>
 <p>Figure&nbsp;9 illustrates the dynamics of a NF trained on a 2 Moon dataset. Note how the final latent space (step 4) conforms to a Gaussian distribution.</p>
-<div id="fig-2d-normalizing-flow" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-2d-normalizing-flow" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-2d-normalizing-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/normalization_flow/img/2d/training-process.png" class="img-fluid figure-img">
@@ -3048,9 +3112,11 @@ Figure&nbsp;9: Normalizing flow from a 2 moon dataset to the guassian prior visu
 <p>Finally, a simple implementation of a coupling layer in pytorch is proviceded as follow:</p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> CouplingFlow(nn.Module):</span>
 <span id="cb4-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(</span>
@@ -3076,6 +3142,7 @@ background-color: null;
 font-style: inherit;">__init__</span>()</span>
 <span id="cb4-9">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">assert</span> dim <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span> <span class="dv" style="color: #AD0000;
@@ -3089,6 +3156,7 @@ background-color: null;
 font-style: inherit;">"dim must be even"</span></span>
 <span id="cb4-10">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">assert</span> dim <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">==</span> mask.size(<span class="op" style="color: #5E5E5E;
@@ -3127,6 +3195,7 @@ font-style: inherit;">=</span> nn.Sequential(</span>
 <span id="cb4-21"></span>
 <span id="cb4-22">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, x: Tensor) <span class="op" style="color: #5E5E5E;
@@ -3172,10 +3241,12 @@ background-color: null;
 font-style: inherit;">+</span> t))</span>
 <span id="cb4-27">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> z</span>
 <span id="cb4-28"></span>
 <span id="cb4-29">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> log_abs_det_jacobian(</span>
 <span id="cb4-30">        <span class="va" style="color: #111111;
 background-color: null;
@@ -3205,6 +3276,7 @@ background-color: null;
 font-style: inherit;">1</span>)</span>
 <span id="cb4-36">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> log_d.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">sum</span>(dim<span class="op" style="color: #5E5E5E;
@@ -3277,7 +3349,7 @@ font-style: inherit;">1</span>)</span></code></pre></div>
 
 
 <p>Nowadays, it is common practice to develop new machine learning projects starting from a large pre-trained model and fine-tuning it to the task at hand. <a href="https://youtu.be/WHoWGNQRXb0?t=170">Sam Altman</a>, at the time of writing the CEO of OpenAI, recently mentioned that he envisions a feature where the most valuable startups are the ones capable of adapting publicly available foundation models to specific domains; rather than training a proprietary model from scratch. Thus, tuning or fine-tuning large models is a key capability that machine learning practitioners need to learn as much as being able to train a deep neural network was a major skill that each scientist had perfected in the last few years.</p>
-<div id="fig-intro-finetuning" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-intro-finetuning" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-intro-finetuning-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/finetune/img/intro.png" class="img-fluid figure-img">
@@ -3312,6 +3384,7 @@ Figure&nbsp;1: Model finetuning.
 </ol>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_group_params(</span>
 <span id="cb1-2">    model: nn.Module,</span>
 <span id="cb1-3">    weight_decay: <span class="bu" style="color: null;
@@ -3386,19 +3459,25 @@ background-color: null;
 font-style: inherit;"># parameters with weight decay</span></span>
 <span id="cb1-21">                p <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> n, p <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> model.named_parameters() <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">any</span>(</span>
 <span id="cb1-22">                    [re.search(pattern, n) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> pattern <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> no_decay_patterns]</span>
 <span id="cb1-23">                )</span>
 <span id="cb1-24">            ],</span>
@@ -3417,17 +3496,22 @@ background-color: null;
 font-style: inherit;"># parameters without weight decay</span></span>
 <span id="cb1-30">                p <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> n, p <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> model.named_parameters() <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">any</span>(</span>
 <span id="cb1-31">                    [re.search(pattern, n) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> pattern <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> no_decay_patterns]</span>
 <span id="cb1-32">                )</span>
 <span id="cb1-33">            ],</span>
@@ -3440,6 +3524,7 @@ font-style: inherit;">0.</span>,</span>
 <span id="cb1-36">    ]</span>
 <span id="cb1-37">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> optimizer_grouped_parameters</span></code></pre></div>
 <p>If you don’t like regex patterns, karpathy provided a nite alternative implementation in its <a href="https://github.com/karpathy/minGPT/blob/37baab71b9abea1b76ab957409a1cc2fbfba8a26/mingpt/model.py#L224">miniGPT</a> repository.</p>
 </section>
@@ -3460,6 +3545,7 @@ font-style: inherit;">import</span> Optimizer</span>
 <span id="cb2-3"></span>
 <span id="cb2-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_linear_scheduler_with_warmup(</span>
 <span id="cb2-5">    optim: Optimizer,</span>
 <span id="cb2-6">    num_warmup_step: <span class="bu" style="color: null;
@@ -3493,14 +3579,17 @@ font-style: inherit;">    """</span></span>
 <span id="cb2-14"></span>
 <span id="cb2-15">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> lr_lambda(current_step):</span>
 <span id="cb2-16">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> current_step <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span> num_warmup_step:</span>
 <span id="cb2-17">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">float</span>(current_step) <span class="op" style="color: #5E5E5E;
@@ -3514,6 +3603,7 @@ background-color: null;
 font-style: inherit;">1.0</span>, num_warmup_step))</span>
 <span id="cb2-18">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">max</span>(</span>
@@ -3540,10 +3630,11 @@ font-style: inherit;">-</span> num_warmup_step)),</span>
 <span id="cb2-23"></span>
 <span id="cb2-24">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> LambdaLR(optim, lr_lambda, last_epoch)</span></code></pre></div>
 <p>The assumption is to linearly increase the learning rate during the warmup phase (usually lasting for one epoch) to align the model’s parameters to the new task. Afterwards, the learning rate is reduced to allow for fine-grained adjustments of the weights. Figure&nbsp;2 shows how the learning rate is adjusted across different epochs.</p>
 <p>Note that adopting a learning rate scheduler is beneficial, but it introduces many challenges for reproducibility. Schedulers adapt the learning rate according to the epoch and the dataset size. Thus, by simply modifiing the dataset you will likely change your scheduler. Be carefull !!!</p>
-<div id="fig-scheduler" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-scheduler" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-scheduler-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/finetune/img/scheduler.png" class="img-fluid figure-img">
@@ -3560,6 +3651,7 @@ Figure&nbsp;2: Example of linear scheduler with warmup.
 <p>Freezing parameters is extramly easy in PyTorch thanks to the <code>requires_grad</code> flag associated to each model’s parameter:</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> unfreeze_layer_params(</span>
 <span id="cb3-2">    model: nn.Module,</span>
 <span id="cb3-3">    freeze_patterns: <span class="bu" style="color: null;
@@ -3574,18 +3666,23 @@ font-style: inherit;">".*bias$"</span>],</span>
 <span id="cb3-4">):</span>
 <span id="cb3-5">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> n, p <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> model.named_parameters():</span>
 <span id="cb3-6">        </span>
 <span id="cb3-7">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">any</span>([re.search(pattern, n) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> pattern <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> freeze_patterns]):</span>
 <span id="cb3-8">            <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -3609,6 +3706,7 @@ font-style: inherit;">"</span>)</span>
 <span id="cb3-11"></span>
 <span id="cb3-12">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb3-13">            <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -3643,7 +3741,7 @@ font-style: inherit;">"</span>)</span></code></pre></div>
 <div aria-describedby="fig-overfit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-overfit" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-train" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-train" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-train-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/finetune/img/train_overfit.png" class="img-fluid figure-img" data-ref-parent="fig-overfit">
@@ -3657,7 +3755,7 @@ font-style: inherit;">"</span>)</span></code></pre></div>
 </div>
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-overfit" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-val" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-val" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-val-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/finetune/img/eval_overfit.png" class="img-fluid figure-img" data-ref-parent="fig-overfit">
@@ -3732,6 +3830,7 @@ Figure&nbsp;3
 <p>To compare the different engines, the text preprocessing task is used for benchmarking. As above mentioned, the dataset is the farfetch dataset that contains about 400K products, but about 300K are used for this test due to missing meaningful descriptions. Text preprocessing aims to clean, tokenize, pad and add special tokens to each product description. For consistency, we adopted the same tokenizer used in the original <a href="https://github.com/openai/CLIP/blob/main/clip/simple_tokenizer.py">CLIP implementation</a>. However, a pyspark UDF is used to apply the preprocessing to the original dataframe:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> encode(value):</span>
 <span id="cb1-2">    <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -3745,12 +3844,14 @@ font-style: inherit;">=</span> io.BytesIO()</span>
 <span id="cb1-5">    np.save(memfile, value)</span>
 <span id="cb1-6">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">bytearray</span>(memfile.getvalue())</span>
 <span id="cb1-7"></span>
 <span id="cb1-8"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_preprocess_data_fn(</span>
 <span id="cb1-9">        vocab_path: <span class="bu" style="color: null;
 background-color: null;
@@ -3772,6 +3873,7 @@ font-style: inherit;">int</span>,</span>
 <span id="cb1-16"></span>
 <span id="cb1-17">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> preprocess_data(</span>
 <span id="cb1-18">        dataframe_batch_iterator: Iterator[pd.DataFrame]</span>
 <span id="cb1-19">    ) <span class="op" style="color: #5E5E5E;
@@ -3792,8 +3894,10 @@ font-style: inherit;">        """</span></span>
 <span id="cb1-24"></span>
 <span id="cb1-25">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> dataframe_batch <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> dataframe_batch_iterator:</span>
 <span id="cb1-26">            product_ids <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3803,8 +3907,10 @@ background-color: null;
 font-style: inherit;">=</span> []</span>
 <span id="cb1-28">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> dataframe_batch.itertuples():</span>
 <span id="cb1-29">                product_ids.append(<span class="bu" style="color: null;
 background-color: null;
@@ -3826,6 +3932,7 @@ font-style: inherit;"># enconde numpy array as byte-array</span></span>
 <span id="cb1-36"></span>
 <span id="cb1-37">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">yield</span> pd.DataFrame({</span>
 <span id="cb1-38">                <span class="st" style="color: #20794D;
 background-color: null;
@@ -3837,11 +3944,13 @@ font-style: inherit;">"description_ids"</span>: descriptions_ids,</span>
 <span id="cb1-41"></span>
 <span id="cb1-42">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> preprocess_data</span>
 <span id="cb1-43"></span>
 <span id="cb1-44"></span>
 <span id="cb1-45"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> main():</span>
 <span id="cb1-46">    ...</span>
 <span id="cb1-47">    preprocess_data_fn <span class="op" style="color: #5E5E5E;
@@ -3870,13 +3979,13 @@ font-style: inherit;">"description_ids"</span>, BinaryType()),</span>
 <span id="cb1-58">    )</span>
 <span id="cb1-59">    ...</span></code></pre></div>
 <p>Cluster configuration and experiment results are reported in Table&nbsp;1 and Figure&nbsp;1.</p>
-<div id="tbl-setup" class="hover quarto-float anchored">
+<div id="tbl-setup" class="hover quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Clstuer definitions used for data preprocessing benchmarking.
 </figcaption>
 <div aria-describedby="tbl-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table-hover table">
+<table class="table-hover caption-top table">
 <thead>
 <tr class="header">
 <th>CPU</th>
@@ -3914,7 +4023,7 @@ Table&nbsp;1: Clstuer definitions used for data preprocessing benchmarking.
 </figure>
 </div>
 <p>The experiment result shows that a reduction of 31.5 to 49% in processing time achievable just by adopting an accelerated engine. Rapids is the most promising option as it provides a 2x speedup at a competitive price w.r.t. the CPU baseline. However, not that in this test, the dataset size is small compared to the available cluster memory, and special care is usually required when working with GPUs as it is pretty common to get out-of-bound memory errors.</p>
-<div id="fig-data-procseeing" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-data-procseeing" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-data-procseeing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/data_preprocessing/img/text_preprocessing_benchmark.png" class="img-fluid figure-img">
@@ -3929,7 +4038,7 @@ Figure&nbsp;1: Data preprocessing benchmark.
 <h1>Data Ingestion</h1>
 <p>Data ingestion is another crucial component for any successful ML project. Too little credit has been given to the developers of <a href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset">Tensorflow Dataset</a> and <a href="https://pytorch.org/docs/stable/data.html">PyTorch DataLoaders</a> as they provide common APIs for loading and manipulating the created datasets. However, these data-loaders utilities are limited when it comes to processing large datasets that do not fit the memory and that need to operate in a distributed environment. On the one hand, Tensorflow Dataset is extremely efficient when working with TFRecords, but does not support parquet data format and requires a significant amount of boilerplate code to be parsed. On the other hand, PyTorch Dataloaders only focuses on sampling and batching the data, leaving the scope of loading the dataset into the memory for rapid access indexed access to the user.</p>
 <p>Due to these limitations, multiple third-party solutions arose. As shown in Figure&nbsp;2 in machine learning there are two main type of datasets: - datasets composed by raw complex data formats such as images, texts or audios are common in deep learning; - tabular dataset are composed by multiple columns of scalar values representing handcrafted features are usually used in reccomandation applications. As this two datatypes present different challences, distinct benchmarks are conducted to understand which are the best practices to follow in differnet scenarios.</p>
-<div id="fig-datasets-type" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-datasets-type" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-datasets-type-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/data_preprocessing/img/datasets-type.png" class="img-fluid figure-img">
@@ -3945,6 +4054,7 @@ Figure&nbsp;2: Visual representations of the different dataset types. Note that 
 <p>Based on these assumptions, a common pattern emerged across the dataloaders solutions: spawning thread-based or process-based workers to ingest the data while the GPUs are used for training. Among the others, <a href="https://petastorm.readthedocs.io/en/latest/index.html">Petastorm</a>, a general-purpose solution provided by Uber that easily integrates with Databricks, follows exactly this pattern. At the core of Petastorm, there is the <a href="https://petastorm.readthedocs.io/en/latest/_modules/petastorm/codecs.html?highlight=Codec">Codecs</a> concept, an API that specifies methods to encode and decode custom datatypes. For example, numpy arrays and images, two types not supported by Spark, are encoded by Petastorm into a Spark DataFrames as BinaryType and decoded at training time. As above mentioned, when a new column containing a non-native datatype is added to the DataFrame, the <a href="https://github.com/uber/petastorm/blob/170b22a18ee1c0346d2b289f096804e34a0c5d25/petastorm/codecs.py#L136">encode</a> function is applied to every row.</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> encode(value)</span>
 <span id="cb2-2">    memfile <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3952,21 +4062,24 @@ font-style: inherit;">=</span> BytesIO()</span>
 <span id="cb2-3">    np.save(memfile, value)</span>
 <span id="cb2-4">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">bytearray</span>(memfile.getvalue())</span></code></pre></div>
 <p>Similarly, once the dataset is stored on any distributed file system, the Petastorm <a href="https://github.com/uber/petastorm/blob/170b22a18ee1c0346d2b289f096804e34a0c5d25/petastorm/reader.py#L344">Reader</a> decodes each row of the dataset while feeding the data into the training pipeline.</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> decode(value)</span>
 <span id="cb3-2">    memfile <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> BytesIO(value)</span>
 <span id="cb3-3">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> np.load(memfile)</span></code></pre></div>
 <p>Yet, performing random access of distributed datasets containing large arrays is costly due to the multiple I/O operations involved. Thus, an evaluation of Petastorm dataloaders, on the dataset previously prepared is reported. The dataset consists of about 300K image/text pairs. Images are represented as <code>3 x 224 x 224</code> arrays, while text by a list of <code>77</code> elements. Each batch is composed of 64 examples. The objective is to find the best worker-type and number of worker combinations possible. Thus, a grid search is reported in [fig-dataloader-cn-nlp-bnc], where thread-based and process-based workers are compared with a setting that uses 5, 10 and 20 workers.</p>
-<div id="fig-dataloader-cn-nlp-bnc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-dataloader-cn-nlp-bnc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dataloader-cn-nlp-bnc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/data_preprocessing/img/dataloader-cn-nlp-bnc.png" class="img-fluid figure-img">
@@ -3994,7 +4107,7 @@ Figure&nbsp;3: Bencharking of dataloaders for complex raw datatype. Upper figure
 <li>Tensorflow uses 5 or 10 workers for reading and parsing the TFRecords;</li>
 <li>Merlin uses the default configuration.</li>
 </ul>
-<div id="fig-dataloader-tabular-bnc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-dataloader-tabular-bnc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dataloader-tabular-bnc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/data_preprocessing/img/dataloader-tablular-bnc.png" class="img-fluid figure-img">
@@ -4036,7 +4149,7 @@ Figure&nbsp;4: Benchmarking of dataloaders for tabular datasets. The results dem
 <section id="big-o-notation-and-asymptotic-analysis" class="level1">
 <h1>Big-O Notation and asymptotic Analysis</h1>
 <p>To evaluate the efficency of a data structure we need to evaluate the <strong>time</strong> and <strong>memory consumption</strong> requred to execute the algorithm. As the run-time depends on the input size, we will focus on the performance of the data structure when the inputs are infinitly large. The asymptotic notations is the mathematical tool used to perform this analysis, specifically we will focus on the <strong>Big-O</strong> notation that studies the behaviout of each algorithm in the worst-case scenarious. Thus, it indicates the complexity of an algirithm assuming inputs of size N with <img src="https://latex.codecogs.com/png.latex?%5Clim%20N%5Cto%5Cinfty">. Under this context constant factors are ignored as are dominated by N.</p>
-<table class="table-striped table-hover table">
+<table class="table-striped table-hover caption-top table">
 <caption>Time complexities</caption>
 <colgroup>
 <col style="width: 10%">
@@ -4090,7 +4203,7 @@ Figure&nbsp;4: Benchmarking of dataloaders for tabular datasets. The results dem
 <h2 class="anchored" data-anchor-id="array">Array</h2>
 <p>Arrays are collections of items stored at a contiguous memory locations. Such property makes array easy to traverse and genearlly it provides random access to its element in constant complexity.</p>
 <p>Genearally speaking arrays have fixed size and new element can’t be added if the array is already full. However, it is possible to implement dynamic arrays at the expences of a memory overhead (unused memory is reserved for new items that will be added later on). Dynamic arrays achieve constant time complexity when it comes to append and delete operation in the general case, but if resize is needed then a new copy of the current array has to be create; thus requireing high memory and time complexity. The dynamic structure is obtained by creating a new array double size of the original array and copy all element from the previous array to the new array.</p>
-<table class="table-hover table">
+<table class="table-hover caption-top table">
 <caption>Array complexities</caption>
 <colgroup>
 <col style="width: 15%">
@@ -4148,7 +4261,7 @@ Figure&nbsp;4: Benchmarking of dataloaders for tabular datasets. The results dem
 <p>Hash tabels are one of the most importat data strcutre build uppon arrays. By organising data in (key, values) pairs it allows for fast insertion, lookup and access to data. It is composed by an array and the position of each key in this array is determined by the function:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0Aidx%20=%20hash(key)%20%5C%25%20size(hash%5C_table)%0A">.</p>
 <p>Python provide a native implementation of hash table under the <code>dict</code> class.</p>
-<table class="table-hover table">
+<table class="table-hover caption-top table">
 <caption>Hash table complexities</caption>
 <colgroup>
 <col style="width: 15%">
@@ -4194,7 +4307,7 @@ Figure&nbsp;4: Benchmarking of dataloaders for tabular datasets. The results dem
 <section id="linked-list" class="level2">
 <h2 class="anchored" data-anchor-id="linked-list">Linked List</h2>
 <p>A linked list is a linear data structure that includes a series of connected nodes. Usually every nodes is composed by a data filed that contains some value and a pointer to the next element (if there is). While arrays are contiguous in memory, linked lists allows for a dynamic memory management where nodes can be scattered across the memory and simply point to each other. Linked lists are the fundamental backbone for other data structure as stacks and queue.</p>
-<table class="table-hover table">
+<table class="table-hover caption-top table">
 <caption>Linked list complexities</caption>
 <colgroup>
 <col style="width: 15%">
@@ -4228,9 +4341,11 @@ Figure&nbsp;4: Benchmarking of dataloaders for tabular datasets. The results dem
 </table>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> Node:</span>
 <span id="cb1-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -4253,6 +4368,7 @@ font-style: inherit;">None</span></span>
 <span id="cb1-5"></span>
 <span id="cb1-6"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> LinkedList:</span>
 <span id="cb1-7">    <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -4265,6 +4381,7 @@ background-color: null;
 font-style: inherit;"># easier for handling edge cases.</span></span>
 <span id="cb1-10">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -4290,15 +4407,18 @@ background-color: null;
 font-style: inherit;"># Check if the stack is empty</span></span>
 <span id="cb1-15">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> isEmpty(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb1-16">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.head <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span></span>
@@ -4308,6 +4428,7 @@ background-color: null;
 font-style: inherit;"># Insert at the end</span></span>
 <span id="cb1-19">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> insert(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, value):</span>
@@ -4316,6 +4437,7 @@ background-color: null;
 font-style: inherit;">=</span> Node(value)</span>
 <span id="cb1-21">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.isEmpty():</span>
@@ -4331,6 +4453,7 @@ background-color: null;
 font-style: inherit;">=</span> node</span>
 <span id="cb1-24">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb1-25">            <span class="va" style="color: #111111;
 background-color: null;
@@ -4354,16 +4477,19 @@ background-color: null;
 font-style: inherit;"># remove from the beginning.</span></span>
 <span id="cb1-29">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> remove(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb1-30">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.isEmpty():</span>
 <span id="cb1-31">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">raise</span> <span class="pp" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">Exception</span>(<span class="st" style="color: #20794D;
@@ -4377,6 +4503,7 @@ background-color: null;
 font-style: inherit;">self</span>.head</span>
 <span id="cb1-34">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.head <span class="op" style="color: #5E5E5E;
@@ -4404,6 +4531,7 @@ background-color: null;
 font-style: inherit;">next</span></span>
 <span id="cb1-37">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> node</span>
 <span id="cb1-38"></span>
 <span id="cb1-39">    <span class="co" style="color: #5E5E5E;
@@ -4411,6 +4539,7 @@ background-color: null;
 font-style: inherit;"># sarch the node with a given value</span></span>
 <span id="cb1-40">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> search(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, value):</span>
@@ -4421,20 +4550,25 @@ background-color: null;
 font-style: inherit;">self</span>.head</span>
 <span id="cb1-42">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">while</span> node <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
 <span id="cb1-43">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> node.value <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">==</span> value:</span>
 <span id="cb1-44">                <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">break</span></span>
 <span id="cb1-45">            node <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4443,6 +4577,7 @@ background-color: null;
 font-style: inherit;">next</span></span>
 <span id="cb1-46">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> node</span></code></pre></div>
 <section id="floyds-cycle-finding-algorithm" class="level4">
 <h4 class="anchored" data-anchor-id="floyds-cycle-finding-algorithm">Floyd’s Cycle Finding Algorithm</h4>
@@ -4453,6 +4588,7 @@ font-style: inherit;">return</span> node</span></code></pre></div>
 </ul>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> detectLoop(llist):</span>
 <span id="cb2-2">    slow_pointer <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4463,6 +4599,7 @@ font-style: inherit;">=</span> llist.head</span>
 <span id="cb2-4"></span>
 <span id="cb2-5">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">while</span> (slow_pointer <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!=</span> <span class="va" style="color: #111111;
@@ -4470,6 +4607,7 @@ background-color: null;
 font-style: inherit;">None</span></span>
 <span id="cb2-6">           <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">and</span> fast_pointer <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!=</span> <span class="va" style="color: #111111;
@@ -4477,6 +4615,7 @@ background-color: null;
 font-style: inherit;">None</span></span>
 <span id="cb2-7">           <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">and</span> fast_pointer.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">next</span> <span class="op" style="color: #5E5E5E;
@@ -4498,17 +4637,20 @@ background-color: null;
 font-style: inherit;">next</span></span>
 <span id="cb2-10">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (slow_pointer <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">==</span> fast_pointer):</span>
 <span id="cb2-11">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span></span>
 <span id="cb2-12"></span>
 <span id="cb2-13">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span></span></code></pre></div>
@@ -4516,7 +4658,7 @@ font-style: inherit;">0</span></span></code></pre></div>
 <section id="stack" class="level3">
 <h3 class="anchored" data-anchor-id="stack">Stack</h3>
 <p>The Stack is a special kind of linked list that follows the <strong>LIFO</strong> principle. Intuitivly it’s a deck of cards where the top card of the deck (the last added element added) is the first card to picked (the first element to remove next).</p>
-<table class="table-hover table">
+<table class="table-hover caption-top table">
 <caption>Stack complexities</caption>
 <colgroup>
 <col style="width: 15%">
@@ -4555,9 +4697,11 @@ font-style: inherit;">0</span></span></code></pre></div>
 </table>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> Node:</span>
 <span id="cb3-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -4588,6 +4732,7 @@ font-style: inherit;">None</span></span>
 <span id="cb3-7"></span>
 <span id="cb3-8"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> Stack:</span>
 <span id="cb3-9">    <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -4600,6 +4745,7 @@ background-color: null;
 font-style: inherit;"># easier for handling edge cases.</span></span>
 <span id="cb3-12">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -4625,11 +4771,13 @@ background-color: null;
 font-style: inherit;"># Get the current size of the stack</span></span>
 <span id="cb3-17">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> getSize(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb3-18">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.size</span>
@@ -4639,11 +4787,13 @@ background-color: null;
 font-style: inherit;"># Check if the stack is empty</span></span>
 <span id="cb3-21">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> isEmpty(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb3-22">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.size <span class="op" style="color: #5E5E5E;
@@ -4657,6 +4807,7 @@ background-color: null;
 font-style: inherit;"># Get the top item of the stack</span></span>
 <span id="cb3-25">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> peek(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
@@ -4668,11 +4819,13 @@ background-color: null;
 font-style: inherit;"># are peeking an empty stack.</span></span>
 <span id="cb3-28">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.isEmpty():</span>
 <span id="cb3-29">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">raise</span> <span class="pp" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">Exception</span>(<span class="st" style="color: #20794D;
@@ -4680,6 +4833,7 @@ background-color: null;
 font-style: inherit;">"Peeking from an empty stack"</span>)</span>
 <span id="cb3-30">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.head.value</span>
@@ -4689,6 +4843,7 @@ background-color: null;
 font-style: inherit;"># Push a value into the stack.</span></span>
 <span id="cb3-33">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> push(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, value):</span>
@@ -4697,10 +4852,12 @@ background-color: null;
 font-style: inherit;">=</span> Node(value)</span>
 <span id="cb3-35">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.head <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
@@ -4711,6 +4868,7 @@ background-color: null;
 font-style: inherit;">=</span> node</span>
 <span id="cb3-37">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb3-38">            node.prev <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4742,16 +4900,19 @@ background-color: null;
 font-style: inherit;"># Remove a value from the stack and return.</span></span>
 <span id="cb3-44">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> pop(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb3-45">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.isEmpty():</span>
 <span id="cb3-46">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">raise</span> <span class="pp" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">Exception</span>(<span class="st" style="color: #20794D;
@@ -4787,12 +4948,13 @@ background-color: null;
 font-style: inherit;">1</span></span>
 <span id="cb3-51">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> remove.value</span></code></pre></div>
 </section>
 <section id="queue" class="level3">
 <h3 class="anchored" data-anchor-id="queue">Queue</h3>
 <p>Queues are an implementation of LinkedList that follows the <strong>FIFO</strong> principle. Similarly to ticket queue outside a cinema hall, where the first person entering the queue is the first person who gets the ticket.</p>
-<table class="table-hover table">
+<table class="table-hover caption-top table">
 <caption>Queue complexities</caption>
 <colgroup>
 <col style="width: 15%">
@@ -4839,7 +5001,7 @@ font-style: inherit;">return</span> remove.value</span></code></pre></div>
 <li>the address to the left child,</li>
 <li>the address to the right child.</li>
 </ul>
-<table class="table-hover table">
+<table class="table-hover caption-top table">
 <caption>Binary trees complexities</caption>
 <colgroup>
 <col style="width: 15%">
@@ -4869,9 +5031,11 @@ font-style: inherit;">return</span> remove.value</span></code></pre></div>
 <p>Binary trees are generaly represetned by linked nodes structures.</p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> Node:</span>
 <span id="cb4-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -4899,6 +5063,7 @@ font-style: inherit;">None</span></span>
 <span id="cb4-6"></span>
 <span id="cb4-7">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> pre_order_traverse(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
@@ -4909,6 +5074,7 @@ background-color: null;
 font-style: inherit;">self</span>.value)</span>
 <span id="cb4-9">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.left:</span>
@@ -4917,6 +5083,7 @@ background-color: null;
 font-style: inherit;">self</span>.left.pre_order_traverse()</span>
 <span id="cb4-11">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.right:</span>
@@ -4926,11 +5093,13 @@ font-style: inherit;">self</span>.right.pre_order_traverse()</span>
 <span id="cb4-13"></span>
 <span id="cb4-14">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> in_order_traverse(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb4-15">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.left:</span>
@@ -4946,6 +5115,7 @@ font-style: inherit;">self</span>.value)</span>
 <span id="cb4-19"></span>
 <span id="cb4-20">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.right:</span>
@@ -4955,11 +5125,13 @@ font-style: inherit;">self</span>.right.in_order_traverse()</span>
 <span id="cb4-22"></span>
 <span id="cb4-23">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> post_order_traverse(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>):</span>
 <span id="cb4-24">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.left:</span>
@@ -4969,6 +5141,7 @@ font-style: inherit;">self</span>.left.post_order_traverse()</span>
 <span id="cb4-26"></span>
 <span id="cb4-27">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.right:</span>
@@ -4984,6 +5157,7 @@ font-style: inherit;">self</span>.value)</span>
 <span id="cb4-31"></span>
 <span id="cb4-32"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> build(array):</span>
 <span id="cb4-33">    root <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4998,9 +5172,11 @@ font-style: inherit;">len</span>(array)</span>
 <span id="cb4-35"></span>
 <span id="cb4-36">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> add_child(idx):</span>
 <span id="cb4-37">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> idx <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span> n:</span>
@@ -5034,6 +5210,7 @@ font-style: inherit;">2</span>)</span>
 <span id="cb4-43"></span>
 <span id="cb4-44">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> node</span>
 <span id="cb4-45"></span>
 <span id="cb4-46">    root <span class="op" style="color: #5E5E5E;
@@ -5043,6 +5220,7 @@ background-color: null;
 font-style: inherit;">0</span>)</span>
 <span id="cb4-47">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> root</span></code></pre></div>
 <p>However, binary trees can be also represented using arrays in which:</p>
 <ul>
@@ -5052,9 +5230,11 @@ font-style: inherit;">return</span> root</span></code></pre></div>
 </ul>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> Tree:</span>
 <span id="cb5-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -5068,11 +5248,13 @@ font-style: inherit;">=</span> array</span>
 <span id="cb5-4"></span>
 <span id="cb5-5">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> left(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, parent_idx):</span>
 <span id="cb5-6">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (parent_idx <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
@@ -5090,6 +5272,7 @@ background-color: null;
 font-style: inherit;">self</span>.array):</span>
 <span id="cb5-7">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.array[(parent_idx <span class="op" style="color: #5E5E5E;
@@ -5104,11 +5287,13 @@ font-style: inherit;">1</span>]</span>
 <span id="cb5-8"></span>
 <span id="cb5-9">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> right(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, parent_idx):</span>
 <span id="cb5-10">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (parent_idx <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
@@ -5126,6 +5311,7 @@ background-color: null;
 font-style: inherit;">self</span>.array):</span>
 <span id="cb5-11">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.array[(parent_idx <span class="op" style="color: #5E5E5E;
@@ -5140,6 +5326,7 @@ font-style: inherit;">2</span>]</span>
 <span id="cb5-12"></span>
 <span id="cb5-13">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> set_left(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, val, parent_idx):</span>
@@ -5159,6 +5346,7 @@ font-style: inherit;">=</span> val</span>
 <span id="cb5-15"></span>
 <span id="cb5-16">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> set_right(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, val, parent_idx):</span>
@@ -5178,6 +5366,7 @@ font-style: inherit;">=</span> val</span>
 <span id="cb5-18"></span>
 <span id="cb5-19">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> in_order(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, parent_idx<span class="op" style="color: #5E5E5E;
@@ -5187,6 +5376,7 @@ background-color: null;
 font-style: inherit;">0</span>):</span>
 <span id="cb5-20">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.left(parent_idx):</span>
@@ -5210,6 +5400,7 @@ font-style: inherit;">self</span>.array[parent_idx])</span>
 <span id="cb5-24"></span>
 <span id="cb5-25">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.right(parent_idx):</span>
@@ -5234,7 +5425,7 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 <li>both subtrees of each node are also BSTs i.e.&nbsp;they have the above two properties.</li>
 </ul>
 <p>Searching is extreamly efficent as can be done in <img src="https://latex.codecogs.com/png.latex?O(%5Clog%20N)"> time and constant space. Intuitively, searching is so efficent as we can analys only one of the two subtrees based on the relation between the current node’s value and the looked for value. Thus, at every step we half the searching space.</p>
-<table class="table-hover table">
+<table class="table-hover caption-top table">
 <caption>Binary Search trees complexities</caption>
 <colgroup>
 <col style="width: 15%">
@@ -5268,9 +5459,11 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 </table>
 <div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> Node:</span>
 <span id="cb6-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -5295,12 +5488,14 @@ font-style: inherit;">None</span></span>
 <span id="cb6-5"></span>
 <span id="cb6-6">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> search(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, value):</span>
 <span id="cb6-7"></span>
 <span id="cb6-8">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.value <span class="op" style="color: #5E5E5E;
@@ -5308,58 +5503,71 @@ background-color: null;
 font-style: inherit;">==</span> value:</span>
 <span id="cb6-9">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span></span>
 <span id="cb6-10">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">elif</span> value <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.value <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">and</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.value.left <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
 <span id="cb6-11">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.value.left.search(value)</span>
 <span id="cb6-12">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">elif</span> value <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&gt;</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.value <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">and</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.value.right <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
 <span id="cb6-13">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>.value.right.search(value)</span>
 <span id="cb6-14">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb6-15">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">False</span></span>
@@ -5369,20 +5577,25 @@ background-color: null;
 font-style: inherit;">@staticmethod</span></span>
 <span id="cb6-18">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> insert(node, value):</span>
 <span id="cb6-19">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> node <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
 <span id="cb6-20">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> Node(value)</span>
 <span id="cb6-21"></span>
 <span id="cb6-22">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> value <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span> node.value:</span>
@@ -5391,6 +5604,7 @@ background-color: null;
 font-style: inherit;">=</span> Node.insert(node.left, value)</span>
 <span id="cb6-24">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb6-25">            node.right <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5398,6 +5612,7 @@ font-style: inherit;">=</span> Node.insert(node.right, value)</span>
 <span id="cb6-26"></span>
 <span id="cb6-27">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> node</span>
 <span id="cb6-28"></span>
 <span id="cb6-29">    <span class="at" style="color: #657422;
@@ -5405,9 +5620,11 @@ background-color: null;
 font-style: inherit;">@staticmethod</span></span>
 <span id="cb6-30">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> remove(node, value):</span>
 <span id="cb6-31">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> value <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span> node.value:</span>
@@ -5416,6 +5633,7 @@ background-color: null;
 font-style: inherit;">=</span> Node.remove(node.left, value)</span>
 <span id="cb6-33">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">elif</span> value <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&gt;</span> node.value:</span>
@@ -5425,25 +5643,31 @@ font-style: inherit;">=</span> Node.remove(node.right, value)</span>
 <span id="cb6-35"></span>
 <span id="cb6-36">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb6-37">            <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># case 1: it is a leaf node</span></span>
 <span id="cb6-38">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> node.left <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">and</span> node.right <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
 <span id="cb6-39">                <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span></span>
@@ -5453,16 +5677,21 @@ background-color: null;
 font-style: inherit;"># case 2: there is only 1 child</span></span>
 <span id="cb6-42">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">elif</span> node.left <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">and</span> node.right <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
@@ -5476,16 +5705,21 @@ background-color: null;
 font-style: inherit;">None</span></span>
 <span id="cb6-45">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">elif</span> node.left <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">and</span> node.right <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
@@ -5503,6 +5737,7 @@ background-color: null;
 font-style: inherit;"># case 3: take as new node, the right child or the left node of the right child if it exist</span></span>
 <span id="cb6-50">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb6-51">                <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -5515,10 +5750,13 @@ background-color: null;
 font-style: inherit;">=</span> node</span>
 <span id="cb6-54">                <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">while</span> temp.left <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">None</span>:</span>
@@ -5532,6 +5770,7 @@ font-style: inherit;">=</span> temp.value</span>
 <span id="cb6-58"></span>
 <span id="cb6-59">                <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> prev <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!=</span> node:</span>
@@ -5540,15 +5779,18 @@ background-color: null;
 font-style: inherit;">=</span> temp.right</span>
 <span id="cb6-61">                <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb6-62">                    node.right <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> temp.right</span>
 <span id="cb6-63">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> node</span>
 <span id="cb6-64">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> node</span></code></pre></div>
 
 
@@ -5658,7 +5900,7 @@ Table 1: definition of all the metric reported and build on to of a Confusion ma
 <section id="roc-auc" class="level2">
 <h2 class="anchored" data-anchor-id="roc-auc">ROC-AUC</h2>
 <p>The Receiver Operating Characteristic (ROC) is an analysis tool initially proposed by Provost et al. to compare classifiers’ performance. The ROC curve is built as the interpolation between the <strong>False Positive Rate</strong> (FPR) on the x-axe, and the <strong>True Positive Rate</strong> (TPR) on the y-axe, computed at different thresholds. Intuitively, the TPR represents how well a classifier can identify all the positive examples. In contrast the FPR indicate how likely an error will occur in the negative class (for a formal definition of TPR and FPR, consult the confusion matrix reported in Tab. 1).</p>
-<div id="fig-roc-auc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-roc-auc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-roc-auc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/metrics/img/roc-auc.png" class="img-fluid figure-img">
@@ -5690,7 +5932,7 @@ Figure&nbsp;1: Example of an ROC-AUC curve.
 <div aria-describedby="fig-init-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-init" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-dataset" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-dataset" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-dataset-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/metrics/img/datasets.png" class="img-fluid figure-img" style="width:80.0%" data-ref-parent="fig-init">
@@ -5704,7 +5946,7 @@ Figure&nbsp;1: Example of an ROC-AUC curve.
 </div>
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-init" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-datasets-auc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-datasets-auc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-datasets-auc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/metrics/img/datasets-auc.png" class="img-fluid figure-img" style="width:80.0%" data-ref-parent="fig-init">
@@ -5733,7 +5975,7 @@ Figure&nbsp;2
 <section id="precision-recall-curve" class="level2">
 <h2 class="anchored" data-anchor-id="precision-recall-curve">Precision-Recall curve</h2>
 <p>When the main objective is to evaluate a model on the positive class, PR-curves are more informative. Figure&nbsp;3 shows how PR-curves are built by plotting the <strong>Precision</strong> as a function of the True Positive Rate (or Recall). By inspecting Tab. 1, it is visible how PR-curves effectively consider only statistics related to the positive class; thus, they are inherently robust to highly skewed datasets <span class="citation" data-cites="paula2016survey">[6]</span>. Perhaps motivated by the similarity with ROC-curves, PR-curves became a popular alternative to analysis models on highly skewed datasets.</p>
-<div id="fig-pr-curve" class="quarto-figure quarto-figure-center quarto-float anchored" width="80%">
+<div id="fig-pr-curve" class="quarto-float quarto-figure quarto-figure-center anchored" width="80%">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pr-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/metrics/img/pr-curve.png" class="img-fluid figure-img">
@@ -5856,7 +6098,7 @@ Figure&nbsp;3: Precision-Recall curve and PR-AUC.
 <section id="results" class="level1">
 <h1>Results</h1>
 <p>Based on the code, we have trained a CNN-based Variational Autoencoder on the MNIST dataset. Figure&nbsp;1 report the training loss, while Figure&nbsp;2 shows us some generated example. As it is possible to see, there are still some artifact. Maybe a better activation function would provide better results.</p>
-<div id="fig-loss" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-loss" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/vea/img/loss.png" class="img-fluid figure-img">
@@ -5866,7 +6108,7 @@ Figure&nbsp;1: Training loss of a CNN based VAE on the MNIST dataset.
 </figcaption>
 </figure>
 </div>
-<div id="fig-new-example" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-new-example" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-new-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/vea/img/cnn_variational_autoencoder_pred.png" class="img-fluid figure-img">
@@ -5933,7 +6175,7 @@ Figure&nbsp;2: Generated examples.
 <p>In linear algebra, a vector basis <img src="https://latex.codecogs.com/png.latex?%5CrmB"> of a vector space <img src="https://latex.codecogs.com/png.latex?%5CrmV"> is a set of vectors <img src="https://latex.codecogs.com/png.latex?%5C%7B%5Crvb_1,%20...,%20%5Crvb_n%5C%7D"> that are linearly independent and allow to reconstruct every vector <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bv_i%7D%20%5Cin%20V"> as a linear combination of <img src="https://latex.codecogs.com/png.latex?%5CrmB">:</p>
 <p><span id="eq-basis-vector"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%20%20%20%20%5Cmathbf%7Bv_i%7D%20&amp;%20=%20a_1%20%5Cmathbf%7Bb_1%7D%20+%20...%20+%20a_n%20%5Cmathbf%7Bb_n%7D%0A%5Cend%7Balign%7D%0A%5Ctag%7B1%7D"></span></p>
 <p>For example, the vectors <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bi%7D%20=%20%5Cleft%5B%0A%5Cbegin%7Barray%7D%7Bc%7D%0A%20%201%5C%5C%0A%20%200%0A%5Cend%7Barray%7D%0A%5Cright%5D"> and <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bj%7D%20=%20%5Cleft%5B%0A%5Cbegin%7Barray%7D%7Bc%7D%0A%20%200%5C%5C%0A%20%201%0A%5Cend%7Barray%7D%0A%5Cright%5D"> are the most common base vectors for the vectors space <img src="https://latex.codecogs.com/png.latex?%5Creal%5E2">. Thus, it is possible to represent a vector <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bx%7D%20=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%0A%20%203%5C%5C%0A%20%202%0A%5Cend%7Barray%7D%5Cright%5D"> as <img src="https://latex.codecogs.com/png.latex?3%20%5Cmathbf%7Bi%7D%20+%202%20%5Cmathbf%7Bj%7D">.</p>
-<div id="fig-base-vector" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-base-vector" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-base-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/linear_algebra/img/linear_algebra/basic_vectors.png" id="fig-base-vector" class="img-fluid figure-img">
@@ -5957,7 +6199,7 @@ Figure&nbsp;1: Vector representation by the base vector <img src="https://latex.
 <li>they map equally spaced lines to equally spaced lines (or points).</li>
 </ol>
 <p><span id="eq-linear-transform"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%20%20%20%20L(a_1%20%5Cmathbf%7Bi%7D%20+%20a_2%20%5Cmathbf%7Bj%7D)%20&amp;%20=%20a_1L(%5Cmathbf%7Bi%7D)%20+%20a_2L(%5Cmathbf%7Bj%7D)%0A%5Cend%7Balign%7D%0A%5Ctag%7B2%7D"></span></p>
-<div id="fig-transformations" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-transformations" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-transformations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/linear_algebra/img/linear_algebra/transformations.png" class="img-fluid figure-img">
@@ -5970,7 +6212,7 @@ Figure&nbsp;2: Examples of the most commont linear transformations. (Image taken
 <p>Thanks to their properties, it is possible to linearly transform any vector by means to its basis. In other words, given a vector <img src="https://latex.codecogs.com/png.latex?%5Crvx%20=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%20-1%5C%5C%202%20%5Cend%7Barray%7D%5Cright%5D"> w.r.t. <img src="https://latex.codecogs.com/png.latex?%5Crvi"> and <img src="https://latex.codecogs.com/png.latex?%5Crvj"> and any lineart transformation <img src="https://latex.codecogs.com/png.latex?L">. It is possible to represent <img src="https://latex.codecogs.com/png.latex?L(%5Crvx)"> as a function of <img src="https://latex.codecogs.com/png.latex?L(%5Crvi)"> and <img src="https://latex.codecogs.com/png.latex?L(%5Crvj)"> (formally <img src="https://latex.codecogs.com/png.latex?L(%5Cmathbf%7Bx%7D)%20=%20-1%20L(%5Cmathbf%7Bi%7D)%20+%202%20L(%5Cmathbf%7Bj%7D)">).</p>
 <p>For example, assume <img src="https://latex.codecogs.com/png.latex?L%20=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bcc%7D%201%20&amp;%203%5C%5C%20-2%20&amp;%200%20%5Cend%7Barray%7D%5Cright%5D">, then:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0AL(%5Cmathbf%7Bi%7D)%20&amp;=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bcc%7D%201%20&amp;%203%5C%5C%20-2%20&amp;%200%20%5Cend%7Barray%7D%5Cright%5D%20%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%201%5C%5C%200%20%5Cend%7Barray%7D%5Cright%5D%20=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%201%5C%5C%20-2%20%5Cend%7Barray%7D%5Cright%5D%5C%5C%0AL(%5Cmathbf%7Bj%7D)%20&amp;=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bcc%7D%201%20&amp;%203%5C%5C%20-2%20&amp;%200%20%5Cend%7Barray%7D%5Cright%5D%20%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%200%5C%5C%201%20%5Cend%7Barray%7D%5Cright%5D%20=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%203%5C%5C%200%20%5Cend%7Barray%7D%5Cright%5D%20%5C%5C%0AL(%5Cmathbf%7Bx%7D)%20&amp;=%20-1%20L(%5Cmathbf%7Bi%7D)%20+%202%20L(%5Cmathbf%7Bj%7D)%20%5C%5C%0A%20%20%20%20&amp;=%20-1%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%201%5C%5C%20-2%20%5Cend%7Barray%7D%5Cright%5D%20+%202%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%203%5C%5C%200%20%5Cend%7Barray%7D%5Cright%5D%20%5C%5C%0A%20%20%20%20&amp;=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%205%5C%5C%202%20%5Cend%7Barray%7D%5Cright%5D%0A%5Cend%7Balign*%7D%0A"></p>
-<div id="fig-base-vector" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-base-vector" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-base-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/linear_algebra/img/linear_algebra/linear-transform.png" id="fig-linear-transform" class="img-fluid figure-img">
@@ -5995,7 +6237,7 @@ Figure&nbsp;3: Visualization of the linear transformation appled to vector <img 
 <li>The determinant can be negative if it change orientation of the space.</li>
 <li>Determinant is associative: <img src="https://latex.codecogs.com/png.latex?det(L)%20%5Ccdot%20det(M)%20=%20det(L%20%5Ccdot%20M)">.</li>
 </ol>
-<div id="fig-determinant" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-determinant" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-determinant-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/linear_algebra/img/linear_algebra/determinant.png" id="fig-determinant" class="img-fluid figure-img">
@@ -6066,7 +6308,7 @@ Figure&nbsp;4: Visualization of the determinant for a initial vector space defin
 <p>However, as shown if Figure&nbsp;5, we can also represent <img src="https://latex.codecogs.com/png.latex?%5Crvx"> in terms of different basis vectors <img src="https://latex.codecogs.com/png.latex?%5Crvu%20=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%202%5C%5C%201%5Cend%7Barray%7D%5Cright%5D"> and <img src="https://latex.codecogs.com/png.latex?%5Crvv%20=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%20-1%5C%5C%201%5Cend%7Barray%7D%5Cright%5D">. That is, <img src="https://latex.codecogs.com/png.latex?%5Crvx"> can be represented as the linear combination of <img src="https://latex.codecogs.com/png.latex?%5Crvu"> and <img src="https://latex.codecogs.com/png.latex?%5Crvj">:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Crvx%20=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D%20%5Cfrac%7B5%7D%7B3%7D%20%5Crvu%5C%5C%20%5Cfrac%7B1%7D%7B3%7D%20%5Crvv%20%5Cend%7Barray%7D%5Cright%5D%0A"></p>
 <p>In other words, it is possible to represent <img src="https://latex.codecogs.com/png.latex?%5Crvx"> in two different languages: one according to basis <img src="https://latex.codecogs.com/png.latex?%5Crvi"> and <img src="https://latex.codecogs.com/png.latex?%5Crvj">; the other according to basis <img src="https://latex.codecogs.com/png.latex?%5Crvu"> and <img src="https://latex.codecogs.com/png.latex?%5Crvv">.</p>
-<div id="fig-base-change" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-base-change" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-base-change-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/linear_algebra/img/linear_algebra/base_change.png" class="img-fluid figure-img">
@@ -6092,7 +6334,7 @@ Figure&nbsp;5
 <h1>Eigenvectors and Eigenvalues</h1>
 <p>It is often convinient to study linear transformations, not on their matrix formulation, but ratehr on their base component. Among the most common decomposition methods, <strong>eigenvectors</strong> and <strong>eigenvalues</strong> are the most common matrix decomposition thecnique.</p>
 <p>Given a linear transformation <img src="https://latex.codecogs.com/png.latex?L%20=%20%5Cleft%5B%5Cbegin%7Barray%7D%7Bcc%7D%203%20&amp;%201%5C%5C%200%20&amp;%202%20%5Cend%7Barray%7D%5Cright%5D">, most of the vectors <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bv%7D_i"> are rotated by <img src="https://latex.codecogs.com/png.latex?L"> away from their original span. Instead some special vectors <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Be%7D_i"> are only streched or squished by <img src="https://latex.codecogs.com/png.latex?L">, but they remain on the original span. Moreover, every vector on the span of <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Be%7D_i"> is also only scaled by <img src="https://latex.codecogs.com/png.latex?L">.</p>
-<div id="fig-eigen-values" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-eigen-values" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-eigen-values-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://andompesta.github.io/posts/linear_algebra/img/linear_algebra/eigen_values.png" class="img-fluid figure-img">
