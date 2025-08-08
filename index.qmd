@@ -100,7 +100,6 @@ Credit to [Roel Staes linkedIn post](https://www.linkedin.com/feed/update/urn:li
 
 [Nat Friedman](https://nat.org/) has been the CEO of github from 2018 to 2021. On his website there are some interesting wisdows pils I want to record. 
 
-<!-- ::: {.callout-tip} -->
 ## From Nat's website
 
 1. As human beings it is our right (maybe our moral duty) to reshape the universe to our preferences
@@ -126,9 +125,9 @@ Credit to [Roel Staes linkedIn post](https://www.linkedin.com/feed/update/urn:li
     - Many of the things we believe are wrong
     - We are often not even asking the right questions
 6. The cultural prohibition on micromanagement is harmful
-    Great individuals should be fully empowered to exercise their judgment
-    The goal is not to avoid mistakes; the goal is to achieve uncorrelated levels of excellence in some dimension
-    The downsides are worth it
+    - Great individuals should be fully empowered to exercise their judgment
+    - The goal is not to avoid mistakes; the goal is to achieve uncorrelated levels of excellence in some dimension
+    - The downsides are worth it
 7. Smaller teams are better
     - Faster decisions, fewer meetings, more fun
     - No need to chop up work for political reasons
@@ -142,7 +141,6 @@ Credit to [Roel Staes linkedIn post](https://www.linkedin.com/feed/update/urn:li
 9. You can do more than you think
     - We are tied down by invisible orthodoxy
     - The laws of physics are the only limit
-<!-- ::: -->
 
 
 ---
