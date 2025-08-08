@@ -38,7 +38,7 @@
 <p>In the general term, the solution to an ODE involve to computetion of the antiderivative of <img src="https://latex.codecogs.com/png.latex?f">, in other words the integral of <img src="https://latex.codecogs.com/png.latex?f">. As the integral of any function involve an arbitrary constant, usually defined as <img src="https://latex.codecogs.com/png.latex?C">, there is the need to specify an <em>initial condition</em> <img src="https://latex.codecogs.com/png.latex?x_0"> to guarantee that the solution of the ODE is unique:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0Ax_t%20=%20x_0%20+%20%5Cint_0%5Et%20f(x_%5Ctau)%20%5Cpartial%20%5Ctau%0A"></p>
 <p>Note that, given the inital state <img src="https://latex.codecogs.com/png.latex?x_0"> and a set of points in time <img src="https://latex.codecogs.com/png.latex?%5C%7B%20t_0,%20...,%20t_N%5C%7D">, the objective is to obtain the state solution <img src="https://latex.codecogs.com/png.latex?x_%7B0:N%7D%20%5Cequiv%20%5C%7B%20x_0,%20...,%20x_N%5C%7D">. Unfortunetly, solving the above integral analytically is possible only for a limited amount of differential functions. Therefore, numerical solvers are used in practice.</p>
-<div id="b25ff833" class="cell" data-execution_count="1">
+<div id="1854a3e9" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -245,7 +245,7 @@ font-style: inherit;"># )</span></span></code></pre></div>
 </div>
 <div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="animations//vdp-oscillator_.mp4"></video></div>
 <p>As overmentioned the solution depend on the initial state of the system. Following there is a demonstration of how the system will behave if you used different starting points.</p>
-<div id="f7dc53c7" class="cell" data-execution_count="2">
+<div id="ae12be04" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> plot_vector_field <span class="im" style="color: #00769E;
@@ -346,7 +346,7 @@ font-style: inherit;">=</span>vdp,</span>
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%20%20%20%20y_%7Bn%7D%20&amp;%20=%20x_%7Bn%7D%20+%20%5Cepsilon,%20~~%20%5Cepsilon%20%5Csim%20%5Cmathcal%7BN%7D(0,%20%5Csigma%5E2)%20%5Cquad%20%5Csubstack%7By_n%20%5Ctext%7B%20is%20a%20noise%20variable%7D%7D%20%5C%5C%0A%20%20%20%20x_%7Bn%7D%20&amp;%20=%20x_%7B0%7D%20+%20%5Cint_%7B0%7D%5E%7Bn%7D%20f_%7Btrue%7D(x_%7B%5Ctau%7D)%20%5Cpartial%20%5Ctau%0A%5Cend%7Balign%7D%0A"></p>
 <p>The objective is to learn a neural network <img src="https://latex.codecogs.com/png.latex?f_%5Ctheta"> that matches the unknown dynamics:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0Af_%5Ctheta%20%5Capprox%20f_%7Btrue%7D.%0A"></p>
-<div id="739bd143" class="cell" data-execution_count="3">
+<div id="68477fb6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> torch <span class="im" style="color: #00769E;
@@ -545,7 +545,7 @@ font-style: inherit;">=</span> model(x0, t_span)</span>
 <p>In the previous example <img src="https://latex.codecogs.com/png.latex?f_%5Ctheta"> is randomly initialized, thus the resulting vector-field does not exibit any interesting behaviour. As abovementioned, the objective is to learn such <img src="https://latex.codecogs.com/png.latex?f_%5Ctheta"> from some observations <img src="https://latex.codecogs.com/png.latex?y_n">. Getting a state solution <img src="https://latex.codecogs.com/png.latex?x_n"> involve solving an ODE defined by <img src="https://latex.codecogs.com/png.latex?f_%5Ctheta">. Similarly, optimizing <img src="https://latex.codecogs.com/png.latex?%5Ctheta"> involves computing the gradinets w.r.t. <img src="https://latex.codecogs.com/png.latex?x_n">. As differentiating through the ODE solver is computationally inefficent, the gradients of the paramters are obtained with the <a href="https://ilya.schurov.com/post/adjoint-method/">Adjoint State Method</a>. Thus, we can adopt maximum-likelihood estimation (MLE) to train our neural ODE:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bsplit%7D%0A%5Ctext%7Bargmin%7D_%5Ctheta%20%20%5Cmathcal%7BL(%5Ctheta)%7D%20&amp;%20=%20%5Cfrac%7B1%7D%7B2%7D%20%5Csum_%7Bn=0%7D%5EN%20%7C%7C%20y_n%20-%20x_n%7C%7C_2%5E2%20%5C%5C%0As.t.%20~~%20x_n%20&amp;%20=%20x_0%20+%20%5Cint_0%5E%7Bn%7D%20f_%5Ctheta(x_%5Ctau)%20%5Cpartial%20%5Ctau%0A%5Cend%7Bsplit%7D%0A"></p>
 <p>In order to train our <img src="https://latex.codecogs.com/png.latex?f_%5Ctheta">, some observations of a systems are needed. Thus, next some noise observation are generated from the original VDP oscillator.</p>
-<div id="0463d787" class="cell" data-execution_count="4">
+<div id="eb4e541b" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> torch.utils.data <span class="im" style="color: #00769E;
@@ -745,7 +745,7 @@ font-style: inherit;"># plot noise examples</span></span>
 <span id="cb5-63">    vdp,</span>
 <span id="cb5-64">)</span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_2412/3053862232.py:52: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /pytorch/torch/csrc/utils/tensor_new.cpp:253.)
+<pre><code>/tmp/ipykernel_2423/3053862232.py:52: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /pytorch/torch/csrc/utils/tensor_new.cpp:253.)
   t_spans = torch.tensor(t_spans).float()</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -757,7 +757,7 @@ font-style: inherit;"># plot noise examples</span></span>
 </div>
 </div>
 <p>Obtained a sample of trajectories we can train a model on it. Namely, the objective is to adjust the paramters of the vector field in such a way that given a starting point we simulate the dynamic of the system. Note that during training we can not leverage GPU parallelization trought batches as we need to solve a ODE at each step. However, it is possible to save memory by train on section of collected trajectories.</p>
-<div id="f61a1e99" class="cell" data-execution_count="5">
+<div id="c80c64d6" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> PIL <span class="im" style="color: #00769E;
@@ -997,7 +997,7 @@ HPU available: False, using: 0 HPUs
 <h1>Classification Problem</h1>
 <p>Until now we have focus on problem that naturally fit the NeuralODE space, namly we focused on regression problem over trajectories of phisical system where the functional form of the dynamics is learned by a neural network. However, NeuralODEs are not strictly limited to solve regression problems. By assuming arbitrary time-steps: where <img src="https://latex.codecogs.com/png.latex?t_0"> and <img src="https://latex.codecogs.com/png.latex?t_1"> are respectively the starting and end time of the dynamic system transforming the input data <img src="https://latex.codecogs.com/png.latex?x(t_0)"> into a representation <img src="https://latex.codecogs.com/png.latex?x(t_1)"> that is usefull to solve a classification problem. NeuralODEs vector fields is limited to work on data of the same dimensionality, in other words <img src="https://latex.codecogs.com/png.latex?x(t_0)"> and <img src="https://latex.codecogs.com/png.latex?x(t_1)%20%5Cin%20%5Cmathbb%7BR%7D%5En">. However, as NeuralODE are continuous and differentiable, they can be jointly trained with a linear classifier to solve the final task.</p>
 <p>For example, given the dataset in <strong>?@fig-half-moon-dataset</strong>; it is possible to define the following classifier:</p>
-<div id="fe7ae956" class="cell" data-execution_count="6">
+<div id="5df038c4" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> torch <span class="im" style="color: #00769E;
@@ -1319,7 +1319,7 @@ Figure&nbsp;1: Illustration the <a href="./half_moon.py">HalfMoon</a> dataset us
 </figcaption>
 </figure>
 </div>
-<div id="9ca2c8d4" class="cell" data-execution_count="7">
+<div id="41833b67" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> half_moon <span class="im" style="color: #00769E;

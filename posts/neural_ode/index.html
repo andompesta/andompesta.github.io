@@ -258,7 +258,7 @@ f(x(t), t) = x'(t) = \frac{ \partial x(t)} {\partial t} = \lim_{\Delta t \righta
 x_t = x_0 + \int_0^t f(x_\tau) \partial \tau
 \]</span></p>
 <p>Note that, given the inital state <span class="math inline">\(x_0\)</span> and a set of points in time <span class="math inline">\(\{ t_0, ..., t_N\}\)</span>, the objective is to obtain the state solution <span class="math inline">\(x_{0:N} \equiv \{ x_0, ..., x_N\}\)</span>. Unfortunetly, solving the above integral analytically is possible only for a limited amount of differential functions. Therefore, numerical solvers are used in practice.</p>
-<div id="b25ff833" class="cell" data-execution_count="1">
+<div id="1854a3e9" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
@@ -318,7 +318,7 @@ x_t = x_0 + \int_0^t f(x_\tau) \partial \tau
 </div>
 <div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="animations//vdp-oscillator_.mp4"></video></div>
 <p>As overmentioned the solution depend on the initial state of the system. Following there is a demonstration of how the system will behave if you used different starting points.</p>
-<div id="f7dc53c7" class="cell" data-execution_count="2">
+<div id="ae12be04" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plot_vector_field <span class="im">import</span> plot_ode</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> (</span>
@@ -371,7 +371,7 @@ x_t = x_0 + \int_0^t f(x_\tau) \partial \tau
 <p><span class="math display">\[
 f_\theta \approx f_{true}.
 \]</span></p>
-<div id="739bd143" class="cell" data-execution_count="3">
+<div id="68477fb6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn, Tensor</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchdyn.core <span class="im">import</span> NeuralODE</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -443,7 +443,7 @@ s.t. ~~ x_n &amp; = x_0 + \int_0^{n} f_\theta(x_\tau) \partial \tau
 \end{split}
 \]</span></p>
 <p>In order to train our <span class="math inline">\(f_\theta\)</span>, some observations of a systems are needed. Thus, next some noise observation are generated from the original VDP oscillator.</p>
-<div id="0463d787" class="cell" data-execution_count="4">
+<div id="eb4e541b" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.utils.data <span class="im">as</span> data</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># generate noise examples</span></span>
@@ -509,7 +509,7 @@ s.t. ~~ x_n &amp; = x_0 + \int_0^{n} f_\theta(x_\tau) \partial \tau
 <span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    vdp,</span>
 <span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_2412/3053862232.py:52: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /pytorch/torch/csrc/utils/tensor_new.cpp:253.)
+<pre><code>/tmp/ipykernel_2423/3053862232.py:52: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /pytorch/torch/csrc/utils/tensor_new.cpp:253.)
   t_spans = torch.tensor(t_spans).float()</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -521,7 +521,7 @@ s.t. ~~ x_n &amp; = x_0 + \int_0^{n} f_\theta(x_\tau) \partial \tau
 </div>
 </div>
 <p>Obtained a sample of trajectories we can train a model on it. Namely, the objective is to adjust the paramters of the vector field in such a way that given a starting point we simulate the dynamic of the system. Note that during training we can not leverage GPU parallelization trought batches as we need to solve a ODE at each step. However, it is possible to save memory by train on section of collected trajectories.</p>
-<div id="f61a1e99" class="cell" data-execution_count="5">
+<div id="c80c64d6" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
@@ -595,7 +595,7 @@ HPU available: False, using: 0 HPUs
 <h1>Classification Problem</h1>
 <p>Until now we have focus on problem that naturally fit the NeuralODE space, namly we focused on regression problem over trajectories of phisical system where the functional form of the dynamics is learned by a neural network. However, NeuralODEs are not strictly limited to solve regression problems. By assuming arbitrary time-steps: where <span class="math inline">\(t_0\)</span> and <span class="math inline">\(t_1\)</span> are respectively the starting and end time of the dynamic system transforming the input data <span class="math inline">\(x(t_0)\)</span> into a representation <span class="math inline">\(x(t_1)\)</span> that is usefull to solve a classification problem. NeuralODEs vector fields is limited to work on data of the same dimensionality, in other words <span class="math inline">\(x(t_0)\)</span> and <span class="math inline">\(x(t_1) \in \mathbb{R}^n\)</span>. However, as NeuralODE are continuous and differentiable, they can be jointly trained with a linear classifier to solve the final task.</p>
 <p>For example, given the dataset in <strong>?@fig-half-moon-dataset</strong>; it is possible to define the following classifier:</p>
-<div id="fe7ae956" class="cell" data-execution_count="6">
+<div id="5df038c4" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn, Tensor</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchdyn.core <span class="im">import</span> NeuralODE</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -690,7 +690,7 @@ Figure&nbsp;1: Illustration the <a href="./half_moon.py">HalfMoon</a> dataset us
 </figcaption>
 </figure>
 </div>
-<div id="9ca2c8d4" class="cell" data-execution_count="7">
+<div id="41833b67" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> half_moon <span class="im">import</span> HalfMoonDataset</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> DataLoader</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
